@@ -2,7 +2,8 @@
   "name": "remessage",
   "private": true,
   "workspaces": [
-    "client"
+    "client",
+    "server"
   ],
   "dependencies": {
     "eslint": "8.40.0",
