@@ -2,11 +2,17 @@
   "name": "server",
   "version": "0.1.0",
   "scripts": {
-    "dev": "tsc-watch --onSuccess \"node ./out/index.js\" -p ./tsconfig.json",
+    "dev": "NODE_ENV=development tsc-watch --noClear --onSuccess \"node ./out/index.js\" --project ./tsconfig.json",
     "build": "tsc",
     "start": "node out/index.js"
   },
   "dependencies": {
+    "@fastify/cookie": "8.3.0",
+    "@fastify/secure-session": "6.1.0",
+    "@fastify/sensible": "5.2.0",
+    "@fastify/type-provider-typebox": "3.2.0",
+    "@prisma/client": "4.14.0",
+    "@sinclair/typebox": "0.28.10",
     "@types/node": "20.1.4",
     "fastify": "4.17.0",
     "tsc-watch": "6.0.4",

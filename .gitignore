@@ -1,9 +1,10 @@
 .DS_Store
-.env*.local
+.env
 .next
 .pnp
 .pnp.js
 .vercel
+*.db
 *.pem
 *.tsbuildinfo
 build
