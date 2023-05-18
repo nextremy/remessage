@@ -1,4 +1,5 @@
 import fastifyCookie from "@fastify/cookie";
+import fastifyHelmet from "@fastify/helmet";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifySensible from "@fastify/sensible";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
@@ -27,6 +28,7 @@ declare module "fastify" {
 
 fastify.register(fastifyCookie);
 fastify.register(fastifySecureSession, { key: process.env.SESSION_KEY! });
+fastify.register(fastifyHelmet);
 fastify.register(fastifySensible);
 
 fastify.register(authenticationRoutes);
