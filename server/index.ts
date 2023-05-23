@@ -26,6 +26,12 @@ declare module "fastify" {
   >;
 }
 
+declare module "@fastify/secure-session" {
+  interface SessionData {
+    id: number;
+  }
+}
+
 fastify.register(fastifyCookie);
 fastify.register(fastifySecureSession, { key: process.env.SESSION_KEY! });
 fastify.register(fastifyHelmet);
