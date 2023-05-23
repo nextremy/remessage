@@ -18,7 +18,9 @@ export default async function authenticationRoutes(
     },
     async (request) => {
       const user = await prisma.user.findUnique({
-        where: { username: request.body.username },
+        where: {
+          username: request.body.username,
+        },
       });
 
       if (
