@@ -5,6 +5,44 @@ import { FastifyInstanceTypebox } from "fastify";
 import prisma from "../prisma/client";
 
 export default async function userRoutes(fastify: FastifyInstanceTypebox) {
+  fastify.get(
+    "/user/:id",
+    {
+      schema: {
+        params: Type.Object({
+          id: Type.Number(),
+        }),
+        response: {
+          "200": Type.Object({
+            id: Type.Number(),
+            username: Type.Optional(Type.String()),
+          }),
+        },
+      },
+    },
+    async (request) => {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: request.params.id,
+        },
+        select: {
+          id: true,
+          username: true,
+        },
+      });
+
+      if (!user) {
+        throw fastify.httpErrors.notFound("User not found");
+      }
+
+      return {
+        id: user.id,
+        username:
+          request.params.id === request.session.id ? user.username : undefined,
+      };
+    }
+  );
+
   fastify.post(
     "/user",
     {
