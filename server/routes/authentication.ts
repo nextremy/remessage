@@ -33,7 +33,7 @@ export default async function authenticationRoutes(
         throw fastify.httpErrors.unauthorized("Invalid username or password");
       }
 
-      request.session.id = user.id;
+      request.session.username = user.username;
     }
   );
 

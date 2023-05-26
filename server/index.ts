@@ -34,7 +34,7 @@ declare module "fastify" {
 
 declare module "@fastify/secure-session" {
   interface SessionData {
-    id: number;
+    username: string;
   }
 }
 
@@ -46,7 +46,7 @@ fastify.register(fastifySensible);
 fastify.register(authenticationRoutes);
 fastify.register(async (fastify: FastifyInstanceTypebox) => {
   fastify.addHook("preHandler", async (request) => {
-    if (request.session.id === undefined) {
+    if (request.session.username === undefined) {
       throw fastify.httpErrors.unauthorized();
     }
   });
