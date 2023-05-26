@@ -54,9 +54,7 @@ fastify.register(async (fastify: FastifyInstanceTypebox) => {
   fastify.register(userRoutes);
 });
 
-fastify.listen({ port: 4000 }, (error) => {
-  if (error) {
-    fastify.log.error(error);
-    process.exit(1);
-  }
+fastify.listen({ port: 4000 }).catch((error) => {
+  fastify.log.error(error);
+  process.exit();
 });
