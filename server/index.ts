@@ -5,6 +5,7 @@ import fastifySensible from "@fastify/sensible";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastify_, {
   FastifyBaseLogger,
+  FastifyInstanceTypebox,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
@@ -38,7 +39,15 @@ fastify.register(fastifyHelmet);
 fastify.register(fastifySensible);
 
 fastify.register(authenticationRoutes);
-fastify.register(userRoutes);
+fastify.register(async (fastify: FastifyInstanceTypebox) => {
+  fastify.addHook("preHandler", async (request) => {
+    if (request.session.id === undefined) {
+      throw fastify.httpErrors.unauthorized();
+    }
+  });
+
+  fastify.register(userRoutes);
+});
 
 fastify.listen({ port: 4000 }, (error) => {
   if (error) {
