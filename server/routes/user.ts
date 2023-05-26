@@ -6,7 +6,7 @@ import prisma from "../prisma/client";
 
 export default async function userRoutes(fastify: FastifyInstanceTypebox) {
   fastify.get(
-    "/user/:id",
+    "/users/:id",
     {
       schema: {
         params: Type.Object({
@@ -44,7 +44,7 @@ export default async function userRoutes(fastify: FastifyInstanceTypebox) {
   );
 
   fastify.post(
-    "/user",
+    "/users",
     {
       schema: {
         body: Type.Object({
