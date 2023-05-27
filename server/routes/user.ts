@@ -13,7 +13,7 @@ export default async function userRoutes(fastify: FastifyInstanceTypebox) {
           username: Type.String(),
         }),
         response: {
-          "200": Type.Object({
+          200: Type.Object({
             username: Type.String(),
           }),
         },
