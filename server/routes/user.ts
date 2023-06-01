@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { Type } from "@sinclair/typebox";
 import { randomBytes, scryptSync } from "crypto";
 import { FastifyInstanceTypebox } from "fastify";
@@ -9,29 +8,19 @@ export default async function userRoutes(fastify: FastifyInstanceTypebox) {
     "/users/:username",
     {
       schema: {
-        params: Type.Object({
-          username: Type.String(),
-        }),
-        response: {
-          200: Type.Object({
-            username: Type.String(),
-          }),
-        },
+        params: Type.Object({ username: Type.String() }),
+        response: { 200: Type.Object({ username: Type.String() }) },
       },
     },
     async (request) => {
+      const { username } = request.params;
+
       const user = await prisma.user.findUnique({
-        where: {
-          username: request.params.username,
-        },
-        select: {
-          username: true,
-        },
+        where: { username },
+        select: { username: true },
       });
 
-      if (!user) {
-        throw fastify.httpErrors.notFound("User not found");
-      }
+      if (!user) throw fastify.httpErrors.badRequest();
 
       return user;
     }
@@ -52,25 +41,17 @@ export default async function userRoutes(fastify: FastifyInstanceTypebox) {
       },
     },
     async (request) => {
-      try {
-        const passwordSalt = randomBytes(32);
-        await prisma.user.create({
-          data: {
-            username: request.body.username,
-            passwordHash: scryptSync(request.body.password, passwordSalt, 32),
-            passwordSalt,
-          },
-        });
-      } catch (error) {
-        if (
-          error instanceof Prisma.PrismaClientKnownRequestError &&
-          error.code === "P2002"
-        ) {
-          throw fastify.httpErrors.conflict("Username not available");
-        }
+      const { username, password } = request.body;
 
-        throw fastify.httpErrors.internalServerError();
-      }
+      const passwordSalt = randomBytes(32);
+      const passwordHash = scryptSync(password, passwordSalt, 32);
+      await prisma.user.create({
+        data: {
+          username,
+          passwordHash,
+          passwordSalt,
+        },
+      });
     }
   );
 }

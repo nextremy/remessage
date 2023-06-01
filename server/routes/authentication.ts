@@ -17,21 +17,14 @@ export default async function authenticationRoutes(
       },
     },
     async (request) => {
-      const user = await prisma.user.findUnique({
-        where: {
-          username: request.body.username,
-        },
-      });
+      const { username, password } = request.body;
 
-      if (
-        !user ||
-        !timingSafeEqual(
-          scryptSync(request.body.password, user.passwordSalt, 32),
-          user.passwordHash
-        )
-      ) {
-        throw fastify.httpErrors.unauthorized("Invalid username or password");
-      }
+      const user = await prisma.user.findUnique({ where: { username } });
+
+      if (!user) throw fastify.httpErrors.badRequest();
+      const passwordHash = scryptSync(password, user.passwordSalt, 32);
+      const passwordMatches = timingSafeEqual(passwordHash, user.passwordHash);
+      if (!passwordMatches) throw fastify.httpErrors.badRequest();
 
       request.session.username = user.username;
     }
