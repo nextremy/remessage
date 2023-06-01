@@ -7,7 +7,7 @@ export default async function authenticationRoutes(
   fastify: FastifyInstanceTypebox
 ) {
   fastify.post(
-    "/authentication",
+    "/sign-in",
     {
       schema: {
         body: Type.Object({
@@ -37,7 +37,7 @@ export default async function authenticationRoutes(
     }
   );
 
-  fastify.delete("/authentication", async (request) => {
+  fastify.delete("/sign-out", async (request) => {
     request.session.delete();
   });
 }
