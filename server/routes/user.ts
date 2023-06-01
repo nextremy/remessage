@@ -4,15 +4,15 @@ import prisma from "../prisma/client";
 
 export default async function userRoutes(fastify: FastifyInstanceTypebox) {
   fastify.get(
-    "/users/:username",
+    "/users",
     {
       schema: {
-        params: Type.Object({ username: Type.String() }),
+        querystring: Type.Object({ username: Type.String() }),
         response: { 200: Type.Object({ username: Type.String() }) },
       },
     },
     async (request) => {
-      const { username } = request.params;
+      const { username } = request.query;
 
       const user = await prisma.user.findUnique({
         where: { username },
