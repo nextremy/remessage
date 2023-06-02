@@ -20,22 +20,6 @@ const fastify = fastify_({
   },
 }).withTypeProvider<TypeBoxTypeProvider>();
 
-declare module "fastify" {
-  type FastifyInstanceTypebox = FastifyInstance<
-    RawServerDefault,
-    RawRequestDefaultExpression<RawServerDefault>,
-    RawReplyDefaultExpression<RawServerDefault>,
-    FastifyBaseLogger,
-    TypeBoxTypeProvider
-  >;
-}
-
-declare module "@fastify/secure-session" {
-  interface SessionData {
-    id: string;
-  }
-}
-
 fastify.register(fastifyCookie);
 fastify.register(fastifySecureSession, { key: process.env.SESSION_KEY! });
 fastify.register(fastifyHelmet);
@@ -56,3 +40,19 @@ fastify.listen({ port: 4000 }).catch((error) => {
   fastify.log.error(error);
   process.exit(1);
 });
+
+declare module "fastify" {
+  type FastifyInstanceTypebox = FastifyInstance<
+    RawServerDefault,
+    RawRequestDefaultExpression<RawServerDefault>,
+    RawReplyDefaultExpression<RawServerDefault>,
+    FastifyBaseLogger,
+    TypeBoxTypeProvider
+  >;
+}
+
+declare module "@fastify/secure-session" {
+  interface SessionData {
+    id: string;
+  }
+}
