@@ -35,10 +35,7 @@ export default async function authenticationRoutes(
     "/sign-in",
     {
       schema: {
-        body: Type.Object({
-          username: Type.String(),
-          password: Type.String(),
-        }),
+        body: Type.Object({ username: Type.String(), password: Type.String() }),
       },
     },
     async (request) => {
