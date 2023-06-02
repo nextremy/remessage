@@ -8,8 +8,30 @@ datasource db {
 }
 
 model User {
-  id           String @id @default(cuid())
-  username     String @unique
-  passwordHash Bytes
-  passwordSalt Bytes
+  id                   String          @id @default(cuid())
+  username             String          @unique
+  passwordHash         Bytes
+  passwordSalt         Bytes
+  friendships          Friendship[]    @relation(name: "Friendships")
+  INTERNAL_friendships Friendship[]    @relation(name: "INTERNAL_Friendships")
+  sentFriendRequests   FriendRequest[] @relation(name: "SentFriendRequests")
+  FriendRequest        FriendRequest[] @relation(name: "ReceivedFriendRequests")
+}
+
+model Friendship {
+  user     User   @relation(name: "Friendships", fields: [userId], references: [id])
+  userId   String
+  friend   User   @relation(name: "INTERNAL_Friendships", fields: [friendId], references: [id])
+  friendId String
+
+  @@id([userId, friendId])
+}
+
+model FriendRequest {
+  sender     User   @relation(name: "SentFriendRequests", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User   @relation(name: "ReceivedFriendRequests", fields: [receiverId], references: [id])
+  receiverId String
+
+  @@id([senderId, receiverId])
 }
