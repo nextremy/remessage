@@ -4,7 +4,7 @@ import prisma from "../prisma/client";
 
 export default async function userRoutes(fastify: FastifyInstanceTypebox) {
   fastify.get(
-    "/users",
+    "/user",
     {
       schema: {
         querystring: Type.Object({ username: Type.String() }),
