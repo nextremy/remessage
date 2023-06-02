@@ -56,5 +56,5 @@ fastify.register(async (fastify: FastifyInstanceTypebox) => {
 
 fastify.listen({ port: 4000 }).catch((error) => {
   fastify.log.error(error);
-  process.exit();
+  process.exit(1);
 });
