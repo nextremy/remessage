@@ -48,7 +48,14 @@ export default async function authenticationRoutes(
     async (request) => {
       const { username, password } = request.body;
 
-      const user = await prisma.user.findUnique({ where: { username } });
+      const user = await prisma.user.findUnique({
+        select: {
+          username: true,
+          passwordHash: true,
+          passwordSalt: true,
+        },
+        where: { username },
+      });
 
       if (!user) throw fastify.httpErrors.badRequest();
       const passwordHash = scryptSync(password, user.passwordSalt, 32);
