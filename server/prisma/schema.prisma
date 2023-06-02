@@ -8,7 +8,8 @@ datasource db {
 }
 
 model User {
-  username     String @id
-  passwordSalt Bytes
+  id           String @id @default(cuid())
+  username     String @unique
   passwordHash Bytes
+  passwordSalt Bytes
 }
