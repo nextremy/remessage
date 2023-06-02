@@ -16,9 +16,7 @@ import userRoutes from "./routes/user";
 const fastify = fastify_({
   logger: {
     enabled: process.env.NODE_ENV === "development",
-    transport: {
-      target: "@fastify/one-line-logger",
-    },
+    transport: { target: "@fastify/one-line-logger" },
   },
 }).withTypeProvider<TypeBoxTypeProvider>();
 
