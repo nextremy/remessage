@@ -1,3 +1,4 @@
+import fastifyAutoload from "@fastify/autoload";
 import fastifyCookie from "@fastify/cookie";
 import fastifyHelmet from "@fastify/helmet";
 import fastifySecureSession from "@fastify/secure-session";
@@ -10,8 +11,8 @@ import fastify_, {
   RawRequestDefaultExpression,
   RawServerDefault,
 } from "fastify";
+import path from "path";
 import authenticationRoutes from "./routes/authentication";
-import userRoutes from "./routes/user";
 
 const fastify = fastify_({
   logger: {
@@ -33,7 +34,10 @@ fastify.register(async (fastify: FastifyInstanceTypebox) => {
     }
   });
 
-  fastify.register(userRoutes);
+  fastify.register(fastifyAutoload, {
+    dir: path.join(__dirname, "routes"),
+    ignoreFilter: (path) => path.endsWith("authentication.js"),
+  });
 });
 
 fastify.listen({ port: 4000 }).catch((error) => {
