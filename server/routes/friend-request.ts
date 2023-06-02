@@ -54,12 +54,12 @@ export default async function friendshipRoutes(
         });
 
         fastify.assert(receiver);
-        fastify.assert(senderId !== receiver.id);
+        const receiverId = receiver.id;
+        fastify.assert(senderId !== receiverId);
+        const [friend1Id, friend2Id] = [senderId, receiverId].sort();
         const friendshipExists = Boolean(
           tx.friendship.findUnique({
-            where: {
-              userId_friendId: { userId: senderId, friendId: receiver.id },
-            },
+            where: { friend1Id_friend2Id: { friend1Id, friend2Id } },
           })
         );
         fastify.assert(!friendshipExists);
@@ -67,8 +67,8 @@ export default async function friendshipRoutes(
           tx.friendRequest.findFirst({
             where: {
               OR: [
-                { senderId, receiverId: receiver.id },
-                { senderId: receiver.id, receiverId: senderId },
+                { senderId, receiverId },
+                { senderId: receiverId, receiverId: senderId },
               ],
             },
           })
@@ -76,7 +76,7 @@ export default async function friendshipRoutes(
         fastify.assert(!friendRequestExists);
 
         await tx.friendRequest.create({
-          data: { senderId, receiverId: receiver.id },
+          data: { senderId, receiverId },
         });
       });
     }
@@ -102,16 +102,12 @@ export default async function friendshipRoutes(
       const { senderId } = request.body;
       const receiverId = request.session.id!;
 
+      const [friend1Id, friend2Id] = [senderId, receiverId].sort();
       await prisma.$transaction([
         prisma.friendRequest.delete({
           where: { senderId_receiverId: { senderId, receiverId } },
         }),
-        prisma.friendship.create({
-          data: { userId: senderId, friendId: receiverId },
-        }),
-        prisma.friendship.create({
-          data: { userId: receiverId, friendId: senderId },
-        }),
+        prisma.friendship.create({ data: { friend1Id, friend2Id } }),
       ]);
     }
   );
