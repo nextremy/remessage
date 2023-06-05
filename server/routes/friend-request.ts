@@ -199,7 +199,13 @@ export default async function friendshipRoutes(
 
   fastify.post(
     "/reject-friend-request",
-    { schema: { body: Type.Object({ senderId: Type.String() }) } },
+    {
+      schema: {
+        body: Type.Object({
+          senderId: Type.String(),
+        }),
+      },
+    },
     async (request) => {
       const { senderId } = request.body;
       const receiverId = request.session.id!;
