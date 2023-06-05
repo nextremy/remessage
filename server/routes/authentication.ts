@@ -26,7 +26,11 @@ export default async function authenticationRoutes(
       const passwordSalt = randomBytes(32);
       const passwordHash = scryptSync(password, passwordSalt, 32);
       await prisma.user.create({
-        data: { username, passwordHash, passwordSalt },
+        data: {
+          username,
+          passwordHash,
+          passwordSalt,
+        },
       });
     }
   );
@@ -35,21 +39,29 @@ export default async function authenticationRoutes(
     "/sign-in",
     {
       schema: {
-        body: Type.Object({ username: Type.String(), password: Type.String() }),
+        body: Type.Object({
+          username: Type.String(),
+          password: Type.String(),
+        }),
       },
     },
     async (request) => {
       const { username, password } = request.body;
 
       const user = await prisma.user.findUnique({
-        select: { id: true, passwordHash: true, passwordSalt: true },
-        where: { username },
+        select: {
+          id: true,
+          passwordHash: true,
+          passwordSalt: true,
+        },
+        where: {
+          username,
+        },
       });
-
-      if (!user) throw fastify.httpErrors.badRequest();
+      fastify.assert(user);
       const passwordHash = scryptSync(password, user.passwordSalt, 32);
       const passwordMatches = timingSafeEqual(passwordHash, user.passwordHash);
-      if (!passwordMatches) throw fastify.httpErrors.badRequest();
+      fastify.assert(passwordMatches);
 
       request.session.id = user.id;
     }
