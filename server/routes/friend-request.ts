@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import { FastifyInstanceTypebox } from "fastify";
 import prisma from "../prisma/client";
 
-export default async function friendshipRoutes(
+export default async function friendRequestRoutes(
   fastify: FastifyInstanceTypebox
 ) {
   fastify.get(
