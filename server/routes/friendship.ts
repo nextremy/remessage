@@ -11,7 +11,10 @@ export default async function friendshipRoutes(
       schema: {
         response: {
           200: Type.Array(
-            Type.Object({ id: Type.String(), username: Type.String() })
+            Type.Object({
+              id: Type.String(),
+              username: Type.String(),
+            })
           ),
         },
       },
@@ -19,33 +22,64 @@ export default async function friendshipRoutes(
     async (request) => {
       const userId = request.session.id;
 
-      const friendships = await prisma.friendship.findMany({
+      const user = await prisma.user.findUnique({
         select: {
-          friend1: { select: { id: true, username: true } },
-          friend2: { select: { id: true, username: true } },
+          friends: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
         },
-        where: { OR: [{ friend1Id: userId, friend2Id: userId }] },
+        where: {
+          id: userId,
+        },
       });
-      const friends = friendships.map((friendship) => {
-        const { friend1, friend2 } = friendship;
-        return friend1.id === userId ? friend2 : friend1;
-      });
+      fastify.assert(user);
 
-      return friends;
+      return user.friends;
     }
   );
 
   fastify.post(
     "/remove-friend",
-    { schema: { body: Type.Object({ friendId: Type.String() }) } },
+    {
+      schema: {
+        body: Type.Object({
+          friendId: Type.String(),
+        }),
+      },
+    },
     async (request) => {
       const userId = request.session.id!;
       const { friendId } = request.body;
 
-      const [friend1Id, friend2Id] = [userId, friendId].sort();
-      await prisma.friendship.delete({
-        where: { friend1Id_friend2Id: { friend1Id, friend2Id } },
-      });
+      await prisma.$transaction([
+        prisma.user.update({
+          data: {
+            friends: {
+              delete: {
+                id: friendId,
+              },
+            },
+          },
+          where: {
+            id: userId,
+          },
+        }),
+        prisma.user.update({
+          data: {
+            friends: {
+              delete: {
+                id: userId,
+              },
+            },
+          },
+          where: {
+            id: friendId,
+          },
+        }),
+      ]);
     }
   );
 }

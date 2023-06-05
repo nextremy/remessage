@@ -8,23 +8,14 @@ datasource db {
 }
 
 model User {
-  id                 String          @id @default(cuid())
-  username           String          @unique
-  passwordHash       Bytes
-  passwordSalt       Bytes
-  friendships1       Friendship[]    @relation(name: "Friendships1")
-  friendships2       Friendship[]    @relation(name: "Friendships2")
-  sentFriendRequests FriendRequest[] @relation(name: "SentFriendRequests")
-  FriendRequest      FriendRequest[] @relation(name: "ReceivedFriendRequests")
-}
-
-model Friendship {
-  friend1   User   @relation(name: "Friendships1", fields: [friend1Id], references: [id])
-  friend1Id String
-  friend2   User   @relation(name: "Friendships2", fields: [friend2Id], references: [id])
-  friend2Id String
-
-  @@id([friend1Id, friend2Id])
+  id                     String          @id @default(cuid())
+  username               String          @unique
+  passwordHash           Bytes
+  passwordSalt           Bytes
+  friends                User[]          @relation(name: "Friends")
+  INTERNAL_friends       User[]          @relation(name: "Friends")
+  sentFriendRequests     FriendRequest[] @relation(name: "SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation(name: "ReceivedFriendRequests")
 }
 
 model FriendRequest {

@@ -30,10 +30,22 @@ export default async function friendshipRoutes(
 
       const friendRequests = await prisma.friendRequest.findMany({
         select: {
-          sender: { select: { id: true, username: true } },
-          receiver: { select: { id: true, username: true } },
+          sender: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
         },
-        where: { receiverId },
+        where: {
+          receiverId,
+        },
       });
 
       return friendRequests;
@@ -42,41 +54,70 @@ export default async function friendshipRoutes(
 
   fastify.post(
     "/send-friend-request",
-    { schema: { body: Type.Object({ receiverUsername: Type.String() }) } },
+    {
+      schema: {
+        body: Type.Object({
+          receiverUsername: Type.String(),
+        }),
+      },
+    },
     async (request) => {
-      const senderId = request.session.id!;
+      const userId = request.session.id!;
       const { receiverUsername } = request.body;
 
       await prisma.$transaction(async (tx) => {
         const receiver = await tx.user.findUnique({
-          select: { id: true },
-          where: { username: receiverUsername },
-        });
-
-        fastify.assert(receiver);
-        const receiverId = receiver.id;
-        fastify.assert(senderId !== receiverId);
-        const [friend1Id, friend2Id] = [senderId, receiverId].sort();
-        const friendshipExists = Boolean(
-          tx.friendship.findUnique({
-            where: { friend1Id_friend2Id: { friend1Id, friend2Id } },
-          })
-        );
-        fastify.assert(!friendshipExists);
-        const friendRequestExists = Boolean(
-          tx.friendRequest.findFirst({
-            where: {
-              OR: [
-                { senderId, receiverId },
-                { senderId: receiverId, receiverId: senderId },
-              ],
+          select: {
+            id: true,
+            friends: {
+              select: {
+                id: true,
+              },
+              where: {
+                id: userId,
+              },
             },
-          })
-        );
-        fastify.assert(!friendRequestExists);
+            sentFriendRequests: {
+              select: {
+                receiverId: true,
+              },
+              where: {
+                receiverId: userId,
+              },
+            },
+            receivedFriendRequests: {
+              select: {
+                senderId: true,
+              },
+              where: {
+                senderId: userId,
+              },
+            },
+          },
+          where: {
+            username: receiverUsername,
+          },
+        });
+        fastify.assert(receiver);
+        fastify.assert(userId !== receiver.id);
+        fastify.assert(receiver.friends.length === 0);
+        fastify.assert(receiver.sentFriendRequests.length === 0);
+        fastify.assert(receiver.receivedFriendRequests.length === 0);
 
-        await tx.friendRequest.create({
-          data: { senderId, receiverId },
+        await tx.user.update({
+          data: {
+            sentFriendRequests: {
+              connect: {
+                senderId_receiverId: {
+                  senderId: userId,
+                  receiverId: receiver.id,
+                },
+              },
+            },
+          },
+          where: {
+            id: userId,
+          },
         });
       });
     }
@@ -84,30 +125,74 @@ export default async function friendshipRoutes(
 
   fastify.post(
     "/unsend-friend-request",
-    { schema: { body: Type.Object({ receiverId: Type.String() }) } },
+    {
+      schema: {
+        body: Type.Object({
+          receiverId: Type.String(),
+        }),
+      },
+    },
     async (request) => {
       const senderId = request.session.id!;
       const { receiverId } = request.body;
 
       await prisma.friendRequest.delete({
-        where: { senderId_receiverId: { senderId, receiverId } },
+        where: {
+          senderId_receiverId: {
+            senderId,
+            receiverId,
+          },
+        },
       });
     }
   );
 
   fastify.post(
     "/accept-friend-request",
-    { schema: { body: Type.Object({ senderId: Type.String() }) } },
+    {
+      schema: {
+        body: Type.Object({
+          senderId: Type.String(),
+        }),
+      },
+    },
     async (request) => {
       const { senderId } = request.body;
       const receiverId = request.session.id!;
 
-      const [friend1Id, friend2Id] = [senderId, receiverId].sort();
       await prisma.$transaction([
-        prisma.friendRequest.delete({
-          where: { senderId_receiverId: { senderId, receiverId } },
+        prisma.user.update({
+          data: {
+            friends: {
+              connect: {
+                id: senderId,
+              },
+            },
+          },
+          where: {
+            id: receiverId,
+          },
         }),
-        prisma.friendship.create({ data: { friend1Id, friend2Id } }),
+        prisma.user.update({
+          data: {
+            friends: {
+              connect: {
+                id: receiverId,
+              },
+            },
+          },
+          where: {
+            id: senderId,
+          },
+        }),
+        prisma.friendRequest.delete({
+          where: {
+            senderId_receiverId: {
+              senderId,
+              receiverId,
+            },
+          },
+        }),
       ]);
     }
   );
@@ -120,7 +205,12 @@ export default async function friendshipRoutes(
       const receiverId = request.session.id!;
 
       await prisma.friendRequest.delete({
-        where: { senderId_receiverId: { senderId, receiverId } },
+        where: {
+          senderId_receiverId: {
+            senderId,
+            receiverId,
+          },
+        },
       });
     }
   );
