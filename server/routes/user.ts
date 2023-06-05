@@ -7,19 +7,30 @@ export default async function userRoutes(fastify: FastifyInstanceTypebox) {
     "/user",
     {
       schema: {
-        querystring: Type.Object({ username: Type.String() }),
-        response: { 200: Type.Object({ username: Type.String() }) },
+        querystring: Type.Object({
+          userId: Type.String(),
+        }),
+        response: {
+          200: Type.Object({
+            id: Type.String(),
+            username: Type.String(),
+          }),
+        },
       },
     },
     async (request) => {
-      const { username } = request.query;
+      const { userId } = request.query;
 
       const user = await prisma.user.findUnique({
-        where: { username },
-        select: { username: true },
+        select: {
+          id: true,
+          username: true,
+        },
+        where: {
+          id: userId,
+        },
       });
-
-      if (!user) throw fastify.httpErrors.badRequest();
+      fastify.assert(user);
 
       return user;
     }
