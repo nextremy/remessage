@@ -16,6 +16,8 @@ model User {
   INTERNAL_friends       User[]          @relation(name: "Friends")
   sentFriendRequests     FriendRequest[] @relation(name: "SentFriendRequests")
   receivedFriendRequests FriendRequest[] @relation(name: "ReceivedFriendRequests")
+  sentDirectMessages     DirectMessage[] @relation(name: "SentDirectMessages")
+  receivedDirectMessages DirectMessage[] @relation(name: "ReceivedDirectMessages")
 }
 
 model FriendRequest {
@@ -25,4 +27,13 @@ model FriendRequest {
   receiverId String
 
   @@id([senderId, receiverId])
+}
+
+model DirectMessage {
+  id         String   @id @default(cuid())
+  sender     User     @relation(name: "SentDirectMessages", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User     @relation(name: "ReceivedDirectMessages", fields: [receiverId], references: [id])
+  receiverId String
+  timestamp  DateTime @default(now())
 }

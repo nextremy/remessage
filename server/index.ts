@@ -4,6 +4,7 @@ import fastifyHelmet from "@fastify/helmet";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifySensible from "@fastify/sensible";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import fastifyWebsocket from "@fastify/websocket";
 import fastify_, {
   FastifyBaseLogger,
   FastifyInstanceTypebox,
@@ -27,6 +28,7 @@ fastify.register(fastifyCookie);
 fastify.register(fastifySecureSession, { key: process.env.SESSION_KEY! });
 fastify.register(fastifyHelmet);
 fastify.register(fastifySensible);
+fastify.register(fastifyWebsocket);
 
 fastify.register(authenticationRoutes);
 fastify.register(async (fastify: FastifyInstanceTypebox) => {

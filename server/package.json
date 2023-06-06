@@ -14,9 +14,11 @@
     "@fastify/secure-session": "6.1.0",
     "@fastify/sensible": "5.2.0",
     "@fastify/type-provider-typebox": "3.2.0",
+    "@fastify/websocket": "8.1.0",
     "@prisma/client": "4.14.0",
     "@sinclair/typebox": "0.28.10",
     "@types/node": "20.1.4",
+    "@types/ws": "8.5.4",
     "fastify": "4.17.0",
     "tsc-watch": "6.0.4",
     "typescript": "5.0.4"
