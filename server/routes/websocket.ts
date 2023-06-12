@@ -1,6 +1,6 @@
-import { FastifyInstanceTypebox } from "fastify";
+import { CustomFastifyInstance } from "fastify";
 
-export default async function websocketRoutes(fastify: FastifyInstanceTypebox) {
+export default async function websocketRoutes(fastify: CustomFastifyInstance) {
   fastify.get("/websocket", { websocket: true }, (connection, request) => {
     const userId = request.session.id;
     if (userId === undefined) {

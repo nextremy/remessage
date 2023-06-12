@@ -1,8 +1,8 @@
 import { Type } from "@sinclair/typebox";
-import { FastifyInstanceTypebox } from "fastify";
+import { CustomFastifyInstance } from "fastify";
 import prisma from "../prisma/client";
 
-export default async function friendRoutes(fastify: FastifyInstanceTypebox) {
+export default async function friendRoutes(fastify: CustomFastifyInstance) {
   fastify.get(
     "/users/:userId/friends",
     {

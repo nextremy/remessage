@@ -7,7 +7,7 @@ import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyWebsocket from "@fastify/websocket";
 import fastify_, {
   FastifyBaseLogger,
-  FastifyInstanceTypebox,
+  CustomFastifyInstance,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
@@ -31,7 +31,7 @@ fastify.register(fastifySensible);
 fastify.register(fastifyWebsocket);
 
 fastify.register(authenticationRoutes);
-fastify.register(async (fastify: FastifyInstanceTypebox) => {
+fastify.register(async (fastify: CustomFastifyInstance) => {
   fastify.addHook("preHandler", async (request) => {
     fastify.assert(request.session.id);
   });
@@ -48,7 +48,7 @@ fastify.listen({ port: 4000 }).catch((error) => {
 });
 
 declare module "fastify" {
-  type FastifyInstanceTypebox = FastifyInstance<
+  type CustomFastifyInstance = FastifyInstance<
     RawServerDefault,
     RawRequestDefaultExpression<RawServerDefault>,
     RawReplyDefaultExpression<RawServerDefault>,

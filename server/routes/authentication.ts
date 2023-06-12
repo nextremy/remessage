@@ -1,10 +1,10 @@
 import { Type } from "@sinclair/typebox";
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
-import { FastifyInstanceTypebox } from "fastify";
+import { CustomFastifyInstance } from "fastify";
 import prisma from "../prisma/client";
 
 export default async function authenticationRoutes(
-  fastify: FastifyInstanceTypebox
+  fastify: CustomFastifyInstance
 ) {
   fastify.post(
     "/sign-up",
