@@ -8,7 +8,7 @@ export default function channelRoutes(fastify: FastifyInstanceTypebox) {
     {
       schema: {
         body: Type.Object({
-          type: Type.Literal("direct-message"),
+          type: Type.Literal("direct"),
           participantIds: Type.Array(Type.String(), {
             minItems: 2,
             maxItems: 2,
@@ -18,10 +18,10 @@ export default function channelRoutes(fastify: FastifyInstanceTypebox) {
       },
     },
     async (request) => {
-      const userId = request.session.id!;
+      const { id: sessionId } = request.session;
       const { type, participantIds } = request.body;
-
-      fastify.assert(participantIds.includes(userId));
+      fastify.assert(sessionId);
+      fastify.assert(participantIds.includes(sessionId));
 
       await prisma.channel.create({
         data: {
@@ -44,14 +44,17 @@ export default function channelRoutes(fastify: FastifyInstanceTypebox) {
           channelId: Type.String(),
         }),
         body: Type.Object({
-          text: Type.String({ maxLength: 2000 }),
+          text: Type.String({
+            maxLength: 2000,
+          }),
+          senderId: Type.String(),
         }),
       },
     },
     async (request) => {
-      const senderId = request.session.id!;
       const { channelId } = request.params;
-      const { text } = request.body;
+      const { text, senderId } = request.body;
+      fastify.assert(senderId === request.session.id);
 
       await prisma.$transaction(async (tx) => {
         const channel = await tx.channel.findUnique({
@@ -66,10 +69,9 @@ export default function channelRoutes(fastify: FastifyInstanceTypebox) {
             id: channelId,
           },
         });
-
         fastify.assert(channel?.participants.length === 1);
 
-        await prisma.message.create({
+        await tx.message.create({
           data: {
             text,
             senderId,

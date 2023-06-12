@@ -17,7 +17,7 @@ model User {
   sentFriendRequests     FriendRequest[] @relation(name: "SentFriendRequests")
   receivedFriendRequests FriendRequest[] @relation(name: "ReceivedFriendRequests")
   channels               Channel[]
-  sentMessages           Message[]
+  messages               Message[]
 }
 
 model FriendRequest {
