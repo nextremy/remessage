@@ -22,9 +22,7 @@ export default async function friendRoutes(fastify: FastifyInstanceTypebox) {
     },
     async (request) => {
       const { userId } = request.params;
-      if (userId !== request.session.id) {
-        throw fastify.httpErrors.forbidden();
-      }
+      fastify.assert(userId === request.session.id);
 
       const user = await prisma.user.findUnique({
         select: {
@@ -39,9 +37,7 @@ export default async function friendRoutes(fastify: FastifyInstanceTypebox) {
           id: userId,
         },
       });
-      if (!user) {
-        throw fastify.httpErrors.notFound();
-      }
+      fastify.assert(user);
 
       return user.friends;
     }
@@ -59,9 +55,7 @@ export default async function friendRoutes(fastify: FastifyInstanceTypebox) {
     },
     async (request) => {
       const { userId, friendId } = request.params;
-      if (userId !== request.session.id) {
-        throw fastify.httpErrors.forbidden();
-      }
+      fastify.assert(userId === request.session.id);
 
       await prisma.$transaction([
         prisma.user.update({

@@ -33,9 +33,7 @@ fastify.register(fastifyWebsocket);
 fastify.register(authenticationRoutes);
 fastify.register(async (fastify: FastifyInstanceTypebox) => {
   fastify.addHook("preHandler", async (request) => {
-    if (request.session.id === undefined) {
-      throw fastify.httpErrors.unauthorized();
-    }
+    fastify.assert(request.session.id);
   });
 
   fastify.register(fastifyAutoload, {
