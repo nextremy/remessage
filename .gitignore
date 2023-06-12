@@ -4,8 +4,8 @@
 .pnp
 .pnp.js
 .vercel
-*.db
 *.pem
+*.sqlite
 *.tsbuildinfo
 build
 coverage
