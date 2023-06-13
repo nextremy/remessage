@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import { CustomFastifyInstance } from "fastify";
 import prisma from "../prisma/client";
 
-export default function channelRoutes(fastify: CustomFastifyInstance) {
+export default async function channelRoutes(fastify: CustomFastifyInstance) {
   fastify.post(
     "/create-channel",
     {
