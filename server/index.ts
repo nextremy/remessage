@@ -3,11 +3,13 @@ import fastifyCookie from "@fastify/cookie";
 import fastifyHelmet from "@fastify/helmet";
 import fastifySecureSession from "@fastify/secure-session";
 import fastifySensible from "@fastify/sensible";
+import fastifySwagger from "@fastify/swagger";
+import fastifySwaggerUi from "@fastify/swagger-ui";
 import { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import fastifyWebsocket from "@fastify/websocket";
 import fastify_, {
-  FastifyBaseLogger,
   CustomFastifyInstance,
+  FastifyBaseLogger,
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerDefault,
@@ -15,15 +17,21 @@ import fastify_, {
 import path from "path";
 import authenticationRoutes from "./routes/authentication";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+
 const fastify = fastify_({
   logger: {
-    enabled: process.env.NODE_ENV === "development",
+    enabled: isDevelopment,
     transport: {
       target: "@fastify/one-line-logger",
     },
   },
 }).withTypeProvider<TypeBoxTypeProvider>();
 
+if (isDevelopment) {
+  fastify.register(fastifySwagger);
+  fastify.register(fastifySwaggerUi);
+}
 fastify.register(fastifyCookie);
 fastify.register(fastifySecureSession, { key: process.env.SESSION_KEY! });
 fastify.register(fastifyHelmet);
@@ -42,10 +50,16 @@ fastify.register(async (fastify: CustomFastifyInstance) => {
   });
 });
 
-fastify.listen({ port: 4000 }).catch((error) => {
-  fastify.log.error(error);
-  process.exit(1);
-});
+const port = 4000;
+fastify
+  .listen({ port })
+  .then(() => {
+    fastify.log.info(`Documentation at http://localhost:${port}/documentation`);
+  })
+  .catch((error) => {
+    fastify.log.error(error);
+    process.exit(1);
+  });
 
 declare module "fastify" {
   type CustomFastifyInstance = FastifyInstance<
