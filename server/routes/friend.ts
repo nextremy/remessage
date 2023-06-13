@@ -4,10 +4,10 @@ import prisma from "../prisma/client";
 
 export default async function friendRoutes(fastify: CustomFastifyInstance) {
   fastify.get(
-    "/users/:userId/friends",
+    "/friends",
     {
       schema: {
-        params: Type.Object({
+        querystring: Type.Object({
           userId: Type.String(),
         }),
         response: {
@@ -21,7 +21,7 @@ export default async function friendRoutes(fastify: CustomFastifyInstance) {
       },
     },
     async (request) => {
-      const { userId } = request.params;
+      const { userId } = request.query;
       fastify.assert(userId === request.session.id);
 
       const user = await prisma.user.findUnique({
@@ -43,18 +43,18 @@ export default async function friendRoutes(fastify: CustomFastifyInstance) {
     }
   );
 
-  fastify.delete(
-    "/users/:userId/friends/:friendId",
+  fastify.post(
+    "/remove-friend",
     {
       schema: {
-        params: Type.Object({
+        body: Type.Object({
           userId: Type.String(),
           friendId: Type.String(),
         }),
       },
     },
     async (request) => {
-      const { userId, friendId } = request.params;
+      const { userId, friendId } = request.body;
       fastify.assert(userId === request.session.id);
 
       await prisma.$transaction([

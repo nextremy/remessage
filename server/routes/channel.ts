@@ -4,7 +4,7 @@ import prisma from "../prisma/client";
 
 export default function channelRoutes(fastify: CustomFastifyInstance) {
   fastify.post(
-    "/channels",
+    "/create-channel",
     {
       schema: {
         body: Type.Object({
@@ -32,52 +32,6 @@ export default function channelRoutes(fastify: CustomFastifyInstance) {
             })),
           },
         },
-      });
-    }
-  );
-
-  fastify.post(
-    "/channels/:channelId/messages",
-    {
-      schema: {
-        params: Type.Object({
-          channelId: Type.String(),
-        }),
-        body: Type.Object({
-          text: Type.String({
-            maxLength: 2000,
-          }),
-          senderId: Type.String(),
-        }),
-      },
-    },
-    async (request) => {
-      const { channelId } = request.params;
-      const { text, senderId } = request.body;
-      fastify.assert(senderId === request.session.id);
-
-      await prisma.$transaction(async (tx) => {
-        const channel = await tx.channel.findUnique({
-          select: {
-            participants: {
-              where: {
-                id: senderId,
-              },
-            },
-          },
-          where: {
-            id: channelId,
-          },
-        });
-        fastify.assert(channel?.participants.length === 1);
-
-        await tx.message.create({
-          data: {
-            text,
-            senderId,
-            channelId,
-          },
-        });
       });
     }
   );
