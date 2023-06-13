@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import { CustomFastifyInstance } from "fastify";
 import prisma from "../prisma/client";
 
-export default function messageRoutes(fastify: CustomFastifyInstance) {
+export default async function messageRoutes(fastify: CustomFastifyInstance) {
   fastify.post(
     "/send-message",
     {
@@ -33,7 +33,8 @@ export default function messageRoutes(fastify: CustomFastifyInstance) {
             id: channelId,
           },
         });
-        fastify.assert(channel?.participants.length === 1);
+        fastify.assert(channel);
+        fastify.assert(channel.participants.length === 1);
 
         await tx.message.create({
           data: {
