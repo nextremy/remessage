@@ -37,5 +37,6 @@ export async function POST(request: NextRequest) {
       passwordSalt,
     },
   });
+
   return NextResponse.json(user, { status: 201 });
 }
