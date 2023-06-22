@@ -67,7 +67,7 @@ export default async function authenticationRoutes(
     }
   );
 
-  fastify.delete("/sign-out", async (request) => {
+  fastify.post("/sign-out", async (request) => {
     request.session.delete();
   });
 }
