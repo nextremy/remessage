@@ -54,7 +54,11 @@ const port = 4000;
 fastify
   .listen({ port })
   .then(() => {
-    fastify.log.info(`Documentation at http://localhost:${port}/documentation`);
+    if (isDevelopment) {
+      fastify.log.info(
+        `Documentation at http://localhost:${port}/documentation`
+      );
+    }
   })
   .catch((error) => {
     fastify.log.error(error);
