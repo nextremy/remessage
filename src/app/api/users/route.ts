@@ -19,20 +19,20 @@ const POSTBodyTypeCheck = TypeCompiler.Compile(
 );
 
 export async function POST(request: NextRequest) {
-  const requestBody = await request.json();
-  if (!POSTBodyTypeCheck.Check(requestBody)) {
+  const body = await request.json();
+  if (!POSTBodyTypeCheck.Check(body)) {
     return NextResponse.json(null, { status: 400 });
   }
 
   const passwordSalt = randomBytes(32);
-  const passwordHash = scryptSync(requestBody.password, passwordSalt, 32);
+  const passwordHash = scryptSync(body.password, passwordSalt, 32);
   const user = await prisma.user.create({
     select: {
       id: true,
       username: true,
     },
     data: {
-      username: requestBody.username,
+      username: body.username,
       passwordHash,
       passwordSalt,
     },
