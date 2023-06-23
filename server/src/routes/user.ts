@@ -4,6 +4,31 @@ import { AppInstance } from "../lib/app-instance";
 import { db } from "../prisma/client";
 
 export default async function (app: AppInstance) {
+  app.get(
+    "/users/:userId",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      const user = db.user.findUnique({
+        select: {
+          id: true,
+          username: true,
+        },
+        where: {
+          id: request.params.userId,
+        },
+      });
+
+      if (!user) return reply.code(404).send();
+      return reply.code(200).send(user);
+    },
+  );
+
   app.post(
     "/users",
     {
