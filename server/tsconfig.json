@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
     "lib": ["ES2023"],
     "module": "Node16",
-    "target": "ES2022",
-    "strict": true,
-    "esModuleInterop": true,
+    "moduleResolution": "Node",
+    "outDir": "out",
+    "rootDir": "src",
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "Node"
+    "strict": true,
+    "target": "ES2022"
   }
 }
