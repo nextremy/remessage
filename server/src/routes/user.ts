@@ -12,7 +12,7 @@ export default async function (app: AppInstance) {
           username: Type.String({
             minLength: 1,
             maxLength: 16,
-            pattern: "^[A-Za-z0-9_]*$",
+            pattern: "^[a-z0-9_]*$",
           }),
           password: Type.String({
             minLength: 8,
