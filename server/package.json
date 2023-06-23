@@ -1,0 +1,16 @@
+{
+  "name": "remessage-server",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc --rootDir src --outDir out",
+    "start": "node out/index.js"
+  },
+  "dependencies": {
+    "@types/node": "20.3.1",
+    "fastify": "4.18.0",
+    "typescript": "5.1.3"
+  }
+}
