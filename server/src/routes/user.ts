@@ -60,48 +60,4 @@ export default async function (app: AppInstance) {
       return reply.code(201).send();
     },
   );
-
-  app.post(
-    "/users/:username/logins",
-    {
-      schema: {
-        params: Type.Object({
-          username: Type.String(),
-        }),
-        body: Type.Object({
-          password: Type.String(),
-        }),
-      },
-    },
-    async (request, reply) => {
-      const user = await db.user.findUnique({
-        select: {
-          id: true,
-          username: true,
-          passwordHash: true,
-          passwordSalt: true,
-          sessionId: true,
-        },
-        where: {
-          username: request.params.username,
-        },
-      });
-
-      if (!user) return reply.code(400).send();
-
-      if (user.sessionId === null) {
-        const sessionId = randomBytes(32).toString("hex");
-        await db.user.update({
-          data: {
-            sessionId,
-          },
-          where: {
-            id: user.id,
-          },
-        });
-        return reply.setCookie("sessionId", sessionId).send();
-      }
-      return reply.setCookie("sessionId", user.sessionId).send();
-    },
-  );
 }
