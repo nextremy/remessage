@@ -1,10 +1,10 @@
 import { Type } from "@fastify/type-provider-typebox";
 import { randomBytes, scryptSync } from "crypto";
-import { CustomFastifyInstance } from "../lib/custom-fastify-instance";
+import { AppInstance } from "../lib/app-instance";
 import { db } from "../prisma/client";
 
-export default async function userRoutes(server: CustomFastifyInstance) {
-  server.post(
+export default async function (app: AppInstance) {
+  app.post(
     "/users",
     {
       schema: {

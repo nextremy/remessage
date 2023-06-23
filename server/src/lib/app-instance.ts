@@ -7,7 +7,7 @@ import {
   RawServerDefault,
 } from "fastify";
 
-export type CustomFastifyInstance = FastifyInstance<
+export type AppInstance = FastifyInstance<
   RawServerDefault,
   RawRequestDefaultExpression<RawServerDefault>,
   RawReplyDefaultExpression<RawServerDefault>,
