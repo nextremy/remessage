@@ -1,3 +1,4 @@
-*.sqlite
+.env
+*.db
 node_modules
 out

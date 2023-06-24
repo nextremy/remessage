@@ -5,9 +5,9 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "dev": "dotenv -e .env.development -- tsc-watch --noClear --onSuccess 'node out/index'",
-    "dev.dbsync": "dotenv -e .env.development -- npx prisma db push && npx prisma generate",
-    "dev.dbstudio": "dotenv -e .env.development -- npx prisma studio",
+    "dev": "dotenv -e .env -- tsc-watch --noClear --onSuccess 'node out/index'",
+    "dev.db.sync": "dotenv -e .env -- npx prisma db push && npx prisma generate",
+    "dev.db.studio": "dotenv -e .env -- npx prisma studio",
     "build": "tsc",
     "start": "node out/index"
   },
