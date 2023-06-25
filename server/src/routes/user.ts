@@ -65,4 +65,73 @@ export default async function (app: AppInstance) {
       };
     },
   );
+
+  app.get(
+    "/users/:userId/friends",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+        }),
+        response: {
+          200: Type.Array(
+            Type.Object({
+              id: Type.String(),
+              username: Type.String(),
+            }),
+          ),
+        },
+      },
+    },
+    async (request) => {
+      const { userId } = request.params;
+
+      const user = await db.user.findUnique({
+        include: {
+          friends: true,
+        },
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) {
+        throw {
+          statusCode: 400,
+        };
+      }
+
+      return user.friends.map((friend) => ({
+        id: friend.id,
+        username: friend.username,
+      }));
+    },
+  );
+
+  app.delete(
+    "/users/:userId/friends/:friendId",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+          friendId: Type.String(),
+        }),
+      },
+    },
+    async (request) => {
+      const { userId, friendId } = request.params;
+
+      await db.user.update({
+        data: {
+          friends: {
+            delete: {
+              id: friendId,
+            },
+          },
+        },
+        where: {
+          id: userId,
+        },
+      });
+    },
+  );
 }

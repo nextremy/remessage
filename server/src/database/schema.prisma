@@ -8,10 +8,12 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(cuid())
-  username     String    @unique
-  passwordHash String
-  sessions     Session[]
+  id               String    @id @default(cuid())
+  username         String    @unique
+  passwordHash     String
+  friends          User[]    @relation("Friends")
+  INTERNAL_friends User[]    @relation("Friends")
+  sessions         Session[]
 }
 
 model Session {
