@@ -40,11 +40,7 @@ export default async function (app: AppInstance) {
   );
 
   app.post("/logout", async (request, reply) => {
-    if (request.cookies.sessionId === undefined) {
-      throw {
-        statusCode: 400,
-      };
-    }
+    app.assert(request.cookies.sessionId !== undefined);
     await db.session.delete({
       where: {
         id: request.cookies.sessionId,

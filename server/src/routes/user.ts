@@ -87,11 +87,7 @@ export default async function (app: AppInstance) {
           id: request.params.userId,
         },
       });
-      if (!user) {
-        throw {
-          statusCode: 400,
-        };
-      }
+      app.assert(user);
 
       return user.friends.map((friend) => ({
         id: friend.id,
