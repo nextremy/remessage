@@ -16,34 +16,42 @@ export default async function (app: AppInstance) {
       },
     },
     async (request, reply) => {
-      const user = await db.user.findUnique({
-        select: {
-          id: true,
-          username: true,
-          passwordHash: true,
-          sessionId: true,
-        },
-        where: {
-          username: request.body.username,
-        },
-      });
+      const { username } = request.body;
 
+      const user = await db.user.findUnique({ where: { username } });
       app.assert(user);
       app.assert(verify(user.passwordHash, request.body.password));
 
-      let sessionId = user.sessionId;
-      if (sessionId === null) {
-        sessionId = randomBytes(32).toString("hex");
-        await db.user.update({
-          data: {
-            sessionId,
-          },
-          where: {
-            id: user.id,
-          },
-        });
-      }
-      return reply.setCookie("sessionId", sessionId).send();
+      const sessionId = randomBytes(16).toString("hex");
+      const expires = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
+      const session = await db.session.create({
+        data: {
+          id: sessionId,
+          expires,
+          userId: user.id,
+        },
+      });
+      reply.setCookie("sessionId", session.id, {
+        expires,
+      });
     },
   );
+
+  app.post("/logout", async (request, reply) => {
+    const { sessionId } = request.cookies;
+
+    if (sessionId === undefined) {
+      throw {
+        statusCode: 400,
+      };
+    }
+    await db.session.delete({
+      where: {
+        id: sessionId,
+      },
+    });
+    reply.setCookie("sessionId", "", {
+      expires: new Date(0),
+    });
+  });
 }

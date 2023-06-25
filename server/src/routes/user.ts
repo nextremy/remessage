@@ -20,19 +20,19 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
+      const { userId } = request.params;
+
       const user = await db.user.findUnique({
-        select: {
-          id: true,
-          username: true,
-        },
         where: {
-          id: request.params.userId,
+          id: userId,
         },
       });
-
       app.assert(user);
 
-      return user;
+      return {
+        id: user.id,
+        username: user.username,
+      };
     },
   );
 
@@ -54,10 +54,13 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
+      const { username } = request.body;
+
+      const passwordHash = await hash(request.body.password);
       await db.user.create({
         data: {
-          username: request.body.username,
-          passwordHash: await hash(request.body.password),
+          username,
+          passwordHash,
         },
       });
     },
