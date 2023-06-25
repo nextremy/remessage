@@ -1,6 +1,7 @@
 import { Type } from "@fastify/type-provider-typebox";
 import { hash } from "argon2";
 import { db } from "../database/client";
+import { verifySessionIdMatchesUserId } from "../hooks/authorization";
 import { AppInstance } from "../types/AppInstance";
 
 export default async function (app: AppInstance) {
@@ -77,17 +78,10 @@ export default async function (app: AppInstance) {
           ),
         },
       },
+      preHandler: (request, reply) =>
+        verifySessionIdMatchesUserId(request, reply),
     },
     async (request) => {
-      app.assert(typeof request.cookies.sessionId === "string", 400);
-      const session = await db.session.findUnique({
-        where: {
-          id: request.cookies.sessionId,
-        },
-      });
-      app.assert(session, 400);
-      app.assert(session.userId === request.params.userId, 400);
-
       const user = await db.user.findUnique({
         include: {
           friends: true,
@@ -114,17 +108,10 @@ export default async function (app: AppInstance) {
           friendId: Type.String(),
         }),
       },
+      preHandler: (request, reply) =>
+        verifySessionIdMatchesUserId(request, reply),
     },
     async (request) => {
-      app.assert(typeof request.cookies.sessionId === "string", 400);
-      const session = await db.session.findUnique({
-        where: {
-          id: request.cookies.sessionId,
-        },
-      });
-      app.assert(session, 400);
-      app.assert(session.userId === request.params.userId, 400);
-
       await db.user.update({
         data: {
           friends: {
