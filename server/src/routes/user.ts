@@ -2,7 +2,6 @@ import { Type } from "@fastify/type-provider-typebox";
 import { hash } from "argon2";
 import { db } from "../database/client";
 import { AppInstance } from "../types/AppInstance";
-import { getRequestSession } from "../lib/get-request-session";
 
 export default async function (app: AppInstance) {
   app.post(
@@ -80,9 +79,14 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const session = await getRequestSession(request);
-      app.assert(session);
-      app.assert(session.userId === request.params.userId);
+      app.assert(typeof request.cookies.sessionId === "string", 400);
+      const session = await db.session.findUnique({
+        where: {
+          id: request.cookies.sessionId,
+        },
+      });
+      app.assert(session, 400);
+      app.assert(session.userId === request.params.userId, 400);
 
       const user = await db.user.findUnique({
         include: {
@@ -92,7 +96,7 @@ export default async function (app: AppInstance) {
           id: request.params.userId,
         },
       });
-      app.assert(user);
+      app.assert(user, 400);
 
       return user.friends.map((friend) => ({
         id: friend.id,
@@ -112,9 +116,14 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const session = await getRequestSession(request);
-      app.assert(session);
-      app.assert(session.userId === request.params.userId);
+      app.assert(typeof request.cookies.sessionId === "string", 400);
+      const session = await db.session.findUnique({
+        where: {
+          id: request.cookies.sessionId,
+        },
+      });
+      app.assert(session, 400);
+      app.assert(session.userId === request.params.userId, 400);
 
       await db.user.update({
         data: {
