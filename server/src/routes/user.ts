@@ -1,5 +1,5 @@
 import { Type } from "@fastify/type-provider-typebox";
-import { randomBytes, scryptSync } from "crypto";
+import { hash } from "argon2";
 import { db } from "../database/client";
 import { AppInstance } from "../types/AppInstance";
 
@@ -19,9 +19,7 @@ export default async function (app: AppInstance) {
           id: true,
           username: true,
         },
-        where: {
-          id: request.params.userId,
-        },
+        where: { id: request.params.userId },
       });
 
       if (!user) return reply.code(404).send();
@@ -47,13 +45,10 @@ export default async function (app: AppInstance) {
       },
     },
     async (request, reply) => {
-      const passwordSalt = randomBytes(32);
-      const passwordHash = scryptSync(request.body.password, passwordSalt, 32);
       await db.user.create({
         data: {
           username: request.body.username,
-          passwordHash,
-          passwordSalt,
+          passwordHash: await hash(request.body.password),
         },
       });
 
