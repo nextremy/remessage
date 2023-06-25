@@ -13,17 +13,18 @@ export default async function (app: AppInstance) {
         }),
       },
     },
-    async (request, reply) => {
+    async (request) => {
       const user = db.user.findUnique({
         select: {
           id: true,
           username: true,
         },
-        where: { id: request.params.userId },
+        where: {
+          id: request.params.userId,
+        },
       });
 
-      if (!user) return reply.code(404).send();
-      return reply.code(200).send(user);
+      app.assert(user);
     },
   );
 
@@ -44,15 +45,13 @@ export default async function (app: AppInstance) {
         }),
       },
     },
-    async (request, reply) => {
+    async (request) => {
       await db.user.create({
         data: {
           username: request.body.username,
           passwordHash: await hash(request.body.password),
         },
       });
-
-      return reply.code(201).send();
     },
   );
 }

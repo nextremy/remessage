@@ -23,7 +23,9 @@ export default async function (app: AppInstance) {
           passwordHash: true,
           sessionId: true,
         },
-        where: { username: request.body.username },
+        where: {
+          username: request.body.username,
+        },
       });
 
       app.assert(user);
@@ -33,8 +35,12 @@ export default async function (app: AppInstance) {
       if (sessionId === null) {
         sessionId = randomBytes(32).toString("hex");
         await db.user.update({
-          data: { sessionId },
-          where: { id: user.id },
+          data: {
+            sessionId,
+          },
+          where: {
+            id: user.id,
+          },
         });
       }
       return reply.setCookie("sessionId", sessionId).send();
