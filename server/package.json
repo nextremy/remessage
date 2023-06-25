@@ -6,10 +6,10 @@
   },
   "scripts": {
     "dev": "dotenv -e .env -- tsc-watch --noClear --onSuccess 'node out/index'",
-    "dev.db.sync": "dotenv -e .env -- npx prisma db push && npx prisma generate",
-    "dev.db.studio": "dotenv -e .env -- npx prisma studio",
     "build": "tsc",
-    "start": "node out/index"
+    "start": "node out/index",
+    "db.sync": "dotenv -e .env -- npx prisma db push && npx prisma generate",
+    "db.studio": "dotenv -e .env -- npx prisma studio"
   },
   "dependencies": {
     "@fastify/autoload": "5.7.1",
