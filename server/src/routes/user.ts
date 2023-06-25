@@ -11,10 +11,16 @@ export default async function (app: AppInstance) {
         params: Type.Object({
           userId: Type.String(),
         }),
+        response: {
+          200: Type.Object({
+            id: Type.String(),
+            username: Type.String(),
+          }),
+        },
       },
     },
     async (request) => {
-      const user = db.user.findUnique({
+      const user = await db.user.findUnique({
         select: {
           id: true,
           username: true,
@@ -25,6 +31,8 @@ export default async function (app: AppInstance) {
       });
 
       app.assert(user);
+
+      return user;
     },
   );
 
