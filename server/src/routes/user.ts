@@ -2,6 +2,7 @@ import { Type } from "@fastify/type-provider-typebox";
 import { hash } from "argon2";
 import { db } from "../database/client";
 import { AppInstance } from "../types/AppInstance";
+import { getRequestSession } from "../lib/get-request-session";
 
 export default async function (app: AppInstance) {
   app.post(
@@ -79,6 +80,10 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
+      const session = await getRequestSession(request);
+      app.assert(session);
+      app.assert(session.userId === request.params.userId);
+
       const user = await db.user.findUnique({
         include: {
           friends: true,
@@ -107,6 +112,10 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
+      const session = await getRequestSession(request);
+      app.assert(session);
+      app.assert(session.userId === request.params.userId);
+
       await db.user.update({
         data: {
           friends: {
