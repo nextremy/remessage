@@ -22,13 +22,10 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const { username } = request.body;
-
-      const passwordHash = await hash(request.body.password);
       await db.user.create({
         data: {
-          username,
-          passwordHash,
+          username: request.body.username,
+          passwordHash: await hash(request.body.password),
         },
       });
     },
@@ -50,11 +47,9 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const { userId } = request.params;
-
       const user = await db.user.findUnique({
         where: {
-          id: userId,
+          id: request.params.userId,
         },
       });
       app.assert(user);
@@ -84,14 +79,12 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const { userId } = request.params;
-
       const user = await db.user.findUnique({
         include: {
           friends: true,
         },
         where: {
-          id: userId,
+          id: request.params.userId,
         },
       });
       if (!user) {
@@ -118,18 +111,16 @@ export default async function (app: AppInstance) {
       },
     },
     async (request) => {
-      const { userId, friendId } = request.params;
-
       await db.user.update({
         data: {
           friends: {
             delete: {
-              id: friendId,
+              id: request.params.friendId,
             },
           },
         },
         where: {
-          id: userId,
+          id: request.params.userId,
         },
       });
     },

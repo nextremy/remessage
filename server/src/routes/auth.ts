@@ -16,9 +16,11 @@ export default async function (app: AppInstance) {
       },
     },
     async (request, reply) => {
-      const { username } = request.body;
-
-      const user = await db.user.findUnique({ where: { username } });
+      const user = await db.user.findUnique({
+        where: {
+          username: request.body.username,
+        },
+      });
       app.assert(user);
       app.assert(verify(user.passwordHash, request.body.password));
 
@@ -38,16 +40,14 @@ export default async function (app: AppInstance) {
   );
 
   app.post("/logout", async (request, reply) => {
-    const { sessionId } = request.cookies;
-
-    if (sessionId === undefined) {
+    if (request.cookies.sessionId === undefined) {
       throw {
         statusCode: 400,
       };
     }
     await db.session.delete({
       where: {
-        id: sessionId,
+        id: request.cookies.sessionId,
       },
     });
     reply.setCookie("sessionId", "", {
