@@ -1,7 +1,7 @@
 import { Type } from "@fastify/type-provider-typebox";
 import { randomBytes, scryptSync, timingSafeEqual } from "crypto";
-import { AppInstance } from "../lib/app-instance";
 import { db } from "../database/client";
+import { AppInstance } from "../types/AppInstance";
 
 export default async function (app: AppInstance) {
   app.post(
