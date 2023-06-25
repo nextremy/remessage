@@ -1,7 +1,7 @@
 import { Type } from "@fastify/type-provider-typebox";
 import { randomBytes, scryptSync } from "crypto";
 import { AppInstance } from "../lib/app-instance";
-import { db } from "../prisma/client";
+import { db } from "../database/client";
 
 export default async function (app: AppInstance) {
   app.get(
