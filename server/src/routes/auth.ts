@@ -46,16 +46,14 @@ export default async function (app: AppInstance) {
         },
       },
     },
-    async (request) => {
+    async (request, reply) => {
       const user = await db.user.findUnique({
         where: {
           username: request.body.username,
         },
       });
-      if (!user) {
-        throw new Error();
-      }
-      if (!verify(user.passwordHash, request.body.password)) {
+      if (!user || !verify(user.passwordHash, request.body.password)) {
+        reply.code(401);
         throw new Error();
       }
       return {
