@@ -45,8 +45,6 @@ export default async function (app: AppInstance) {
         id: request.cookies.sessionId,
       },
     });
-    reply.setCookie("sessionId", "", {
-      expires: new Date(0),
-    });
+    reply.clearCookie("sessionId");
   });
 }
