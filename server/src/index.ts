@@ -8,7 +8,9 @@ const app = fastify({
   logger: process.env.NODE_ENV === "development",
 });
 
-app.register(fastifyCookie);
+app.register(fastifyCookie, {
+  secret: process.env.COOKIE_SECRET!,
+});
 app.register(fastifySensible);
 app.register(fastifyAutoload, {
   dir: join(__dirname, "routes"),
