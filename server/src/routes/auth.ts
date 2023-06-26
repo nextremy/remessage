@@ -23,7 +23,6 @@ export default async function (app: AppInstance) {
       });
       app.assert(user);
       app.assert(verify(user.passwordHash, request.body.password));
-
       const sessionId = randomBytes(16).toString("hex");
       const expires = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000);
       const session = await db.session.create({

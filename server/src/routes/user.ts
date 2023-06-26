@@ -54,7 +54,6 @@ export default async function (app: AppInstance) {
         },
       });
       app.assert(user);
-
       return {
         id: user.id,
         username: user.username,
@@ -91,7 +90,6 @@ export default async function (app: AppInstance) {
         },
       });
       app.assert(user, 400);
-
       return user.friends.map((friend) => ({
         id: friend.id,
         username: friend.username,

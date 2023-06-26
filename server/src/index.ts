@@ -4,7 +4,9 @@ import fastifySensible from "@fastify/sensible";
 import fastify from "fastify";
 import { join } from "path";
 
-const app = fastify({ logger: process.env.NODE_ENV === "development" });
+const app = fastify({
+  logger: process.env.NODE_ENV === "development",
+});
 
 app.register(fastifyCookie);
 app.register(fastifySensible);
