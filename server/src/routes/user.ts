@@ -2,7 +2,7 @@ import { Type } from "@fastify/type-provider-typebox";
 import { hash } from "argon2";
 import { db } from "../database/client";
 import { verifySessionIdMatchesUserId } from "../hooks/authorization";
-import { AppInstance } from "../types/AppInstance";
+import { AppInstance } from "../types/app-instance";
 
 export default async function (app: AppInstance) {
   app.post(

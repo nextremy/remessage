@@ -2,7 +2,7 @@ import { Type } from "@fastify/type-provider-typebox";
 import { verify } from "argon2";
 import { randomBytes } from "crypto";
 import { db } from "../database/client";
-import { AppInstance } from "../types/AppInstance";
+import { AppInstance } from "../types/app-instance";
 
 export default async function (app: AppInstance) {
   app.post(
