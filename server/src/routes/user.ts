@@ -1,37 +1,8 @@
 import { Type } from "@fastify/type-provider-typebox";
-import { hash } from "argon2";
 import { db } from "../database/client";
-import { verifySessionIdMatchesUserId } from "../hooks/authorization";
 import { AppInstance } from "../types/app-instance";
 
 export default async function (app: AppInstance) {
-  app.post(
-    "/users",
-    {
-      schema: {
-        body: Type.Object({
-          username: Type.String({
-            minLength: 1,
-            maxLength: 16,
-            pattern: "^[a-z0-9_]*$",
-          }),
-          password: Type.String({
-            minLength: 8,
-            maxLength: 256,
-          }),
-        }),
-      },
-    },
-    async (request) => {
-      await db.user.create({
-        data: {
-          username: request.body.username,
-          passwordHash: await hash(request.body.password),
-        },
-      });
-    },
-  );
-
   app.get(
     "/users/:userId",
     {
@@ -47,13 +18,16 @@ export default async function (app: AppInstance) {
         },
       },
     },
-    async (request) => {
+    async (request, reply) => {
       const user = await db.user.findUnique({
         where: {
           id: request.params.userId,
         },
       });
-      app.assert(user);
+      if (!user) {
+        reply.code(404);
+        throw new Error();
+      }
       return {
         id: user.id,
         username: user.username,
@@ -77,10 +51,12 @@ export default async function (app: AppInstance) {
           ),
         },
       },
-      preHandler: (request, reply) =>
-        verifySessionIdMatchesUserId(request, reply),
     },
-    async (request) => {
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
       const user = await db.user.findUnique({
         include: {
           friends: true,
@@ -89,7 +65,10 @@ export default async function (app: AppInstance) {
           id: request.params.userId,
         },
       });
-      app.assert(user, 400);
+      if (!user) {
+        reply.code(404);
+        throw new Error();
+      }
       return user.friends.map((friend) => ({
         id: friend.id,
         username: friend.username,
@@ -106,10 +85,12 @@ export default async function (app: AppInstance) {
           friendId: Type.String(),
         }),
       },
-      preHandler: (request, reply) =>
-        verifySessionIdMatchesUserId(request, reply),
     },
-    async (request) => {
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
       await db.user.update({
         data: {
           friends: {
