@@ -8,17 +8,9 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  username         String    @unique
+  id               String @id @default(cuid())
+  username         String @unique
   passwordHash     String
-  friends          User[]    @relation("Friends")
-  INTERNAL_friends User[]    @relation("Friends")
-  sessions         Session[]
-}
-
-model Session {
-  id      String   @id
-  expires DateTime
-  user    User     @relation(fields: [userId], references: [id])
-  userId  String
+  friends          User[] @relation("Friends")
+  INTERNAL_friends User[] @relation("Friends")
 }
