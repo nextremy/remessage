@@ -107,7 +107,7 @@ export default async function (app: AppInstance) {
   );
 
   app.get(
-    "/users/:userId/friend-requests",
+    "/users/:userId/sent-friend-requests",
     {
       schema: {
         params: Type.Object({
@@ -116,11 +116,6 @@ export default async function (app: AppInstance) {
         response: {
           200: Type.Array(
             Type.Object({
-              id: Type.String(),
-              sender: Type.Object({
-                id: Type.String(),
-                username: Type.String(),
-              }),
               receiver: Type.Object({
                 id: Type.String(),
                 username: Type.String(),
@@ -137,13 +132,6 @@ export default async function (app: AppInstance) {
       }
       return await db.friendRequest.findMany({
         select: {
-          id: true,
-          sender: {
-            select: {
-              id: true,
-              username: true,
-            },
-          },
           receiver: {
             select: {
               id: true,
@@ -152,14 +140,14 @@ export default async function (app: AppInstance) {
           },
         },
         where: {
-          id: request.params.userId,
+          senderId: request.params.userId,
         },
       });
     },
   );
 
   app.post(
-    "/users/:userId/friend-requests",
+    "/users/:userId/sent-friend-requests",
     {
       schema: {
         params: Type.Object({
@@ -192,12 +180,78 @@ export default async function (app: AppInstance) {
   );
 
   app.delete(
-    "/users/:userId/friend-requests/:friendRequestId",
+    "/users/:userId/sent-friend-requests/:receiverId",
     {
       schema: {
         params: Type.Object({
           userId: Type.String(),
-          friendRequestId: Type.String(),
+          receiverId: Type.String(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
+      await db.friendRequest.delete({
+        where: {
+          senderId_receiverId: {
+            senderId: request.params.userId,
+            receiverId: request.params.receiverId,
+          },
+        },
+      });
+    },
+  );
+
+  app.get(
+    "/users/:userId/received-friend-requests",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+        }),
+        response: {
+          200: Type.Array(
+            Type.Object({
+              sender: Type.Object({
+                id: Type.String(),
+                username: Type.String(),
+              }),
+            }),
+          ),
+        },
+      },
+    },
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
+      return await db.friendRequest.findMany({
+        select: {
+          sender: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+        where: {
+          receiverId: request.params.userId,
+        },
+      });
+    },
+  );
+
+  app.delete(
+    "/users/:userId/received-friend-requests/:senderId",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+          senderId: Type.String(),
         }),
         querystring: Type.Object({
           accept: Type.Optional(Type.Boolean()),
@@ -210,32 +264,12 @@ export default async function (app: AppInstance) {
         throw new Error();
       }
       await db.$transaction(async (db) => {
-        const friendRequest = await db.friendRequest.findUniqueOrThrow({
-          where: {
-            id: request.params.friendRequestId,
-          },
-        });
-        if (
-          friendRequest.senderId !== request.params.userId &&
-          friendRequest.receiverId !== request.params.userId
-        ) {
-          reply.code(403);
-          throw new Error();
-        }
-        if (
-          friendRequest.receiverId === request.params.userId &&
-          request.query.accept
-        ) {
+        if (request.query.accept) {
           await db.user.update({
             data: {
               friends: {
                 connect: {
-                  id: friendRequest.receiverId,
-                },
-              },
-              INTERNAL_friends: {
-                connect: {
-                  id: friendRequest.receiverId,
+                  id: request.params.senderId,
                 },
               },
             },
@@ -243,10 +277,25 @@ export default async function (app: AppInstance) {
               id: request.params.userId,
             },
           });
+          await db.user.update({
+            data: {
+              friends: {
+                connect: {
+                  id: request.params.userId,
+                },
+              },
+            },
+            where: {
+              id: request.params.senderId,
+            },
+          });
         }
         await db.friendRequest.delete({
           where: {
-            id: request.params.friendRequestId,
+            senderId_receiverId: {
+              senderId: request.params.senderId,
+              receiverId: request.params.userId,
+            },
           },
         });
       });
