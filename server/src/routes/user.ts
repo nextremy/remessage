@@ -25,7 +25,7 @@ export default async function (app: AppInstance) {
         },
       });
       if (!user) {
-        reply.code(404);
+        void reply.code(404);
         throw new Error();
       }
       return {
@@ -54,7 +54,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       const user = await db.user.findUnique({
@@ -66,7 +66,7 @@ export default async function (app: AppInstance) {
         },
       });
       if (!user) {
-        reply.code(404);
+        void reply.code(404);
         throw new Error();
       }
       return user.friends.map((friend) => ({
@@ -88,7 +88,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       await db.user.update({
@@ -127,7 +127,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       return await db.friendRequest.findMany({
@@ -160,7 +160,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       await db.$transaction(async (db) => {
@@ -191,7 +191,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       await db.friendRequest.delete({
@@ -226,7 +226,7 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       return await db.friendRequest.findMany({
@@ -260,11 +260,11 @@ export default async function (app: AppInstance) {
     },
     async (request, reply) => {
       if (request.user.userId !== request.params.userId) {
-        reply.code(403);
+        void reply.code(403);
         throw new Error();
       }
       await db.$transaction(async (db) => {
-        if (request.query.accept) {
+        if (request.query.accept === true) {
           await db.user.update({
             data: {
               friends: {

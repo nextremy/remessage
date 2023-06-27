@@ -52,8 +52,8 @@ export default async function (app: AppInstance) {
           username: request.body.username,
         },
       });
-      if (!user || !verify(user.passwordHash, request.body.password)) {
-        reply.code(401);
+      if (!user || !(await verify(user.passwordHash, request.body.password))) {
+        void reply.code(401);
         throw new Error();
       }
       return {

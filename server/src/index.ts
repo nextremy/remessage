@@ -9,13 +9,17 @@ const app = fastify({
   logger: process.env.NODE_ENV === "development",
 });
 
-app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET!,
+if (process.env.JWT_SECRET === undefined) {
+  app.log.error("No JWT_SECRET environment variable was provided.");
+  process.exit(1);
+}
+void app.register(fastifyJwt, {
+  secret: process.env.JWT_SECRET,
 });
-app.register(fastifySensible);
-app.register(authRoutes);
-app.register(async (app) => {
-  app.register(fastifyAutoload, {
+void app.register(fastifySensible);
+void app.register(authRoutes);
+void app.register(async (app) => {
+  void app.register(fastifyAutoload, {
     dir: join(__dirname, "routes"),
     ignoreFilter: (path) => path.endsWith("auth.js"),
   });
@@ -23,7 +27,8 @@ app.register(async (app) => {
     try {
       await request.jwtVerify();
     } catch (error) {
-      reply.code(401).send();
+      void reply.code(401);
+      throw new Error();
     }
   });
 });
