@@ -105,4 +105,151 @@ export default async function (app: AppInstance) {
       });
     },
   );
+
+  app.get(
+    "/users/:userId/friend-requests",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+        }),
+        response: {
+          200: Type.Array(
+            Type.Object({
+              id: Type.String(),
+              sender: Type.Object({
+                id: Type.String(),
+                username: Type.String(),
+              }),
+              receiver: Type.Object({
+                id: Type.String(),
+                username: Type.String(),
+              }),
+            }),
+          ),
+        },
+      },
+    },
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
+      return await db.friendRequest.findMany({
+        select: {
+          id: true,
+          sender: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+          receiver: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+        where: {
+          id: request.params.userId,
+        },
+      });
+    },
+  );
+
+  app.post(
+    "/users/:userId/friend-requests",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+        }),
+        body: Type.Object({
+          receiverUsername: Type.String(),
+        }),
+      },
+    },
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
+      await db.$transaction(async (db) => {
+        const receiver = await db.user.findUniqueOrThrow({
+          where: {
+            username: request.body.receiverUsername,
+          },
+        });
+        await db.friendRequest.create({
+          data: {
+            senderId: request.params.userId,
+            receiverId: receiver.id,
+          },
+        });
+      });
+    },
+  );
+
+  app.delete(
+    "/users/:userId/friend-requests/:friendRequestId",
+    {
+      schema: {
+        params: Type.Object({
+          userId: Type.String(),
+          friendRequestId: Type.String(),
+        }),
+        querystring: Type.Object({
+          accept: Type.Optional(Type.Boolean()),
+        }),
+      },
+    },
+    async (request, reply) => {
+      if (request.user.userId !== request.params.userId) {
+        reply.code(403);
+        throw new Error();
+      }
+      await db.$transaction(async (db) => {
+        const friendRequest = await db.friendRequest.findUniqueOrThrow({
+          where: {
+            id: request.params.friendRequestId,
+          },
+        });
+        if (
+          friendRequest.senderId !== request.params.userId &&
+          friendRequest.receiverId !== request.params.userId
+        ) {
+          reply.code(403);
+          throw new Error();
+        }
+        if (
+          friendRequest.receiverId === request.params.userId &&
+          request.query.accept
+        ) {
+          await db.user.update({
+            data: {
+              friends: {
+                connect: {
+                  id: friendRequest.receiverId,
+                },
+              },
+              INTERNAL_friends: {
+                connect: {
+                  id: friendRequest.receiverId,
+                },
+              },
+            },
+            where: {
+              id: request.params.userId,
+            },
+          });
+        }
+        await db.friendRequest.delete({
+          where: {
+            id: request.params.friendRequestId,
+          },
+        });
+      });
+    },
+  );
 }
