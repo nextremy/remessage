@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { db } from "../database/client";
+import { db } from "../prisma/client";
 import { publicProcedure, router } from "../trpc";
 
 export const userRouter = router({
