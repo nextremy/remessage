@@ -20,6 +20,14 @@
   "plugins": ["react-refresh"],
   "root": true,
   "rules": {
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": {
+          "attributes": false
+        }
+      }
+    ],
     "@typescript-eslint/strict-boolean-expressions": "error",
     "react-refresh/only-export-components": "warn",
     "react/jsx-sort-props": "warn"
