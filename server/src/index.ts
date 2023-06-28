@@ -1,39 +1,19 @@
-import fastifyAutoload from "@fastify/autoload";
-import fastifyJwt from "@fastify/jwt";
-import fastifySensible from "@fastify/sensible";
-import fastify from "fastify";
-import { join } from "path";
-import authRoutes from "./routes/auth";
+import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import cors from "cors";
+import { friendRouter } from "./routers/friend";
+import { friendRequestRouter } from "./routers/friend-request";
+import { userRouter } from "./routers/user";
+import { router } from "./trpc";
 
-const app = fastify({
-  logger: process.env.NODE_ENV === "development",
-});
-
-if (process.env.JWT_SECRET === undefined) {
-  app.log.error("No JWT_SECRET environment variable was provided.");
-  process.exit(1);
-}
-void app.register(fastifyJwt, {
-  secret: process.env.JWT_SECRET,
-});
-void app.register(fastifySensible);
-void app.register(authRoutes);
-void app.register(async (app) => {
-  void app.register(fastifyAutoload, {
-    dir: join(__dirname, "routes"),
-    ignoreFilter: (path) => path.endsWith("auth.js"),
-  });
-  app.addHook("onRequest", async (request, reply) => {
-    try {
-      await request.jwtVerify();
-    } catch (error) {
-      void reply.code(401);
-      throw new Error();
-    }
-  });
+const appRouter = router({
+  user: userRouter,
+  friend: friendRouter,
+  friendRequest: friendRequestRouter,
 });
 
-app.listen({ port: 4000 }).catch((error) => {
-  app.log.error(error);
-  process.exit(1);
-});
+export type AppRouter = typeof appRouter;
+
+createHTTPServer({
+  middleware: cors(),
+  router: appRouter,
+}).listen(4000);
