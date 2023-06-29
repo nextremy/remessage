@@ -1,12 +1,11 @@
 import { z } from "zod";
-import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
 
 export const friendRequestRouter = router({
   list: protectedProcedure
     .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
-      const user = await db.user.findUnique({
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.db.user.findUnique({
         select: {
           sentFriendRequests: {
             select: { receiver: { select: { id: true, username: true } } },
@@ -22,15 +21,15 @@ export const friendRequestRouter = router({
     }),
   create: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
-      await db.friendRequest.create({
+    .query(async ({ input, ctx }) => {
+      await ctx.db.friendRequest.create({
         data: { senderId: input.senderId, receiverId: input.receiverId },
       });
     }),
   delete: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
-      await db.friendRequest.delete({
+    .query(async ({ input, ctx }) => {
+      await ctx.db.friendRequest.delete({
         where: {
           senderId_receiverId: {
             senderId: input.senderId,
@@ -41,9 +40,9 @@ export const friendRequestRouter = router({
     }),
   accept: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
-      await db.$transaction([
-        db.friendRequest.delete({
+    .query(async ({ input, ctx }) => {
+      await ctx.db.$transaction([
+        ctx.db.friendRequest.delete({
           where: {
             senderId_receiverId: {
               senderId: input.senderId,
@@ -51,11 +50,11 @@ export const friendRequestRouter = router({
             },
           },
         }),
-        db.user.update({
+        ctx.db.user.update({
           data: { friends: { connect: { id: input.receiverId } } },
           where: { id: input.senderId },
         }),
-        db.user.update({
+        ctx.db.user.update({
           data: { friends: { connect: { id: input.senderId } } },
           where: { id: input.receiverId },
         }),
