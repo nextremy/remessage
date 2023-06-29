@@ -1,10 +1,10 @@
 import { hash } from "argon2";
 import { z } from "zod";
 import { db } from "../prisma/client";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 export const userRouter = router({
-  get: publicProcedure
+  get: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input }) => {
       const user = await db.user.findUnique({

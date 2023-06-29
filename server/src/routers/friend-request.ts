@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { db } from "../prisma/client";
-import { publicProcedure, router } from "../trpc";
+import { protectedProcedure, router } from "../trpc";
 
 export const friendRequestRouter = router({
-  list: publicProcedure
+  list: protectedProcedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input }) => {
       const user = await db.user.findUnique({
@@ -20,14 +20,14 @@ export const friendRequestRouter = router({
       if (!user) return null;
       return [...user.sentFriendRequests, ...user.receivedFriendRequests];
     }),
-  create: publicProcedure
+  create: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
     .query(async ({ input }) => {
       await db.friendRequest.create({
         data: { senderId: input.senderId, receiverId: input.receiverId },
       });
     }),
-  delete: publicProcedure
+  delete: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
     .query(async ({ input }) => {
       await db.friendRequest.delete({
@@ -39,7 +39,7 @@ export const friendRequestRouter = router({
         },
       });
     }),
-  accept: publicProcedure
+  accept: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
     .query(async ({ input }) => {
       await db.$transaction([
