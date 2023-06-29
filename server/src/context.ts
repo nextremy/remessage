@@ -1,12 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import type { IncomingMessage } from "http";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "./env";
-
-const db = new PrismaClient();
 
 function getUserId(req: IncomingMessage) {
   if (req.headers.authorization === undefined) {
@@ -20,7 +17,7 @@ function getUserId(req: IncomingMessage) {
 }
 
 export function createContext({ req }: CreateHTTPContextOptions) {
-  return { db, userId: getUserId(req) };
+  return { userId: getUserId(req) };
 }
 
 export type Context = inferAsyncReturnType<typeof createContext>;
