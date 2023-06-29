@@ -22,14 +22,14 @@ export const friendRequestRouter = router({
     }),
   create: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       await db.friendRequest.create({
         data: { senderId: input.senderId, receiverId: input.receiverId },
       });
     }),
   delete: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       await db.friendRequest.delete({
         where: {
           senderId_receiverId: {
@@ -41,7 +41,7 @@ export const friendRequestRouter = router({
     }),
   accept: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverId: z.string() }))
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       await db.$transaction([
         db.friendRequest.delete({
           where: {

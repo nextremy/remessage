@@ -14,7 +14,7 @@ export const friendRouter = router({
     }),
   delete: protectedProcedure
     .input(z.object({ userId: z.string(), friendId: z.string() }))
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       await db.user.update({
         data: { friends: { delete: { id: input.friendId } } },
         where: { id: input.userId },
