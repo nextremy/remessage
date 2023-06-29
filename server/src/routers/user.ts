@@ -1,4 +1,4 @@
-import { hash } from "argon2";
+import * as argon2 from "argon2";
 import { z } from "zod";
 import { db } from "../prisma/client";
 import { protectedProcedure, publicProcedure, router } from "../trpc";
@@ -25,7 +25,7 @@ export const userRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      const passwordHash = await hash(input.password);
+      const passwordHash = await argon2.hash(input.password);
       await db.user.create({
         data: { username: input.username, passwordHash },
       });
