@@ -19,7 +19,7 @@ function getUserId(req: IncomingMessage) {
   return payload.userId;
 }
 
-export async function createContext({ req }: CreateHTTPContextOptions) {
+export function createContext({ req }: CreateHTTPContextOptions) {
   return { db, userId: getUserId(req) };
 }
 
