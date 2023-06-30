@@ -48,7 +48,7 @@ export function LoginRoute() {
             type="password"
           />
           <button
-            className="mt-8 h-14 rounded bg-emerald-700 text-lg font-bold text-zinc-50"
+            className="mt-8 h-14 rounded bg-emerald-700 text-lg font-bold text-zinc-50 saturate-50"
             type="submit"
           >
             Log in
