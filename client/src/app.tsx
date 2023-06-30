@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RootLayout } from "./layouts/root";
+import { ChatRoute } from "./routes/chat";
 import { FriendsRoute } from "./routes/friends";
 import { HomeRoute } from "./routes/home";
 import { LoginRoute } from "./routes/login";
@@ -29,7 +30,10 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<RootLayout />} path="/">
-              <Route element={<HomeRoute />} path="home" />
+              <Route path="home">
+                <Route element={<HomeRoute />} index />
+                <Route element={<ChatRoute />} path=":chatId" />
+              </Route>
               <Route element={<FriendsRoute />} path="friends" />
               <Route element={<ProfileRoute />} path="profile" />
             </Route>

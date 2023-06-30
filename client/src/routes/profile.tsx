@@ -1,3 +1,3 @@
 export function ProfileRoute() {
-  return <div></div>;
+  return <div className="grow"></div>;
 }

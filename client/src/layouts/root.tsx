@@ -15,9 +15,7 @@ export function RootLayout() {
       <div className="flex h-16 items-center gap-2 px-4">
         <h1 className="text-lg font-semibold">{headerTitle}</h1>
       </div>
-      <div className="grow">
-        <Outlet />
-      </div>
+      <Outlet />
       <nav className="grid h-16 auto-cols-fr grid-flow-col border-t border-zinc-800">
         <Link
           className={`flex flex-col items-center justify-center ${

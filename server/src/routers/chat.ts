@@ -14,8 +14,10 @@ export const chatRouter = router({
         { id: ctx.userId },
         { id: input.participants[0].userId },
       ];
-      await db.chat.create({
+      const chat = await db.chat.create({
+        select: { id: true },
         data: { participants: { connect: participants } },
       });
+      return chat;
     }),
 });
