@@ -1,3 +1,3 @@
 export function FriendsRoute() {
-  return <div></div>
+  return <div></div>;
 }
