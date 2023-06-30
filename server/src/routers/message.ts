@@ -24,11 +24,10 @@ export const messageRouter = router({
     .input(
       z.object({
         textContent: z.string().max(2000),
-        authorId: z.string(),
         chatId: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
-      await db.message.create({ data: { ...input } });
+    .mutation(async ({ input, ctx }) => {
+      await db.message.create({ data: { authorId: ctx.userId, ...input } });
     }),
 });
