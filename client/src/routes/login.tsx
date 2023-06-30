@@ -24,7 +24,7 @@ export function LoginRoute() {
         <h1 className="text-center text-2xl font-bold">Log in</h1>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <label
-            className="mt-6 text-sm font-semibold tracking-wider text-zinc-300"
+            className="mt-6 text-sm font-semibold tracking-wide text-zinc-300"
             htmlFor="username"
           >
             Username
@@ -36,7 +36,7 @@ export function LoginRoute() {
             type="text"
           />
           <label
-            className="mt-6 text-sm font-semibold tracking-wider text-zinc-300"
+            className="mt-6 text-sm font-semibold tracking-wide text-zinc-300"
             htmlFor="password"
           >
             Password
@@ -48,7 +48,7 @@ export function LoginRoute() {
             type="password"
           />
           <button
-            className="mt-10 h-14 rounded bg-emerald-700 text-lg font-bold text-zinc-50"
+            className="mt-8 h-14 rounded bg-emerald-700 text-lg font-bold text-zinc-50"
             type="submit"
           >
             Log in
