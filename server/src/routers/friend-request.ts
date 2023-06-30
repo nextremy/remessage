@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
@@ -17,7 +18,9 @@ export const friendRequestRouter = router({
         },
         where: { id: input.userId },
       });
-      if (!user) return null;
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
       return [...user.sentFriendRequests, ...user.receivedFriendRequests];
     }),
   create: protectedProcedure

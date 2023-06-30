@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import * as argon2 from "argon2";
 import { z } from "zod";
 import { db } from "../prisma/client";
@@ -11,6 +12,9 @@ export const userRouter = router({
         select: { id: true, username: true },
         where: { id: input.userId },
       });
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
       return user;
     }),
   create: publicProcedure

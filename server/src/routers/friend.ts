@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
@@ -10,7 +11,10 @@ export const friendRouter = router({
         select: { friends: { select: { id: true, username: true } } },
         where: { id: input.userId },
       });
-      return user ? user.friends : null;
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      return user.friends;
     }),
   delete: protectedProcedure
     .input(z.object({ userId: z.string(), friendId: z.string() }))

@@ -8,8 +8,6 @@ export function LoginRoute() {
   const navigate = useNavigate();
   const loginMutation = trpc.auth.login.useMutation({
     onSuccess: (data) => {
-      console.log(data);
-      if (!data) return;
       localStorage.setItem("token", data.token);
       navigate("/");
     },

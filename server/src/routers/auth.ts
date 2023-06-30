@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import * as argon2 from "argon2";
 import * as jwt from "jsonwebtoken";
 import { z } from "zod";
@@ -12,9 +13,11 @@ export const authRouter = router({
       const user = await db.user.findUnique({
         where: { username: input.username },
       });
-      if (!user) return null;
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
       if (!(await argon2.verify(user.passwordHash, input.password))) {
-        return null;
+        throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       const token = jwt.sign({ userId: user.id }, env.JWT_SECRET);
       return { token };
