@@ -1,3 +1,3 @@
 export function HomeRoute() {
-  return <div className="grow"></div>;
+  return <div></div>;
 }

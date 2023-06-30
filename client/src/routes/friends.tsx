@@ -1,8 +1,20 @@
 import { ChatBubbleLeftIcon } from "@heroicons/react/24/solid";
 import { useNavigate } from "react-router-dom";
+import { AppBar } from "../components/AppBar";
+import { BottomNavigation } from "../components/BottomNavigation";
 import { trpc } from "../trpc";
 
 export function FriendsRoute() {
+  return (
+    <div className="flex h-screen flex-col">
+      <AppBar title="Friends" />
+      <FriendsList />
+      <BottomNavigation destination="friends" />
+    </div>
+  );
+}
+
+function FriendsList() {
   const navigate = useNavigate();
   const friendListQuery = trpc.friend.list.useQuery();
   const chatCreateMutation = trpc.chat.create.useMutation({
