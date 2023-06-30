@@ -29,7 +29,7 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<RootLayout />} path="/">
-              <Route element={<HomeRoute />} path="/home" />
+              <Route element={<HomeRoute />} path="home" />
               <Route element={<FriendsRoute />} path="friends" />
               <Route element={<ProfileRoute />} path="profile" />
             </Route>
