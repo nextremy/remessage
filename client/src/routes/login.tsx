@@ -20,7 +20,7 @@ export function LoginRoute() {
 
   return (
     <div className="grid min-h-screen place-items-center bg-zinc-950 p-4 text-zinc-50">
-      <div className="w-full max-w-sm rounded-md bg-zinc-900 p-6">
+      <div className="w-full max-w-sm rounded bg-zinc-900 p-6">
         <h1 className="text-center text-2xl font-bold">Log in</h1>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <label
@@ -30,7 +30,7 @@ export function LoginRoute() {
             Username
           </label>
           <input
-            className="mt-2 h-12 rounded-md bg-transparent bg-zinc-950 px-4"
+            className="mt-2 h-12 rounded bg-transparent bg-zinc-950 px-4"
             name="username"
             onChange={(event) => setUsername(event.target.value)}
             type="text"
@@ -42,13 +42,13 @@ export function LoginRoute() {
             Password
           </label>
           <input
-            className="mt-2 h-12 rounded-md bg-transparent bg-zinc-950 px-4"
+            className="mt-2 h-12 rounded bg-transparent bg-zinc-950 px-4"
             name="password"
             onChange={(event) => setPassword(event.target.value)}
             type="password"
           />
           <button
-            className="mt-10 h-14 rounded-md bg-emerald-700 text-lg font-bold text-zinc-50"
+            className="mt-10 h-14 rounded bg-emerald-700 text-lg font-bold text-zinc-50"
             type="submit"
           >
             Log in
