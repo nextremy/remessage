@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@prisma/client": "4.16.1",
-    "@trpc/server": "10.32.0",
+    "@trpc/server": "10.33.0",
     "@types/cors": "2.8.13",
     "@types/jsonwebtoken": "9.0.2",
     "@types/node": "20.3.1",
