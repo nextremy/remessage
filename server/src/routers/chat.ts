@@ -3,20 +3,17 @@ import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
 
 export const chatRouter = router({
-  create: protectedProcedure
-    .input(
-      z.object({
-        participants: z.array(z.object({ userId: z.string() })).length(1),
-      }),
-    )
-    .mutation(async ({ input, ctx }) => {
-      const participants = [
-        { id: ctx.userId },
-        { id: input.participants[0].userId },
-      ];
-      const chat = await db.chat.create({
-        select: { id: true },
-        data: { participants: { connect: participants } },
+  get: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const chat = await db.chat.upsert({
+        select: { id: true, type: true },
+        create: {
+          type: "direct",
+          users: { connect: [{ id: ctx.userId }, { id: input.userId }] },
+        },
+        update: {},
+        where: { id: "" },
       });
       return chat;
     }),
