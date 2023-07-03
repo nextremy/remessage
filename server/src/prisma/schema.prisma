@@ -20,7 +20,7 @@ model User {
 }
 
 model FriendRequest {
-  id String @id @default(cuid())
+  id         String @id @default(cuid())
   sender     User   @relation(name: "SentFriendRequests", fields: [senderId], references: [id])
   senderId   String
   receiver   User   @relation(name: "ReceivedFriendRequests", fields: [receiverId], references: [id])
