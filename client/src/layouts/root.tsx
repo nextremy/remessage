@@ -1,4 +1,6 @@
-import { Tab } from "@headlessui/react";
+import { Dialog, Tab } from "@headlessui/react";
+import { UserPlusIcon } from "@heroicons/react/20/solid";
+import { FormEvent, useState } from "react";
 import { trpc } from "../trpc";
 
 export function RootLayout() {
@@ -43,8 +45,83 @@ function Tabs() {
       </Tab.List>
       <Tab.Panels className="grow">
         <Tab.Panel></Tab.Panel>
-        <Tab.Panel></Tab.Panel>
+        <Tab.Panel>
+          <FriendsList />
+        </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
+  );
+}
+
+function FriendsList() {
+  const friendsListQuery = trpc.friend.list.useQuery();
+
+  if (!friendsListQuery.data) return null;
+  return (
+    <div className="flex flex-col">
+      <AddFriendButton />
+    </div>
+  );
+}
+
+function AddFriendButton() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [friendUsername, setFriendUsername] = useState("");
+  const friendRequestCreateMutation = trpc.friendRequest.create.useMutation({
+    onSuccess: () => setDialogOpen(false),
+  });
+
+  function sendFriendRequest(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    friendRequestCreateMutation.mutate({ receiverUsername: friendUsername });
+  }
+
+  return (
+    <>
+      <button
+        className="m-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 shadow"
+        onClick={() => setDialogOpen(true)}
+      >
+        <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
+        Add new...
+      </button>
+      <Dialog
+        className="relative z-50"
+        onClose={() => setDialogOpen(false)}
+        open={dialogOpen}
+      >
+        <div className="fixed inset-0 bg-gray-950/50" />
+        <div className="fixed inset-0 grid place-items-center p-4">
+          <Dialog.Panel className="w-full max-w-md rounded bg-gray-50 p-4">
+            <Dialog.Title className="text-xl font-medium">
+              Add friend
+            </Dialog.Title>
+            <Dialog.Description>
+              Add a friend by their username.
+            </Dialog.Description>
+            <form className="flex flex-col" onSubmit={sendFriendRequest}>
+              <label
+                className="mt-4 text-sm font-semibold tracking-wide text-gray-700"
+                htmlFor="Friend's username"
+              >
+                Friend{"'"}s username
+              </label>
+              <input
+                className="mt-2 h-12 rounded bg-gray-200 px-4"
+                name="Friend's username"
+                onChange={(event) => setFriendUsername(event.target.value)}
+                type="text"
+              />
+              <button
+                className="mt-2 h-12 rounded bg-blue-700 font-bold text-gray-50"
+                type="submit"
+              >
+                Send friend request
+              </button>
+            </form>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </>
   );
 }
