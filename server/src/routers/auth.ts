@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
-import * as argon2 from "argon2";
-import * as jwt from "jsonwebtoken";
+import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "../env";
 import { db } from "../prisma/client";
