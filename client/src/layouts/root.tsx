@@ -1,5 +1,6 @@
 import { Dialog, Tab } from "@headlessui/react";
-import { UserPlusIcon } from "@heroicons/react/20/solid";
+import { ArrowsRightLeftIcon, UserPlusIcon } from "@heroicons/react/20/solid";
+import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import { FormEvent, useState } from "react";
 import { trpc } from "../trpc";
 
@@ -60,6 +61,7 @@ function FriendsList() {
   return (
     <div className="flex flex-col">
       <AddFriendButton />
+      <FriendRequestsButton />
     </div>
   );
 }
@@ -119,6 +121,85 @@ function AddFriendButton() {
                 Send friend request
               </button>
             </form>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </>
+  );
+}
+
+function FriendRequestsButton() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const friendRequestListQuery = trpc.friendRequest.list.useQuery();
+  const friendRequestAcceptMutation = trpc.friendRequest.accept.useMutation();
+  const friendRequestDeleteMutation = trpc.friendRequest.delete.useMutation();
+
+  return (
+    <>
+      <button
+        className="m-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 shadow"
+        onClick={() => setDialogOpen(true)}
+      >
+        <ArrowsRightLeftIcon className="h-5 w-5" />
+        Friend requests
+      </button>
+      <Dialog
+        className="relative z-50"
+        onClose={() => setDialogOpen(false)}
+        open={dialogOpen}
+      >
+        <div className="fixed inset-0 bg-gray-950/50" />
+        <div className="fixed inset-0 grid place-items-center p-4">
+          <Dialog.Panel className="w-full max-w-md rounded bg-gray-50 p-4">
+            <Dialog.Title className="text-xl font-medium">
+              Friend requests
+            </Dialog.Title>
+            {friendRequestListQuery.data ? (
+              <ul className="mt-4 flex flex-col gap-2">
+                {friendRequestListQuery.data.length === 0 ? (
+                  <p>No pending friend requests.</p>
+                ) : null}
+                {friendRequestListQuery.data.map((friendRequest) => (
+                  <li key={friendRequest.id}>
+                    {(() => {
+                      const isSent = "receiver" in friendRequest;
+                      const username = isSent
+                        ? friendRequest.receiver.username
+                        : friendRequest.sender.username;
+                      return (
+                        <div className="flex items-center justify-between font-medium">
+                          {username}
+                          <div className="flex gap-2">
+                            {isSent ? null : (
+                              <button
+                                className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
+                                onClick={() =>
+                                  friendRequestAcceptMutation.mutate({
+                                    id: friendRequest.id,
+                                  })
+                                }
+                              >
+                                <CheckIcon className="h-6 w-6" />
+                              </button>
+                            )}
+                            <button
+                              className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
+                              onClick={() =>
+                                friendRequestDeleteMutation.mutate({
+                                  id: friendRequest.id,
+                                })
+                              }
+                            >
+                              <XMarkIcon className="h-6 w-6" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </Dialog.Panel>
         </div>
       </Dialog>
