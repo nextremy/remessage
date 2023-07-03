@@ -23,7 +23,9 @@ export function RootLayout() {
         </Tab.List>
         <Tab.Panels className="grow">
           <Tab.Panel></Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel className="flex flex-col">
+            <AddFriendButton />
+            <FriendRequestsButton />
             <FriendsList />
           </Tab.Panel>
         </Tab.Panels>
@@ -44,18 +46,6 @@ function Profile() {
       <p className="text-lg font-medium">
         {userGetQuery.data ? userGetQuery.data.username : null}
       </p>
-    </div>
-  );
-}
-
-function FriendsList() {
-  const friendsListQuery = trpc.friend.list.useQuery();
-
-  if (!friendsListQuery.data) return null;
-  return (
-    <div className="flex flex-col">
-      <AddFriendButton />
-      <FriendRequestsButton />
     </div>
   );
 }
@@ -199,4 +189,11 @@ function FriendRequestsButton() {
       </Dialog>
     </>
   );
+}
+
+function FriendsList() {
+  const friendsListQuery = trpc.friend.list.useQuery();
+
+  if (!friendsListQuery.data) return null;
+  return <></>;
 }
