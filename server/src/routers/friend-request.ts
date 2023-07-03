@@ -7,12 +7,17 @@ export const friendRequestRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
     const user = await db.user.findUnique({
       select: {
-        id: true,
         sentFriendRequests: {
-          select: { receiver: { select: { id: true, username: true } } },
+          select: {
+            id: true,
+            receiver: { select: { id: true, username: true } },
+          },
         },
         receivedFriendRequests: {
-          select: { sender: { select: { id: true, username: true } } },
+          select: {
+            id: true,
+            sender: { select: { id: true, username: true } },
+          },
         },
       },
       where: { id: ctx.userId },
