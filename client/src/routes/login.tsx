@@ -20,35 +20,35 @@ export function LoginRoute() {
 
   return (
     <div className="grid min-h-screen place-items-center p-4">
-      <div className="w-full max-w-sm rounded bg-gray-900 p-6">
+      <div className="w-full max-w-sm rounded p-6 shadow">
         <h1 className="text-center text-2xl font-bold">Log in</h1>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <label
-            className="mt-6 text-sm font-semibold tracking-wide text-gray-300"
+            className="mt-6 text-sm font-semibold tracking-wide text-gray-700"
             htmlFor="username"
           >
             Username
           </label>
           <input
-            className="mt-2 h-12 rounded bg-gray-950 bg-transparent px-4"
+            className="mt-2 h-12 rounded bg-gray-200 px-4"
             name="username"
             onChange={(event) => setUsername(event.target.value)}
             type="text"
           />
           <label
-            className="mt-6 text-sm font-semibold tracking-wide text-gray-300"
+            className="mt-6 text-sm font-semibold tracking-wide text-gray-700"
             htmlFor="password"
           >
             Password
           </label>
           <input
-            className="mt-2 h-12 rounded bg-gray-950 bg-transparent px-4"
+            className="mt-2 h-12 rounded bg-gray-200 px-4"
             name="password"
             onChange={(event) => setPassword(event.target.value)}
             type="password"
           />
           <button
-            className="mt-8 h-14 rounded bg-blue-700 text-lg font-bold text-gray-50 saturate-50"
+            className="mt-8 h-14 rounded bg-blue-700 text-lg font-bold text-gray-50"
             type="submit"
           >
             Log in
