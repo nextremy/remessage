@@ -7,6 +7,7 @@ export const friendRequestRouter = router({
   list: protectedProcedure.query(async ({ ctx }) => {
     const user = await db.user.findUnique({
       select: {
+        id: true,
         sentFriendRequests: {
           select: { receiver: { select: { id: true, username: true } } },
         },
@@ -37,37 +38,25 @@ export const friendRequestRouter = router({
       });
     }),
   delete: protectedProcedure
-    .input(z.object({ senderId: z.string(), receiverId: z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ input }) => {
-      await db.friendRequest.delete({
-        where: {
-          senderId_receiverId: {
-            senderId: input.senderId,
-            receiverId: input.receiverId,
-          },
-        },
-      });
+      await db.friendRequest.delete({ where: { id: input.id } });
     }),
   accept: protectedProcedure
-    .input(z.object({ senderId: z.string() }))
-    .mutation(async ({ input, ctx }) => {
-      await db.$transaction([
-        db.friendRequest.delete({
-          where: {
-            senderId_receiverId: {
-              senderId: input.senderId,
-              receiverId: ctx.userId,
-            },
-          },
-        }),
-        db.user.update({
-          data: { friends: { connect: { id: ctx.userId } } },
-          where: { id: input.senderId },
-        }),
-        db.user.update({
-          data: { friends: { connect: { id: input.senderId } } },
-          where: { id: ctx.userId },
-        }),
-      ]);
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ input }) => {
+      await db.$transaction(async (db) => {
+        const friendRequest = await db.friendRequest.delete({
+          where: { id: input.id },
+        });
+        await db.user.update({
+          data: { friends: { connect: { id: friendRequest.receiverId } } },
+          where: { id: friendRequest.senderId },
+        });
+        await db.user.update({
+          data: { friends: { connect: { id: friendRequest.senderId } } },
+          where: { id: friendRequest.receiverId },
+        });
+      });
     }),
 });
