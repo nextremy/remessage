@@ -22,10 +22,18 @@ export const friendRequestRouter = router({
     return [...user.sentFriendRequests, ...user.receivedFriendRequests];
   }),
   create: protectedProcedure
-    .input(z.object({ receiverId: z.string() }))
+    .input(z.object({ receiverUsername: z.string() }))
     .mutation(async ({ input, ctx }) => {
-      await db.friendRequest.create({
-        data: { senderId: ctx.userId, receiverId: input.receiverId },
+      await db.$transaction(async (db) => {
+        const user = await db.user.findUnique({
+          where: { username: input.receiverUsername },
+        });
+        if (!user) {
+          throw new TRPCError({ code: "NOT_FOUND" });
+        }
+        await db.friendRequest.create({
+          data: { senderId: ctx.userId, receiverId: user.id },
+        });
       });
     }),
   delete: protectedProcedure
