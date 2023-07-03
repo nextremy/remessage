@@ -1,6 +1,10 @@
 import { Dialog, Tab } from "@headlessui/react";
 import { ArrowsRightLeftIcon, UserPlusIcon } from "@heroicons/react/20/solid";
-import { CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import {
+  ChatBubbleLeftIcon,
+  CheckIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
 import { FormEvent, useState } from "react";
 import { trpc } from "../trpc";
 
@@ -195,5 +199,24 @@ function FriendsList() {
   const friendsListQuery = trpc.friend.list.useQuery();
 
   if (!friendsListQuery.data) return null;
-  return <></>;
+  return (
+    <ul className="mx-4 my-2 flex flex-col gap-2">
+      {friendsListQuery.data.map((friend) => (
+        <li
+          className="flex items-center justify-between font-medium"
+          key={friend.id}
+        >
+          {friend.username}
+          <div className="flex gap-2">
+            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
+              <ChatBubbleLeftIcon className="h-6 w-6" />
+            </button>
+            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
+              <XMarkIcon className="h-6 w-6" />
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
 }
