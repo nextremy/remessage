@@ -1,11 +1,8 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ChatRoute } from "./routes/chat";
-import { FriendsRoute } from "./routes/friends";
 import { HomeRoute } from "./routes/home";
 import { LoginRoute } from "./routes/login";
-import { ProfileRoute } from "./routes/profile";
 import { trpc } from "./trpc";
 
 const queryClient = new QueryClient();
@@ -31,10 +28,7 @@ export default function App() {
             <Route path="/">
               <Route path="home">
                 <Route element={<HomeRoute />} index />
-                <Route element={<ChatRoute />} path=":chatId" />
               </Route>
-              <Route element={<FriendsRoute />} path="friends" />
-              <Route element={<ProfileRoute />} path="profile" />
             </Route>
             <Route element={<LoginRoute />} path="/login" />
           </Routes>
