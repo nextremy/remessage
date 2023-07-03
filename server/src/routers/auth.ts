@@ -20,6 +20,6 @@ export const authRouter = router({
         throw new TRPCError({ code: "UNAUTHORIZED" });
       }
       const token = jwt.sign({ userId: user.id }, env.JWT_SECRET);
-      return { token };
+      return { userId: user.id, token };
     }),
 });
