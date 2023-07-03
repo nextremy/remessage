@@ -69,7 +69,7 @@ function AddFriendButton() {
   return (
     <>
       <button
-        className="m-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 shadow"
+        className="m-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
         onClick={() => setDialogOpen(true)}
       >
         <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
@@ -125,7 +125,7 @@ function FriendRequestsButton() {
   return (
     <>
       <button
-        className="m-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 shadow"
+        className="m-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
         onClick={() => setDialogOpen(true)}
       >
         <ArrowsRightLeftIcon className="h-5 w-5" />
