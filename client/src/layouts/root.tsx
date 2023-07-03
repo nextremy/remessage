@@ -83,7 +83,7 @@ function AddFriendButton() {
         onClick={() => setDialogOpen(true)}
       >
         <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
-        Add new...
+        Add friend
       </button>
       <Dialog
         className="relative z-50"
