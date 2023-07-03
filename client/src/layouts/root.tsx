@@ -8,7 +8,26 @@ export function RootLayout() {
   return (
     <div className="flex h-screen flex-col">
       <Profile />
-      <Tabs />
+      <Tab.Group>
+        <Tab.List className="grid h-12 auto-cols-fr grid-flow-col border-b-2 border-gray-200">
+          <Tab className="flex justify-center">
+            <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
+              Chats
+            </div>
+          </Tab>
+          <Tab className="flex justify-center">
+            <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
+              Friends
+            </div>
+          </Tab>
+        </Tab.List>
+        <Tab.Panels className="grow">
+          <Tab.Panel></Tab.Panel>
+          <Tab.Panel>
+            <FriendsList />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   );
 }
@@ -26,31 +45,6 @@ function Profile() {
         {userGetQuery.data ? userGetQuery.data.username : null}
       </p>
     </div>
-  );
-}
-
-function Tabs() {
-  return (
-    <Tab.Group>
-      <Tab.List className="grid h-12 auto-cols-fr grid-flow-col border-b-2 border-gray-200">
-        <Tab className="flex justify-center">
-          <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-            Chats
-          </div>
-        </Tab>
-        <Tab className="flex justify-center">
-          <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-            Friends
-          </div>
-        </Tab>
-      </Tab.List>
-      <Tab.Panels className="grow">
-        <Tab.Panel></Tab.Panel>
-        <Tab.Panel>
-          <FriendsList />
-        </Tab.Panel>
-      </Tab.Panels>
-    </Tab.Group>
   );
 }
 
