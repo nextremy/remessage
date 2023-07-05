@@ -8,38 +8,46 @@ datasource db {
 }
 
 model User {
-  id                     String          @id @default(cuid())
-  username               String          @unique
-  passwordHash           String
+  id           String @id @default(cuid())
+  username     String @unique
+  passwordHash String
+
   friends                User[]          @relation(name: "Friends")
   INTERNAL_friends       User[]          @relation(name: "Friends")
   sentFriendRequests     FriendRequest[] @relation(name: "SentFriendRequests")
   receivedFriendRequests FriendRequest[] @relation(name: "ReceivedFriendRequests")
-  chats                  Chat[]
-  messages               Message[]
+  directChats1           DirectChat[]    @relation(name: "DirectChats1")
+  directChats2           DirectChat[]    @relation(name: "DirectChats2")
+  directMessages         DirectMessage[]
 }
 
 model FriendRequest {
-  id         String @id @default(cuid())
+  id String @id @default(cuid())
+
   sender     User   @relation(name: "SentFriendRequests", fields: [senderId], references: [id])
   senderId   String
   receiver   User   @relation(name: "ReceivedFriendRequests", fields: [receiverId], references: [id])
   receiverId String
 }
 
-model Chat {
-  id       String    @id @default(cuid())
-  type     String
-  users    User[]
-  messages Message[]
+model DirectChat {
+  user1          User            @relation(name: "DirectChats1", fields: [user1Id], references: [id])
+  user1Id        String
+  user2          User            @relation(name: "DirectChats2", fields: [user2Id], references: [id])
+  user2Id        String
+  directMessages DirectMessage[]
+
+  @@id([user1Id, user2Id])
 }
 
-model Message {
+model DirectMessage {
   id          String   @id @default(cuid())
   timestamp   DateTime @default(now())
   textContent String
-  author      User     @relation(fields: [authorId], references: [id])
-  authorId    String
-  chat        Chat     @relation(fields: [chatId], references: [id])
-  chatId      String
+
+  author            User       @relation(fields: [authorId], references: [id])
+  authorId          String
+  directChat        DirectChat @relation(fields: [directChatUser1Id, directChatUser2Id], references: [user1Id, user2Id])
+  directChatUser1Id String
+  directChatUser2Id String
 }
