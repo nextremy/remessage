@@ -1,10 +1,11 @@
 import { Dialog, Tab } from "@headlessui/react";
-import { ArrowsRightLeftIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 import {
+  ArrowsRightLeftIcon,
   ChatBubbleLeftIcon,
   CheckIcon,
+  UserPlusIcon,
   XMarkIcon,
-} from "@heroicons/react/24/solid";
+} from "@heroicons/react/20/solid";
 import { FormEvent, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { trpc } from "../trpc";
@@ -173,7 +174,7 @@ function FriendRequestsButton() {
                                   })
                                 }
                               >
-                                <CheckIcon className="h-6 w-6" />
+                                <CheckIcon className="h-5 w-5" />
                               </button>
                             ) : null}
                             <button
@@ -184,7 +185,7 @@ function FriendRequestsButton() {
                                 })
                               }
                             >
-                              <XMarkIcon className="h-6 w-6" />
+                              <XMarkIcon className="h-5 w-5" />
                             </button>
                           </div>
                         </div>
@@ -219,7 +220,7 @@ function FriendsList() {
               className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700"
               onClick={() => navigate(`chats/@${friend.id}`)}
             >
-              <ChatBubbleLeftIcon className="h-6 w-6" />
+              <ChatBubbleLeftIcon className="h-5 w-5" />
             </button>
             <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
               <XMarkIcon className="h-6 w-6" />
