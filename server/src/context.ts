@@ -1,7 +1,7 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
 import type { IncomingMessage } from "http";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { z } from "zod";
 import { env } from "./env";
 
