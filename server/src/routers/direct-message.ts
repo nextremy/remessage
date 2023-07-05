@@ -16,7 +16,7 @@ export const directMessageRouter = router({
           id: true,
           textContent: true,
           timestamp: true,
-          senderId: true,
+          sender: { select: { id: true, username: true } },
         },
         where: {
           OR: [
