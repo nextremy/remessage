@@ -31,7 +31,7 @@ export function LoginRoute() {
             Username
           </label>
           <input
-            className="mt-2 h-12 rounded bg-gray-200 px-4"
+            className="mt-2 h-12 rounded bg-gray-300 px-4"
             name="username"
             onChange={(event) => setUsername(event.target.value)}
             type="text"
@@ -43,7 +43,7 @@ export function LoginRoute() {
             Password
           </label>
           <input
-            className="mt-2 h-12 rounded bg-gray-200 px-4"
+            className="mt-2 h-12 rounded bg-gray-300 px-4"
             name="password"
             onChange={(event) => setPassword(event.target.value)}
             type="password"
