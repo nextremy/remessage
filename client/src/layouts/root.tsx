@@ -6,35 +6,39 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/solid";
 import { FormEvent, useState } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { trpc } from "../trpc";
 
 export function RootLayout() {
   return (
-    <div className="flex h-screen flex-col">
-      <Profile />
-      <Tab.Group>
-        <Tab.List className="grid h-12 auto-cols-fr grid-flow-col border-b-2 border-gray-200">
-          <Tab className="flex justify-center">
-            <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-              Chats
-            </div>
-          </Tab>
-          <Tab className="flex justify-center">
-            <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-              Friends
-            </div>
-          </Tab>
-        </Tab.List>
-        <Tab.Panels className="grow">
-          <Tab.Panel></Tab.Panel>
-          <Tab.Panel className="flex flex-col gap-2 py-2">
-            <AddFriendButton />
-            <FriendRequestsButton />
-            <FriendsList />
-          </Tab.Panel>
-        </Tab.Panels>
-      </Tab.Group>
-    </div>
+    <>
+      <div className="flex h-screen flex-col">
+        <Profile />
+        <Tab.Group>
+          <Tab.List className="grid h-12 auto-cols-fr grid-flow-col border-b-2 border-gray-200">
+            <Tab className="flex justify-center">
+              <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
+                Chats
+              </div>
+            </Tab>
+            <Tab className="flex justify-center">
+              <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
+                Friends
+              </div>
+            </Tab>
+          </Tab.List>
+          <Tab.Panels className="grow">
+            <Tab.Panel></Tab.Panel>
+            <Tab.Panel className="flex flex-col gap-2 py-2">
+              <AddFriendButton />
+              <FriendRequestsButton />
+              <FriendsList />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      </div>
+      <Outlet />
+    </>
   );
 }
 
@@ -199,6 +203,7 @@ function FriendRequestsButton() {
 
 function FriendsList() {
   const friendsListQuery = trpc.friend.list.useQuery();
+  const navigate = useNavigate();
 
   if (!friendsListQuery.data) return null;
   return (
@@ -210,7 +215,10 @@ function FriendsList() {
         >
           {friend.username}
           <div className="flex gap-2">
-            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
+            <button
+              className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700"
+              onClick={() => navigate(`chats/@${friend.id}`)}
+            >
               <ChatBubbleLeftIcon className="h-6 w-6" />
             </button>
             <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
