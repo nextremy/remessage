@@ -42,8 +42,8 @@ model DirectChat {
 
 model DirectMessage {
   id          String   @id @default(cuid())
-  timestamp   DateTime @default(now())
   textContent String
+  timestamp   DateTime @default(now())
 
   author            User       @relation(fields: [authorId], references: [id])
   authorId          String
