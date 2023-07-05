@@ -4,7 +4,6 @@ import { createContext } from "./context";
 import { authRouter } from "./routers/auth";
 import { friendRouter } from "./routers/friend";
 import { friendRequestRouter } from "./routers/friend-request";
-import { messageRouter } from "./routers/message";
 import { userRouter } from "./routers/user";
 import { router } from "./trpc";
 
@@ -13,7 +12,6 @@ const appRouter = router({
   user: userRouter,
   friend: friendRouter,
   friendRequest: friendRequestRouter,
-  message: messageRouter,
 });
 
 export type AppRouter = typeof appRouter;
