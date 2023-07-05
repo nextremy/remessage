@@ -6,8 +6,7 @@ export const directMessageRouter = router({
   list: protectedProcedure
     .input(
       z.object({
-        senderId: z.string(),
-        receiverId: z.string(),
+        userIds: z.array(z.string()).length(2),
         limit: z.number().int().min(1).max(50),
       }),
     )
@@ -19,7 +18,12 @@ export const directMessageRouter = router({
           timestamp: true,
           senderId: true,
         },
-        where: { senderId: input.senderId, receiverId: input.receiverId },
+        where: {
+          OR: [
+            { senderId: input.userIds[0], receiverId: input.userIds[1] },
+            { senderId: input.userIds[1], receiverId: input.userIds[0] },
+          ],
+        },
         orderBy: { timestamp: "asc" },
         take: 50,
       });
