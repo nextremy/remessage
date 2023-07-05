@@ -10,6 +10,7 @@ export const friendRequestRouter = router({
         sentFriendRequests: {
           select: {
             id: true,
+            sender: { select: { id: true, username: true } },
             receiver: { select: { id: true, username: true } },
           },
         },
@@ -17,6 +18,7 @@ export const friendRequestRouter = router({
           select: {
             id: true,
             sender: { select: { id: true, username: true } },
+            receiver: { select: { id: true, username: true } },
           },
         },
       },
@@ -25,7 +27,7 @@ export const friendRequestRouter = router({
     if (!user) {
       throw new TRPCError({ code: "NOT_FOUND" });
     }
-    return [...user.sentFriendRequests, ...user.receivedFriendRequests];
+    return user.sentFriendRequests.concat(user.receivedFriendRequests);
   }),
   create: protectedProcedure
     .input(z.object({ receiverUsername: z.string() }))

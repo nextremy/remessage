@@ -150,15 +150,17 @@ function FriendRequestsButton() {
                 {friendRequestListQuery.data.map((friendRequest) => (
                   <li key={friendRequest.id}>
                     {(() => {
-                      const isSent = "receiver" in friendRequest;
-                      const username = isSent
-                        ? friendRequest.receiver.username
-                        : friendRequest.sender.username;
+                      const isReceived =
+                        friendRequest.receiver.id ===
+                        localStorage.getItem("userId");
+                      const username = isReceived
+                        ? friendRequest.sender.username
+                        : friendRequest.receiver.username;
                       return (
                         <div className="flex items-center justify-between font-medium">
                           {username}
                           <div className="flex gap-2">
-                            {isSent ? null : (
+                            {isReceived ? (
                               <button
                                 className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
                                 onClick={() =>
@@ -169,7 +171,7 @@ function FriendRequestsButton() {
                               >
                                 <CheckIcon className="h-6 w-6" />
                               </button>
-                            )}
+                            ) : null}
                             <button
                               className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
                               onClick={() =>
