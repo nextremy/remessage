@@ -27,7 +27,7 @@ export function RootLayout() {
         </Tab.List>
         <Tab.Panels className="grow">
           <Tab.Panel></Tab.Panel>
-          <Tab.Panel className="flex flex-col">
+          <Tab.Panel className="flex flex-col gap-2 py-2">
             <AddFriendButton />
             <FriendRequestsButton />
             <FriendsList />
@@ -69,7 +69,7 @@ function AddFriendButton() {
   return (
     <>
       <button
-        className="mx-2 mt-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
+        className="mx-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
         onClick={() => setDialogOpen(true)}
       >
         <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
@@ -125,7 +125,7 @@ function FriendRequestsButton() {
   return (
     <>
       <button
-        className="mx-2 mt-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
+        className="mx-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
         onClick={() => setDialogOpen(true)}
       >
         <ArrowsRightLeftIcon className="h-5 w-5" />
@@ -200,7 +200,7 @@ function FriendsList() {
 
   if (!friendsListQuery.data) return null;
   return (
-    <ul className="mx-4 mt-2 flex flex-col gap-2">
+    <ul className="mx-4 flex flex-col gap-2">
       {friendsListQuery.data.map((friend) => (
         <li
           className="flex items-center justify-between font-medium"
