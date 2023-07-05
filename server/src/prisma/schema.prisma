@@ -16,9 +16,8 @@ model User {
   INTERNAL_friends       User[]          @relation(name: "Friends")
   sentFriendRequests     FriendRequest[] @relation(name: "SentFriendRequests")
   receivedFriendRequests FriendRequest[] @relation(name: "ReceivedFriendRequests")
-  directChats1           DirectChat[]    @relation(name: "DirectChats1")
-  directChats2           DirectChat[]    @relation(name: "DirectChats2")
-  directMessages         DirectMessage[]
+  sentDirectMessages     DirectMessage[] @relation(name: "SentDirectMessages")
+  receivedDirectMessages DirectMessage[] @relation(name: "ReceivedDirectMessages")
 }
 
 model FriendRequest {
@@ -30,24 +29,13 @@ model FriendRequest {
   receiverId String
 }
 
-model DirectChat {
-  user1          User            @relation(name: "DirectChats1", fields: [user1Id], references: [id])
-  user1Id        String
-  user2          User            @relation(name: "DirectChats2", fields: [user2Id], references: [id])
-  user2Id        String
-  directMessages DirectMessage[]
-
-  @@id([user1Id, user2Id])
-}
-
 model DirectMessage {
   id          String   @id @default(cuid())
   textContent String
   timestamp   DateTime @default(now())
 
-  author            User       @relation(fields: [authorId], references: [id])
-  authorId          String
-  directChat        DirectChat @relation(fields: [directChatUser1Id, directChatUser2Id], references: [user1Id, user2Id])
-  directChatUser1Id String
-  directChatUser2Id String
+  sender     User   @relation(name: "SentDirectMessages", fields: [senderId], references: [id])
+  senderId   String
+  receiver   User   @relation(name: "ReceivedDirectMessages", fields: [receiverId], references: [id])
+  receiverId String
 }
