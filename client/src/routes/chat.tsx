@@ -57,7 +57,7 @@ function DirectChatMessageList(props: { userId: string }) {
               {message.timestamp}
             </time>
           </div>
-          {message.textContent}
+          <p>{message.textContent}</p>
         </li>
       ))}
     </ul>
