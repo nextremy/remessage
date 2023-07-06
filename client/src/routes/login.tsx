@@ -21,7 +21,7 @@ export function LoginRoute() {
 
   return (
     <div className="grid min-h-screen place-items-center p-4">
-      <div className="w-full max-w-sm rounded p-6 shadow">
+      <div className="w-full max-w-sm rounded border border-gray-300 p-6">
         <h1 className="text-center text-2xl font-bold">Log in</h1>
         <form className="flex flex-col" onSubmit={handleSubmit}>
           <label
