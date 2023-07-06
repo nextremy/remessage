@@ -66,7 +66,7 @@ function AddFriendButton() {
                 Friend{"'"}s username
               </label>
               <input
-                className="mt-2 h-12 rounded bg-gray-200 px-4"
+                className="mt-2 h-12 rounded bg-gray-300 px-4"
                 name="Friend's username"
                 onChange={(event) => setFriendUsername(event.target.value)}
                 type="text"
