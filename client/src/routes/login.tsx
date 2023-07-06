@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { trpc } from "../trpc";
 
 export function LoginRoute() {
@@ -56,6 +56,13 @@ export function LoginRoute() {
         >
           Log in
         </button>
+        <p className="mt-8 text-center">
+          Don{"'"}t have an account?{" "}
+          <Link className="text-blue-700" to="/register">
+            Register for one here
+          </Link>
+          .
+        </p>
       </form>
     </div>
   );
