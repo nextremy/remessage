@@ -4,10 +4,10 @@ import { trpc } from "../trpc";
 
 export function FriendRequestsRoute() {
   return (
-    <div className="fixed inset-0 flex min-h-screen w-full flex-col bg-gray-100">
+    <>
       <AppBar title="Friend requests" />
       <FriendRequestList />
-    </div>
+    </>
   );
 }
 

@@ -1,26 +1,28 @@
-import { Link, Outlet } from "react-router-dom";
-import { trpc } from "../trpc";
 import { UsersIcon } from "@heroicons/react/20/solid";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { trpc } from "../trpc";
 
 export function RootLayout() {
+  const location = useLocation();
+
   return (
-    <>
-      <div className="flex h-screen flex-col">
-        <Profile />
-        <Link
-          className="mx-2 mt-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
-          to="/friends"
-        >
-          <UsersIcon className="h-5 w-5" />
-          Friends
-        </Link>
+    <div className="flex h-screen divide-x divide-gray-300">
+      <div
+        className={`flex w-full flex-col md:block md:max-w-xs ${
+          location.pathname === "/" ? "" : "hidden"
+        }`}
+      >
+        <ProfileBar />
+        <FriendsButton />
       </div>
-      <Outlet />
-    </>
+      <div className="grow">
+        <Outlet />
+      </div>
+    </div>
   );
 }
 
-function Profile() {
+function ProfileBar() {
   const userGetQuery = trpc.user.get.useQuery(
     { userId: localStorage.getItem("userId") ?? "" },
     { enabled: localStorage.getItem("userId") !== undefined },
@@ -33,5 +35,17 @@ function Profile() {
         {userGetQuery.data ? userGetQuery.data.username : null}
       </p>
     </div>
+  );
+}
+
+function FriendsButton() {
+  return (
+    <Link
+      className="mx-2 mt-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
+      to="/friends"
+    >
+      <UsersIcon className="h-5 w-5" />
+      Friends
+    </Link>
   );
 }

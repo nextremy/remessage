@@ -13,7 +13,7 @@ export function ChatRoute() {
   }
 
   return (
-    <div className="fixed inset-0 flex min-h-screen w-full flex-col bg-gray-100">
+    <div className="flex h-full flex-col">
       {chatId.startsWith("@") ? (
         <DirectChat userId={chatId.replace("@", "")} />
       ) : null}

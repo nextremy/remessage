@@ -12,14 +12,14 @@ import { trpc } from "../trpc";
 
 export function FriendsRoute() {
   return (
-    <div className="fixed inset-0 flex min-h-screen w-full flex-col bg-gray-100">
+    <>
       <AppBar title="Friends" />
       <div className="flex flex-col gap-2 py-2">
         <AddFriendButton />
         <FriendRequestsButton />
         <FriendsList />
       </div>
-    </div>
+    </>
   );
 }
 
