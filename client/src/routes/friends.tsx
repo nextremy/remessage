@@ -51,7 +51,7 @@ function AddFriendButton() {
       >
         <div className="fixed inset-0 bg-gray-950/50" />
         <div className="fixed inset-0 grid place-items-center p-4">
-          <Dialog.Panel className="w-full max-w-sm rounded bg-gray-50 p-4">
+          <Dialog.Panel className="w-full max-w-sm rounded border border-gray-300 bg-gray-50 p-4">
             <Dialog.Title className="text-xl font-medium">
               Add friend
             </Dialog.Title>
