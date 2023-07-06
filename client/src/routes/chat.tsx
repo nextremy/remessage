@@ -48,7 +48,15 @@ function DirectChatMessageList(props: { userId: string }) {
     <ul className="flex grow flex-col justify-end gap-2 px-4 py-2">
       {directMessageListQuery.data.map((message) => (
         <li className="flex flex-col" key={message.id}>
-          <div className="font-medium">{message.sender.username}</div>
+          <div className="flex items-center gap-2">
+            <p className="font-medium">{message.sender.username}</p>
+            <time
+              className="text-xs text-gray-700"
+              dateTime={message.timestamp}
+            >
+              {message.timestamp}
+            </time>
+          </div>
           {message.textContent}
         </li>
       ))}
