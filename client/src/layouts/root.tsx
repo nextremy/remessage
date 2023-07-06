@@ -1,42 +1,19 @@
-import { Dialog, Tab } from "@headlessui/react";
-import {
-  ArrowsRightLeftIcon,
-  ChatBubbleLeftIcon,
-  CheckIcon,
-  UserPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/20/solid";
-import { FormEvent, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { trpc } from "../trpc";
+import { UsersIcon } from "@heroicons/react/20/solid";
 
 export function RootLayout() {
   return (
     <>
       <div className="flex h-screen flex-col">
         <Profile />
-        <Tab.Group>
-          <Tab.List className="grid h-12 auto-cols-fr grid-flow-col border-b-2 border-gray-200">
-            <Tab className="flex justify-center">
-              <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-                Chats
-              </div>
-            </Tab>
-            <Tab className="flex justify-center">
-              <div className="ui-selected:border-blue-700 ui-selected:text-blue-700 flex h-full items-center gap-2 border-b-2 border-transparent text-lg font-medium text-gray-700">
-                Friends
-              </div>
-            </Tab>
-          </Tab.List>
-          <Tab.Panels className="grow">
-            <Tab.Panel></Tab.Panel>
-            <Tab.Panel className="flex flex-col gap-2 py-2">
-              <AddFriendButton />
-              <FriendRequestsButton />
-              <FriendsList />
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
+        <Link
+          className="mx-2 mt-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
+          to="/friends"
+        >
+          <UsersIcon className="h-5 w-5" />
+          Friends
+        </Link>
       </div>
       <Outlet />
     </>
@@ -56,178 +33,5 @@ function Profile() {
         {userGetQuery.data ? userGetQuery.data.username : null}
       </p>
     </div>
-  );
-}
-
-function AddFriendButton() {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [friendUsername, setFriendUsername] = useState("");
-  const friendRequestCreateMutation = trpc.friendRequest.create.useMutation({
-    onSuccess: () => setDialogOpen(false),
-  });
-
-  function sendFriendRequest(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    friendRequestCreateMutation.mutate({ receiverUsername: friendUsername });
-  }
-
-  return (
-    <>
-      <button
-        className="mx-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
-        onClick={() => setDialogOpen(true)}
-      >
-        <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
-        Add friend
-      </button>
-      <Dialog
-        className="relative z-50"
-        onClose={() => setDialogOpen(false)}
-        open={dialogOpen}
-      >
-        <div className="fixed inset-0 bg-gray-950/50" />
-        <div className="fixed inset-0 grid place-items-center p-4">
-          <Dialog.Panel className="w-full max-w-sm rounded bg-gray-50 p-4">
-            <Dialog.Title className="text-xl font-medium">
-              Add friend
-            </Dialog.Title>
-            <Dialog.Description>
-              Add a friend by their username.
-            </Dialog.Description>
-            <form className="flex flex-col" onSubmit={sendFriendRequest}>
-              <label
-                className="mt-4 text-sm font-semibold tracking-wide text-gray-700"
-                htmlFor="Friend's username"
-              >
-                Friend{"'"}s username
-              </label>
-              <input
-                className="mt-2 h-12 rounded bg-gray-200 px-4"
-                name="Friend's username"
-                onChange={(event) => setFriendUsername(event.target.value)}
-                type="text"
-              />
-              <button
-                className="mt-2 h-12 rounded bg-blue-700 font-bold text-gray-50"
-                type="submit"
-              >
-                Send friend request
-              </button>
-            </form>
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-    </>
-  );
-}
-
-function FriendRequestsButton() {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const friendRequestListQuery = trpc.friendRequest.list.useQuery();
-  const friendRequestAcceptMutation = trpc.friendRequest.accept.useMutation();
-  const friendRequestDeleteMutation = trpc.friendRequest.delete.useMutation();
-
-  return (
-    <>
-      <button
-        className="mx-2 flex h-12 items-center gap-2 rounded border-2 border-gray-300 px-4 font-semibold text-gray-700"
-        onClick={() => setDialogOpen(true)}
-      >
-        <ArrowsRightLeftIcon className="h-5 w-5" />
-        Friend requests
-      </button>
-      <Dialog
-        className="relative z-50"
-        onClose={() => setDialogOpen(false)}
-        open={dialogOpen}
-      >
-        <div className="fixed inset-0 bg-gray-950/50" />
-        <div className="fixed inset-0 grid place-items-center p-4">
-          <Dialog.Panel className="w-full max-w-sm rounded bg-gray-50 p-4">
-            <Dialog.Title className="text-xl font-medium">
-              Friend requests
-            </Dialog.Title>
-            {friendRequestListQuery.data ? (
-              <ul className="mt-4 flex flex-col gap-2">
-                {friendRequestListQuery.data.length === 0 ? (
-                  <p>No pending friend requests.</p>
-                ) : null}
-                {friendRequestListQuery.data.map((friendRequest) => (
-                  <li key={friendRequest.id}>
-                    {(() => {
-                      const isReceived =
-                        friendRequest.receiver.id ===
-                        localStorage.getItem("userId");
-                      const username = isReceived
-                        ? friendRequest.sender.username
-                        : friendRequest.receiver.username;
-                      return (
-                        <div className="flex items-center justify-between font-medium">
-                          {username}
-                          <div className="flex gap-2">
-                            {isReceived ? (
-                              <button
-                                className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
-                                onClick={() =>
-                                  friendRequestAcceptMutation.mutate({
-                                    id: friendRequest.id,
-                                  })
-                                }
-                              >
-                                <CheckIcon className="h-5 w-5" />
-                              </button>
-                            ) : null}
-                            <button
-                              className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700"
-                              onClick={() =>
-                                friendRequestDeleteMutation.mutate({
-                                  id: friendRequest.id,
-                                })
-                              }
-                            >
-                              <XMarkIcon className="h-5 w-5" />
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })()}
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </Dialog.Panel>
-        </div>
-      </Dialog>
-    </>
-  );
-}
-
-function FriendsList() {
-  const friendsListQuery = trpc.friend.list.useQuery();
-  const navigate = useNavigate();
-
-  if (!friendsListQuery.data) return null;
-  return (
-    <ul className="mx-4 flex flex-col gap-2">
-      {friendsListQuery.data.map((friend) => (
-        <li
-          className="flex items-center justify-between font-medium"
-          key={friend.id}
-        >
-          {friend.username}
-          <div className="flex gap-2">
-            <button
-              className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700"
-              onClick={() => navigate(`chats/@${friend.id}`)}
-            >
-              <ChatBubbleLeftIcon className="h-5 w-5" />
-            </button>
-            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-        </li>
-      ))}
-    </ul>
   );
 }

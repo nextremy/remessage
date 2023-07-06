@@ -1,7 +1,7 @@
-import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { FormEvent, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { AppBar } from "../components/AppBar";
 import { trpc } from "../trpc";
 
 export function ChatRoute() {
@@ -32,17 +32,9 @@ function DirectChat(props: { userId: string }) {
 }
 
 function DirectChatAppBar(props: { userId: string }) {
-  const navigate = useNavigate();
   const user = trpc.user.get.useQuery({ userId: props.userId });
 
-  return (
-    <div className="flex h-12 items-center border-b border-gray-300">
-      <button className="grid h-12 w-12 place-items-center">
-        <ArrowLeftIcon className="h-5 w-5" onClick={() => navigate("/")} />
-      </button>
-      <p className="font-semibold">{user.data?.username}</p>
-    </div>
-  );
+  return <AppBar title={user.data?.username ?? ""} />;
 }
 
 function DirectChatMessageList(props: { userId: string }) {
