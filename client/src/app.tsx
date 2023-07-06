@@ -3,12 +3,12 @@ import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { RootLayout } from "./layouts/root";
 import { ChatRoute } from "./routes/chat";
+import { FriendRequestsRoute } from "./routes/friend-requests";
 import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
 import { RootRoute } from "./routes/root";
 import { trpc } from "./trpc";
-import { FriendRequestsRoute } from "./routes/friend-requests";
 
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
