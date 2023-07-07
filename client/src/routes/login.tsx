@@ -51,7 +51,8 @@ export function LoginRoute() {
           type="password"
         />
         <button
-          className="mt-8 h-14 rounded bg-blue-700 text-lg font-bold text-gray-50"
+          className="mt-8 h-14 rounded bg-blue-700 text-lg font-bold text-gray-50 duration-200 enabled:hover:bg-blue-600 disabled:opacity-50"
+          disabled={username === "" || password === ""}
           type="submit"
         >
           Log in

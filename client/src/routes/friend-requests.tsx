@@ -14,10 +14,9 @@ export function FriendRequestsRoute() {
 function FriendRequestList() {
   const friendRequestListQuery = trpc.friendRequest.list.useQuery();
 
-  if (!friendRequestListQuery.data) return null;
   return (
-    <ul className="flex flex-col gap-2 p-4">
-      {friendRequestListQuery.data.map((friendRequest) => (
+    <ul className="flex flex-col divide-y divide-gray-300 p-4">
+      {friendRequestListQuery.data?.map((friendRequest) => (
         <FriendRequestListItem
           friendRequest={friendRequest}
           key={friendRequest.id}
@@ -40,7 +39,7 @@ function FriendRequestListItem(props: {
   const deleteFriendRequestMutation = trpc.friendRequest.delete.useMutation();
 
   return (
-    <li className="flex items-center gap-2">
+    <li className="flex items-center gap-2 py-2">
       <p className="grow font-medium">
         {isReceived
           ? props.friendRequest.sender.username

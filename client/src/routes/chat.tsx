@@ -43,10 +43,9 @@ function DirectChatMessageList(props: { userId: string }) {
     limit: 50,
   });
 
-  if (!directMessageListQuery.data) return null;
   return (
     <ul className="flex grow flex-col justify-end gap-2 px-4 py-2">
-      {directMessageListQuery.data.map((message) => (
+      {directMessageListQuery.data?.map((message) => (
         <li className="flex flex-col" key={message.id}>
           <div className="flex items-center gap-2">
             <p className="font-medium">{message.sender.username}</p>

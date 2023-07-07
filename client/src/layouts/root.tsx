@@ -13,7 +13,9 @@ export function RootLayout() {
         }`}
       >
         <ProfileBar />
-        <FriendsButton />
+        <div className="px-2">
+          <FriendsButton />
+        </div>
       </div>
       <div className="grow">
         <Outlet />
@@ -29,19 +31,16 @@ function ProfileBar() {
   );
 
   return (
-    <div className="flex items-center gap-4 p-4">
-      <div className="h-8 w-8 rounded-full bg-blue-500" />
-      <p className="text-lg font-medium">
-        {userGetQuery.data ? userGetQuery.data.username : null}
-      </p>
-    </div>
+    <p className="p-4 text-lg font-medium">
+      {userGetQuery.data ? userGetQuery.data.username : null}
+    </p>
   );
 }
 
 function FriendsButton() {
   return (
     <Link
-      className="mx-2 mt-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
+      className="flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 duration-200 hover:bg-gray-200"
       to="/friends"
     >
       <UsersIcon className="h-5 w-5" />

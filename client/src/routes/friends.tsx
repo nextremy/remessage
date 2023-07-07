@@ -38,10 +38,10 @@ function AddFriendButton() {
   return (
     <>
       <button
-        className="mx-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
+        className="mx-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 duration-200 hover:bg-gray-200"
         onClick={() => setDialogOpen(true)}
       >
-        <UserPlusIcon className="h-5 w-5" onClick={() => setDialogOpen(true)} />
+        <UserPlusIcon className="h-5 w-5" />
         Add friend
       </button>
       <Dialog
@@ -72,7 +72,8 @@ function AddFriendButton() {
                 type="text"
               />
               <button
-                className="mt-2 h-12 rounded bg-blue-700 font-bold text-gray-50"
+                className="mt-2 h-12 rounded bg-blue-700 font-bold text-gray-50 duration-200 hover:bg-blue-600 disabled:opacity-50"
+                disabled={friendUsername === ""}
                 type="submit"
               >
                 Send friend request
@@ -88,7 +89,7 @@ function AddFriendButton() {
 function FriendRequestsButton() {
   return (
     <Link
-      className="mx-2 flex h-12 items-center gap-2 px-4 font-semibold text-gray-700"
+      className="mx-2 flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 duration-200 hover:bg-gray-200"
       to="/friends/requests"
     >
       <ArrowsRightLeftIcon className="h-5 w-5" />
@@ -100,23 +101,22 @@ function FriendRequestsButton() {
 function FriendsList() {
   const friendsListQuery = trpc.friend.list.useQuery();
 
-  if (!friendsListQuery.data) return null;
   return (
-    <ul className="mx-4 flex flex-col gap-2">
-      {friendsListQuery.data.map((friend) => (
+    <ul className="flex flex-col divide-y divide-gray-300 px-4">
+      {friendsListQuery.data?.map((friend) => (
         <li
-          className="flex items-center justify-between font-medium"
+          className="flex items-center justify-between p-2 font-medium"
           key={friend.id}
         >
           {friend.username}
           <div className="flex gap-2">
             <Link
-              className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700"
+              className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700 duration-200 hover:bg-gray-400"
               to={`/chats/@${friend.id}`}
             >
               <ChatBubbleLeftIcon className="h-5 w-5" />
             </Link>
-            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700">
+            <button className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700 duration-200 hover:bg-gray-400">
               <XMarkIcon className="h-6 w-6" />
             </button>
           </div>
