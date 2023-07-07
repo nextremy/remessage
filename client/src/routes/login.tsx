@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getButtonClassName } from "../styles/button";
 import { trpc } from "../trpc";
 
 export function LoginRoute() {
@@ -51,7 +52,7 @@ export function LoginRoute() {
           type="password"
         />
         <button
-          className="mt-8 h-14 rounded bg-blue-700 text-lg font-bold text-gray-50 duration-200 enabled:hover:bg-blue-600 disabled:opacity-50"
+          className={`mt-8 h-16 ${getButtonClassName("primary")}`}
           disabled={username === "" || password === ""}
           type="submit"
         >

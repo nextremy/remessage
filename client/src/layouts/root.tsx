@@ -1,5 +1,6 @@
 import { UsersIcon } from "@heroicons/react/20/solid";
 import { Link, Outlet, useLocation } from "react-router-dom";
+import { getButtonClassName } from "../styles/button";
 import { trpc } from "../trpc";
 
 export function RootLayout() {
@@ -39,10 +40,7 @@ function ProfileBar() {
 
 function FriendsButton() {
   return (
-    <Link
-      className="flex h-12 items-center gap-2 rounded px-4 font-semibold text-gray-700 duration-200 hover:bg-gray-200"
-      to="/friends"
-    >
+    <Link className={`h-12 ${getButtonClassName("text")}`} to="/friends">
       <UsersIcon className="h-5 w-5" />
       Friends
     </Link>
