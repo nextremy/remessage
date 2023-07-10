@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-const schema = z.object({
+const envSchema = z.object({
   JWT_SECRET: z.string(),
 });
 
-export const env = schema.parse(process.env);
+export const env = envSchema.parse(process.env);
