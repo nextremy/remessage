@@ -1,9 +1,9 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { trpc } from "../trpc";
 import { getButtonClassName } from "../styles/button";
+import { trpc } from "../trpc";
 
-export function RegisterRoute() {
+export function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();

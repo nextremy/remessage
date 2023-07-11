@@ -2,11 +2,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { RootLayout } from "./layouts/root";
-import { DirectChatRoute } from "./routes/direct-chat";
-import { FriendRequestsRoute } from "./routes/friend-requests";
-import { FriendsRoute } from "./routes/friends";
-import { LoginRoute } from "./routes/login";
-import { RegisterRoute } from "./routes/register";
+import { DirectChat } from "./routes/direct-chat";
+import { FriendRequests } from "./routes/friend-requests";
+import { Friends } from "./routes/friends";
+import { Login } from "./routes/login";
+import { Register } from "./routes/register";
 import { trpc } from "./trpc";
 
 const queryClient = new QueryClient();
@@ -39,12 +39,12 @@ function Router() {
       <Routes>
         <Route element={<RootLayout />} path="/">
           <Route element={<Navigate to="friends" />} index />
-          <Route element={<FriendsRoute />} path="friends" />
-          <Route element={<FriendRequestsRoute />} path="friends/requests" />
-          <Route element={<DirectChatRoute />} path="direct-chats/:id" />
+          <Route element={<Friends />} path="friends" />
+          <Route element={<FriendRequests />} path="friends/requests" />
+          <Route element={<DirectChat />} path="direct-chats/:id" />
         </Route>
-        <Route element={<RegisterRoute />} path="/register" />
-        <Route element={<LoginRoute />} path="/login" />
+        <Route element={<Register />} path="/register" />
+        <Route element={<Login />} path="/login" />
         <Route element={<Navigate to="/" />} path="*" />
       </Routes>
     </BrowserRouter>

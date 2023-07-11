@@ -2,7 +2,7 @@ import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
 import { AppBar } from "../components/AppBar";
 import { trpc } from "../trpc";
 
-export function FriendRequestsRoute() {
+export function FriendRequests() {
   return (
     <>
       <AppBar>

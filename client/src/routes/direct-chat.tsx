@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { trpc } from "../trpc";
 
-export function DirectChatRoute() {
+export function DirectChat() {
   const { id } = useParams();
   if (id === undefined) {
     throw new Error();
@@ -12,14 +12,14 @@ export function DirectChatRoute() {
 
   return (
     <div className="flex h-full flex-col">
-      <DirectChatAppBar userId={id} />
-      <DirectChatMessageList userId={id} />
-      <DirectChatMessageInput userId={id} />
+      <AppBar_ userId={id} />
+      <MessageList userId={id} />
+      <MessageInput userId={id} />
     </div>
   );
 }
 
-function DirectChatAppBar(props: { userId: string }) {
+function AppBar_(props: { userId: string }) {
   const user = trpc.user.get.useQuery({ userId: props.userId });
 
   return (
@@ -29,7 +29,7 @@ function DirectChatAppBar(props: { userId: string }) {
   );
 }
 
-function DirectChatMessageList(props: { userId: string }) {
+function MessageList(props: { userId: string }) {
   const directMessageListQuery = trpc.directMessage.list.useQuery({
     userIds: [localStorage.getItem("userId") ?? "", props.userId],
     limit: 50,
@@ -55,7 +55,7 @@ function DirectChatMessageList(props: { userId: string }) {
   );
 }
 
-function DirectChatMessageInput(props: { userId: string }) {
+function MessageInput(props: { userId: string }) {
   const [input, setInput] = useState("");
   const directMessageCreateMutation = trpc.directMessage.create.useMutation();
 

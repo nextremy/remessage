@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { trpc } from "../trpc";
 
-export function FriendsRoute() {
+export function Friends() {
   return (
     <Tab.Group>
       <AppBar>
@@ -23,7 +23,7 @@ export function FriendsRoute() {
       </AppBar>
       <Tab.Panels className="flex flex-col gap-2 py-2">
         <Tab.Panel>
-          <FriendsList />
+          <ListFriends />
         </Tab.Panel>
         <Tab.Panel></Tab.Panel>
         <Tab.Panel></Tab.Panel>
@@ -32,7 +32,7 @@ export function FriendsRoute() {
   );
 }
 
-function FriendsList() {
+function ListFriends() {
   const friendsListQuery = trpc.friend.list.useQuery();
 
   return (
