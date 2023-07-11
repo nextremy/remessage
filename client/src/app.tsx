@@ -27,23 +27,26 @@ export default function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<RootLayout />} path="/">
-              <Route element={<Navigate to="friends" />} index />
-              <Route element={<FriendsRoute />} path="friends" />
-              <Route
-                element={<FriendRequestsRoute />}
-                path="friends/requests"
-              />
-              <Route element={<ChatRoute />} path="chats/:chatId" />
-            </Route>
-            <Route element={<RegisterRoute />} path="/register" />
-            <Route element={<LoginRoute />} path="/login" />
-            <Route element={<Navigate to="/" />} path="*" />
-          </Routes>
-        </BrowserRouter>
+        <Router />
       </QueryClientProvider>
     </trpc.Provider>
+  );
+}
+
+function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<RootLayout />} path="/">
+          <Route element={<Navigate to="friends" />} index />
+          <Route element={<FriendsRoute />} path="friends" />
+          <Route element={<FriendRequestsRoute />} path="friends/requests" />
+          <Route element={<ChatRoute />} path="chats/:chatId" />
+        </Route>
+        <Route element={<RegisterRoute />} path="/register" />
+        <Route element={<LoginRoute />} path="/login" />
+        <Route element={<Navigate to="/" />} path="*" />
+      </Routes>
+    </BrowserRouter>
   );
 }
