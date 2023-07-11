@@ -34,7 +34,11 @@ function DirectChat(props: { userId: string }) {
 function DirectChatAppBar(props: { userId: string }) {
   const user = trpc.user.get.useQuery({ userId: props.userId });
 
-  return <AppBar title={user.data?.username ?? ""} />;
+  return (
+    <AppBar>
+      <AppBar.Title>{user.data?.username ?? ""}</AppBar.Title>
+    </AppBar>
+  );
 }
 
 function DirectChatMessageList(props: { userId: string }) {

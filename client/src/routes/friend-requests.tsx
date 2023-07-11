@@ -5,7 +5,9 @@ import { trpc } from "../trpc";
 export function FriendRequestsRoute() {
   return (
     <>
-      <AppBar title="Friend requests" />
+      <AppBar>
+        <AppBar.Title>Friends list</AppBar.Title>
+      </AppBar>
       <FriendRequestList />
     </>
   );

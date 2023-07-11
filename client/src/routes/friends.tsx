@@ -13,7 +13,9 @@ import { trpc } from "../trpc";
 export function FriendsRoute() {
   return (
     <>
-      <AppBar title="Friends" />
+      <AppBar>
+        <AppBar.Title>Friends</AppBar.Title>
+      </AppBar>
       <div className="flex flex-col gap-2 py-2">
         <AddFriendButton />
         <FriendRequestsButton />
