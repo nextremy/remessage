@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import { ChatBubbleLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { Dialog } from "../components/Dialog";
@@ -23,12 +23,14 @@ export function Friends() {
           </Tab>
         </Tab.List>
       </AppBar>
-      <Tab.Panels className="flex flex-col gap-2 py-2">
+      <Tab.Panels>
         <Tab.Panel>
           <FriendsList />
         </Tab.Panel>
         <Tab.Panel></Tab.Panel>
-        <Tab.Panel></Tab.Panel>
+        <Tab.Panel>
+          <AddFriend />
+        </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
   );
@@ -38,7 +40,7 @@ function FriendsList() {
   const { data: friends } = trpc.friend.list.useQuery();
 
   return (
-    <ul className="flex flex-col divide-y divide-gray-300 px-4">
+    <ul className="flex flex-col divide-y divide-gray-300 p-4">
       {friends?.map((friend) => (
         <li
           className="flex items-center justify-between p-2 font-medium"
@@ -113,5 +115,39 @@ function RemoveFriendButton(props: { friend: Friend }) {
         </div>
       </Dialog>
     </>
+  );
+}
+
+function AddFriend() {
+  const [username, setUsername] = useState("");
+  const { mutate: createFriendRequest } =
+    trpc.friendRequest.create.useMutation();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    createFriendRequest({ receiverUsername: username });
+    setUsername("");
+  }
+
+  return (
+    <div className="p-4">
+      <h2 className="font-bold">Add friend</h2>
+      <p>You can add another user as a friend by their username.</p>
+      <form className="mt-4 flex h-12 gap-2" onSubmit={handleSubmit}>
+        <input
+          className="grow rounded-md bg-gray-300 px-4 placeholder:text-gray-500"
+          onChange={(event) => setUsername(event.target.value)}
+          placeholder="Friend's username"
+          type="text"
+          value={username}
+        />
+        <button
+          className="rounded-md bg-blue-700 px-4 font-semibold text-gray-100 hover:bg-blue-600"
+          type="submit"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
   );
 }
