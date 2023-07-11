@@ -7,7 +7,6 @@ import { FriendRequestsRoute } from "./routes/friend-requests";
 import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
-import { RootRoute } from "./routes/root";
 import { trpc } from "./trpc";
 
 const queryClient = new QueryClient();
@@ -31,7 +30,6 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route element={<RootLayout />} path="/">
-              <Route element={<RootRoute />} index />
               <Route element={<FriendsRoute />} path="/friends" />
               <Route
                 element={<FriendRequestsRoute />}
