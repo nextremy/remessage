@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: "Work Sans";
-  src: url("/fonts/WorkSans-VariableFont_wght.woff2") format("woff2-variations");
+  font-family: "Inter";
+  src: url("/fonts/inter.woff2") format("woff2-variations");
   font-display: swap;
   font-style: normal;
   font-weight: 100 1000;
@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: "Work Sans";
-  src: url("/fonts/WorkSans-Italic-VariableFont_wght.woff2") format("woff2-variations");
+  src: url("/fonts/inter.woff2") format("woff2-variations");
   font-display: swap;
   font-style: italic;
   font-weight: 100 1000;
