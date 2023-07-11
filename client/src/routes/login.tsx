@@ -23,7 +23,7 @@ export function Login() {
   return (
     <div className="grid min-h-screen place-items-center p-4">
       <form
-        className="flex w-full max-w-sm flex-col rounded border border-gray-300 p-6"
+        className="flex w-full max-w-sm flex-col rounded-md border border-gray-300 p-6"
         onSubmit={handleSubmit}
       >
         <h1 className="text-center text-2xl font-bold">Log in</h1>
@@ -34,7 +34,7 @@ export function Login() {
           Username
         </label>
         <input
-          className="mt-2 h-12 rounded bg-gray-300 px-4"
+          className="mt-2 h-12 rounded-md bg-gray-300 px-4"
           name="username"
           onChange={(event) => setUsername(event.target.value)}
           type="text"
@@ -46,7 +46,7 @@ export function Login() {
           Password
         </label>
         <input
-          className="mt-2 h-12 rounded bg-gray-300 px-4"
+          className="mt-2 h-12 rounded-md bg-gray-300 px-4"
           name="password"
           onChange={(event) => setPassword(event.target.value)}
           type="password"
