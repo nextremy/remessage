@@ -40,6 +40,7 @@ export default function App() {
             </Route>
             <Route element={<RegisterRoute />} path="/register" />
             <Route element={<LoginRoute />} path="/login" />
+            <Route element={<Navigate to="/" />} path="*" />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
