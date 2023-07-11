@@ -19,11 +19,11 @@ export const friendRouter = router({
     .mutation(async ({ input }) => {
       await db.$transaction([
         db.user.update({
-          data: { friends: { delete: { id: input.friendId } } },
+          data: { friends: { disconnect: { id: input.friendId } } },
           where: { id: input.userId },
         }),
         db.user.update({
-          data: { friends: { delete: { id: input.userId } } },
+          data: { friends: { disconnect: { id: input.userId } } },
           where: { id: input.friendId },
         }),
       ]);
