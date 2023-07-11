@@ -10,13 +10,13 @@ export function FriendsRoute() {
       <AppBar>
         <AppBar.Title>Friends</AppBar.Title>
         <Tab.List className="ml-4 flex h-8 gap-2 border-l border-gray-300 pl-4">
-          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
+          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded-md px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
             List
           </Tab>
-          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
+          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded-md px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
             Pending
           </Tab>
-          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
+          <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded-md px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
             Add friend
           </Tab>
         </Tab.List>
