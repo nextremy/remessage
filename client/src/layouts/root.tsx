@@ -1,18 +1,12 @@
 import { UsersIcon } from "@heroicons/react/20/solid";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { getButtonClassName } from "../styles/button";
 import { trpc } from "../trpc";
 
 export function RootLayout() {
-  const location = useLocation();
-
   return (
     <div className="flex h-screen divide-x divide-gray-300">
-      <div
-        className={`flex w-full flex-col md:block md:max-w-xs ${
-          location.pathname === "/" ? "" : "hidden"
-        }`}
-      >
+      <div className="flex w-full max-w-xs flex-col">
         <ProfileBar />
         <div className="px-2">
           <FriendsButton />
