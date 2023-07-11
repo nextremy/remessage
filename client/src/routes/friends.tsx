@@ -114,7 +114,7 @@ function FriendsList() {
           <div className="flex gap-2">
             <Link
               className="grid h-12 w-12 place-items-center rounded-full bg-gray-300 text-gray-700 duration-200 hover:bg-gray-400"
-              to={`/chats/@${friend.id}`}
+              to={`/direct-chats/${friend.id}`}
             >
               <ChatBubbleLeftIcon className="h-5 w-5" />
             </Link>

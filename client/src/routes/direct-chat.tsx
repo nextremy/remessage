@@ -1,33 +1,21 @@
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { FormEvent, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { trpc } from "../trpc";
 
-export function ChatRoute() {
-  const { chatId } = useParams();
-  const navigate = useNavigate();
-  if (chatId === undefined) {
-    navigate("/");
-    return null;
+export function DirectChatRoute() {
+  const { id } = useParams();
+  if (id === undefined) {
+    throw new Error();
   }
 
   return (
     <div className="flex h-full flex-col">
-      {chatId.startsWith("@") ? (
-        <DirectChat userId={chatId.replace("@", "")} />
-      ) : null}
+      <DirectChatAppBar userId={id} />
+      <DirectChatMessageList userId={id} />
+      <DirectChatMessageInput userId={id} />
     </div>
-  );
-}
-
-function DirectChat(props: { userId: string }) {
-  return (
-    <>
-      <DirectChatAppBar userId={props.userId} />
-      <DirectChatMessageList userId={props.userId} />
-      <DirectChatMessageInput userId={props.userId} />
-    </>
   );
 }
 
