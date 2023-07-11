@@ -1,6 +1,5 @@
 import { UsersIcon } from "@heroicons/react/20/solid";
-import { Link, Outlet } from "react-router-dom";
-import { getButtonClassName } from "../styles/button";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { trpc } from "../trpc";
 
 export function RootLayout() {
@@ -33,8 +32,15 @@ function ProfileBar() {
 }
 
 function FriendsButton() {
+  const { pathname } = useLocation();
+
   return (
-    <Link className={`h-12 ${getButtonClassName("text")}`} to="/friends">
+    <Link
+      className={`flex h-12 items-center gap-2 rounded-md px-4 font-semibold text-gray-700 hover:bg-gray-200 ${
+        pathname.startsWith("/friends") ? "bg-gray-200" : ""
+      }`}
+      to="/friends"
+    >
       <UsersIcon className="h-5 w-5" />
       Friends
     </Link>
