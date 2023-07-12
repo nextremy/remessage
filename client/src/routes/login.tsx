@@ -23,7 +23,7 @@ export function Login() {
   return (
     <div className="grid min-h-screen place-items-center p-4">
       <form
-        className="flex w-full max-w-sm flex-col rounded-md border border-gray-300 p-6"
+        className="flex w-full max-w-sm flex-col rounded-md border-2 border-gray-300 p-6"
         onSubmit={handleSubmit}
       >
         <h1 className="text-center text-2xl font-bold">Log in</h1>

@@ -22,7 +22,7 @@ export function Friends() {
             Friends
           </div>
         </AppBar.Title>
-        <Tab.List className="ml-4 flex h-8 gap-2 border-l border-gray-300 pl-4">
+        <Tab.List className="ml-4 flex h-8 gap-2 border-l-2 border-gray-300 pl-4">
           <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded-md px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
             All
           </Tab>
