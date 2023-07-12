@@ -36,7 +36,7 @@ function MessageList(props: { userId: string }) {
   });
 
   return (
-    <ul className="flex grow flex-col justify-end gap-2 px-4 py-2">
+    <ul className="flex grow flex-col justify-end gap-2 px-4">
       {directMessageListQuery.data?.map((message) => (
         <li className="flex flex-col" key={message.id}>
           <div className="flex items-center gap-2">
@@ -70,7 +70,7 @@ function MessageInput(props: { userId: string }) {
   }
 
   return (
-    <form className="flex gap-2 p-2" onSubmit={handleSubmit}>
+    <form className="flex gap-2 p-4" onSubmit={handleSubmit}>
       <input
         className="h-12 grow rounded-full bg-gray-300 px-4"
         onChange={(event) => setInput(event.target.value)}
