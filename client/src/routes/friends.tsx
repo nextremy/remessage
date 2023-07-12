@@ -227,7 +227,7 @@ function AddFriend() {
       <p>You can add another user as a friend by their username.</p>
       <form className="mt-4 flex h-12 gap-2" onSubmit={handleSubmit}>
         <input
-          className="grow rounded-md bg-gray-300 px-4 placeholder:text-gray-500"
+          className="grow rounded-md bg-gray-300 px-4 placeholder:text-gray-700"
           onChange={(event) => setUsername(event.target.value)}
           placeholder="Friend's username"
           type="text"
