@@ -8,7 +8,7 @@ export default {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      gray: colors.zinc,
+      gray: colors.slate,
       blue: colors.blue,
     },
     extend: {
