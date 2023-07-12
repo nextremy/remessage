@@ -1,9 +1,14 @@
 import { Tab } from "@headlessui/react";
-import { ChatBubbleLeftIcon, XMarkIcon } from "@heroicons/react/20/solid";
+import {
+  ChatBubbleLeftIcon,
+  CheckIcon,
+  XMarkIcon,
+} from "@heroicons/react/20/solid";
 import { FormEvent, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { AppBar } from "../components/AppBar";
 import { Dialog } from "../components/Dialog";
+import { useSession } from "../hooks/session";
 import { trpc } from "../trpc";
 
 export function Friends() {
@@ -27,7 +32,9 @@ export function Friends() {
         <Tab.Panel>
           <FriendsList />
         </Tab.Panel>
-        <Tab.Panel></Tab.Panel>
+        <Tab.Panel>
+          <FriendRequestsList />
+        </Tab.Panel>
         <Tab.Panel>
           <AddFriend />
         </Tab.Panel>
@@ -40,10 +47,10 @@ function FriendsList() {
   const { data: friends } = trpc.friend.list.useQuery();
 
   return (
-    <ul className="flex flex-col divide-y divide-gray-300 p-4">
+    <ul className="flex flex-col divide-y divide-gray-300 px-4 py-2">
       {friends?.map((friend) => (
         <li
-          className="flex items-center justify-between p-2 font-medium"
+          className="flex items-center justify-between py-2 font-medium"
           key={friend.id}
         >
           {friend.username}
@@ -115,6 +122,85 @@ function RemoveFriendButton(props: { friend: Friend }) {
         </div>
       </Dialog>
     </>
+  );
+}
+
+function FriendRequestsList() {
+  const { data: friendRequests } = trpc.friendRequest.list.useQuery();
+
+  return (
+    <ul className="flex flex-col divide-y divide-gray-300 px-4 py-2">
+      {friendRequests?.map((friendRequest) => (
+        <FriendRequestListItem
+          friendRequest={friendRequest}
+          key={friendRequest.id}
+        />
+      ))}
+    </ul>
+  );
+}
+
+type FriendRequest = {
+  id: string;
+  sender: {
+    username: string;
+    id: string;
+  };
+  receiver: {
+    username: string;
+    id: string;
+  };
+};
+
+function FriendRequestListItem(props: { friendRequest: FriendRequest }) {
+  const session = useSession();
+  const trpcContext = trpc.useContext();
+  const { mutate: acceptFriendRequest } = trpc.friendRequest.accept.useMutation(
+    {
+      onSuccess: () => {
+        void trpcContext.friend.list.invalidate();
+        void trpcContext.friendRequest.list.invalidate();
+      },
+    },
+  );
+  const { mutate: deleteFriendRequest } = trpc.friendRequest.delete.useMutation(
+    {
+      onSuccess: () => {
+        void trpcContext.friendRequest.list.invalidate();
+      },
+    },
+  );
+
+  const isReceived = session.id === props.friendRequest.receiver.id;
+  return (
+    <li className="flex items-center justify-between py-2">
+      <div className="flex flex-col">
+        <p className="font-medium">
+          {isReceived
+            ? props.friendRequest.sender.username
+            : props.friendRequest.receiver.username}
+        </p>
+        <p className="text-sm text-gray-600">
+          {isReceived ? "Incoming friend request" : "Outgoing friend request"}
+        </p>
+      </div>
+      <div className="flex gap-2">
+        {isReceived ? (
+          <button
+            className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+            onClick={() => acceptFriendRequest({ id: props.friendRequest.id })}
+          >
+            <CheckIcon className="h-5 w-5" />
+          </button>
+        ) : null}
+        <button
+          className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+          onClick={() => deleteFriendRequest({ id: props.friendRequest.id })}
+        >
+          <XMarkIcon className="h-5 w-5" />
+        </button>
+      </div>
+    </li>
   );
 }
 
