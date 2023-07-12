@@ -2,6 +2,7 @@ import { Tab } from "@headlessui/react";
 import {
   ChatBubbleLeftIcon,
   CheckIcon,
+  UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { FormEvent, useState } from "react";
@@ -15,7 +16,12 @@ export function Friends() {
   return (
     <Tab.Group>
       <AppBar>
-        <AppBar.Title>Friends</AppBar.Title>
+        <AppBar.Title>
+          <div className="flex items-center gap-2">
+            <UsersIcon className="h-5 w-5" />
+            Friends
+          </div>
+        </AppBar.Title>
         <Tab.List className="ml-4 flex h-8 gap-2 border-l border-gray-300 pl-4">
           <Tab className="ui-selected:bg-gray-200 ui-selected:text-gray-900 rounded-md px-4 font-medium text-gray-600 hover:bg-gray-200 hover:text-gray-900">
             All
