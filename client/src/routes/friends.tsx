@@ -69,7 +69,7 @@ type Friend = { id: string; username: string };
 function MessageFriendButton(props: { friend: Friend }) {
   return (
     <Link
-      className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+      className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
       to={`/direct-chats/${props.friend.id}`}
     >
       <ChatBubbleLeftIcon className="h-5 w-5" />
@@ -94,7 +94,7 @@ function RemoveFriendButton(props: { friend: Friend }) {
   return (
     <>
       <button
-        className="grid h-12 w-12 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+        className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
         onClick={() => setDialogOpen(true)}
       >
         <XMarkIcon className="h-6 w-6" />
