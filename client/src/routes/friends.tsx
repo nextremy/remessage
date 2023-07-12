@@ -234,7 +234,7 @@ function AddFriend() {
           value={username}
         />
         <button
-          className="rounded-md bg-blue-700 px-4 font-semibold text-gray-100 hover:bg-blue-600 disabled:opacity-50"
+          className="rounded-md bg-blue-700 px-4 font-semibold text-gray-100 enabled:hover:bg-blue-600 disabled:opacity-50"
           disabled={username === ""}
           type="submit"
         >
