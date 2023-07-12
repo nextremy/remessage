@@ -4,30 +4,18 @@ import { trpc } from "../trpc";
 
 export function RootLayout() {
   return (
-    <div className="flex h-screen divide-x divide-gray-300">
+    <div className="flex h-screen">
       <div className="flex w-full max-w-xs flex-col bg-gray-200">
-        <ProfileBar />
-        <div className="px-2">
+        <div className="p-2">
           <FriendsButton />
         </div>
+        <div className="grow" />
+        <ProfileBar />
       </div>
       <div className="grow">
         <Outlet />
       </div>
     </div>
-  );
-}
-
-function ProfileBar() {
-  const userGetQuery = trpc.user.get.useQuery(
-    { userId: localStorage.getItem("userId") ?? "" },
-    { enabled: localStorage.getItem("userId") !== undefined },
-  );
-
-  return (
-    <p className="p-4 text-lg font-medium">
-      {userGetQuery.data ? userGetQuery.data.username : null}
-    </p>
   );
 }
 
@@ -44,5 +32,16 @@ function FriendsButton() {
       <UsersIcon className="h-5 w-5" />
       Friends
     </Link>
+  );
+}
+
+function ProfileBar() {
+  const { data: user } = trpc.user.get.useQuery(
+    { userId: localStorage.getItem("userId") ?? "" },
+    { enabled: localStorage.getItem("userId") !== undefined },
+  );
+
+  return (
+    <p className="p-4 text-lg font-medium">{user ? user.username : null}</p>
   );
 }
