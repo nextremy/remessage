@@ -5,7 +5,7 @@ import { trpc } from "../trpc";
 export function RootLayout() {
   return (
     <div className="flex h-screen">
-      <div className="flex w-full max-w-xs flex-col bg-gray-200">
+      <div className="flex w-64 flex-col bg-gray-200">
         <div className="p-2">
           <FriendsButton />
         </div>
