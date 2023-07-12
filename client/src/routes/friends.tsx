@@ -53,7 +53,7 @@ function FriendsList() {
   const { data: friends } = trpc.friend.list.useQuery();
 
   return (
-    <ul className="flex flex-col divide-y divide-gray-300 px-4 py-2">
+    <ul className="flex flex-col divide-y divide-gray-300 px-4">
       {friends?.map((friend) => (
         <li
           className="flex h-16 items-center justify-between font-medium"
@@ -135,7 +135,7 @@ function FriendRequestsList() {
   const { data: friendRequests } = trpc.friendRequest.list.useQuery();
 
   return (
-    <ul className="flex flex-col divide-y divide-gray-300 px-4 py-2">
+    <ul className="flex flex-col divide-y divide-gray-300 px-4">
       {friendRequests?.map((friendRequest) => (
         <FriendRequestListItem
           friendRequest={friendRequest}
