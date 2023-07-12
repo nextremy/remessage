@@ -50,7 +50,7 @@ function FriendsList() {
     <ul className="flex flex-col divide-y divide-gray-300 px-4 py-2">
       {friends?.map((friend) => (
         <li
-          className="flex items-center justify-between py-2 font-medium"
+          className="flex h-16 items-center justify-between font-medium"
           key={friend.id}
         >
           {friend.username}
@@ -173,7 +173,7 @@ function FriendRequestListItem(props: { friendRequest: FriendRequest }) {
 
   const isReceived = session.id === props.friendRequest.receiver.id;
   return (
-    <li className="flex items-center justify-between py-2">
+    <li className="flex h-16 items-center justify-between">
       <div className="flex flex-col">
         <p className="font-medium">
           {isReceived
