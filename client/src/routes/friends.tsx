@@ -237,7 +237,7 @@ function AddFriend() {
           className="rounded-md bg-blue-700 px-4 font-semibold text-gray-100 hover:bg-blue-600"
           type="submit"
         >
-          Submit
+          Send friend request
         </button>
       </form>
     </div>
