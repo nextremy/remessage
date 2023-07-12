@@ -97,7 +97,7 @@ function RemoveFriendButton(props: { friend: Friend }) {
         className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
         onClick={() => setDialogOpen(true)}
       >
-        <XMarkIcon className="h-6 w-6" />
+        <XMarkIcon className="h-5 w-5" />
       </button>
       <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
         <Dialog.Title>Remove friend</Dialog.Title>
