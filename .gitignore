@@ -1,4 +1,5 @@
 .env
+.next
 *.db
 *.db-journal
 dist
