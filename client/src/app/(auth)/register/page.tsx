@@ -55,7 +55,7 @@ export default function Register() {
         />
       </div>
       <button
-        className="mt-4 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 hover:brightness-110"
+        className="mt-4 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 duration-200 hover:bg-blue-800"
         type="submit"
       >
         Register
