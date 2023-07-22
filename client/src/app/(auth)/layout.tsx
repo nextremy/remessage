@@ -1,10 +1,19 @@
+"use client";
+
 import "@/app/globals.css";
 import { Inter } from "next/font/google";
-import { ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import { ReactNode, useEffect } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function AuthLayout(props: { children: ReactNode }) {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token !== null) router.replace("/");
+  }, [router]);
+
   return (
     <html lang="en">
       <body
