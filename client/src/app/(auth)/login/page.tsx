@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 
-export default function Login() {
+export default function LoginPage() {
   const [username, setUsername] = useState("");
   const usernameId = useId();
   const [password, setPassword] = useState("");
