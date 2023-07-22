@@ -37,7 +37,7 @@ export default function Login() {
           Username
         </label>
         <input
-          className="h-12 rounded-md bg-gray-300 px-4 placeholder:text-gray-500"
+          className="h-12 rounded-md bg-gray-300 px-4"
           id={usernameId}
           onChange={(event) => setUsername(event.target.value)}
           type="text"
@@ -52,7 +52,7 @@ export default function Login() {
           Password
         </label>
         <input
-          className="h-12 rounded-md bg-gray-300 px-4 placeholder:text-gray-500"
+          className="h-12 rounded-md bg-gray-300 px-4"
           id={passwordId}
           onChange={(event) => setPassword(event.target.value)}
           type="password"
