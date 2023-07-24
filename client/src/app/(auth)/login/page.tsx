@@ -1,6 +1,6 @@
 "use client";
 
-import trpc from "@/trpc";
+import { trpc } from "@/trpc";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
