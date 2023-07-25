@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink } from "@trpc/client";
+import { createWSClient, httpBatchLink, wsLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layouts/auth";
 import { MainLayout } from "./layouts/main";
@@ -19,6 +19,11 @@ const trpcClient = trpc.createClient({
         if (token === null) return {};
         return { Authorization: `Bearer ${token}` };
       },
+    }),
+    wsLink({
+      client: createWSClient({
+        url: "ws://localhost:4000",
+      }),
     }),
   ],
 });
