@@ -1,3 +1,4 @@
+import headlessUI from "@headlessui/tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 /** @type {import("tailwindcss").Config} */
@@ -9,5 +10,5 @@ export default {
     },
     extend: {},
   },
-  plugins: ["@headlessui/tailwindcss"],
+  plugins: [headlessUI],
 };
