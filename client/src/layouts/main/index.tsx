@@ -6,7 +6,7 @@ export function MainLayout() {
 
   return (
     <div className="flex h-screen">
-      <div className="max-w-xs grow bg-gray-200 p-4">
+      <div className="w-80 bg-gray-200 p-4">
         <Link
           className={`${
             pathname.startsWith("/friends")
