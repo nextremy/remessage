@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { FormEvent, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { trpc } from "../../trpc";
 
@@ -16,14 +16,13 @@ export function LoginRoute() {
   const [password, setPassword] = useState("");
   const passwordId = useId();
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    login({ username, password });
+  }
+
   return (
-    <form
-      className="flex flex-col"
-      onSubmit={(event) => {
-        event.preventDefault();
-        login({ username, password });
-      }}
-    >
+    <form className="flex flex-col" onSubmit={handleSubmit}>
       <h1 className="text-center text-xl font-bold">Log in</h1>
       <label
         className="mt-4 text-sm font-semibold tracking-wide"
