@@ -26,5 +26,10 @@
       }
     ],
     "react/jsx-sort-props": ["warn"]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
   }
 }
