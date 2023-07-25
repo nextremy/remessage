@@ -1,7 +1,7 @@
 {
   "name": "remessage-server",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.0.0",
   "engines": {
     "node": ">=18.0.0"
   },
