@@ -13,7 +13,7 @@ export function AllFriendsList() {
     <ul className="m-4">
       {friends.map((friend) => (
         <li
-          className="flex h-12 items-center justify-between rounded-md px-4 font-medium"
+          className="flex h-12 items-center justify-between px-4 font-medium"
           key={friend.id}
         >
           {friend.username}
