@@ -1,5 +1,7 @@
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import { applyWSSHandler } from "@trpc/server/adapters/ws";
 import cors from "cors";
+import { WebSocketServer } from "ws";
 import { createContext } from "./context";
 import { authRouter } from "./routers/auth";
 import { directMessageRouter } from "./routers/direct-message";
@@ -18,8 +20,17 @@ const appRouter = router({
 
 export type AppRouter = typeof appRouter;
 
-createHTTPServer({
+const { server, listen } = createHTTPServer({
   router: appRouter,
   middleware: cors(),
   createContext,
-}).listen(4000);
+});
+
+const wss = new WebSocketServer({ server });
+applyWSSHandler<AppRouter>({
+  router: appRouter,
+  wss,
+  createContext,
+});
+
+listen(4000);

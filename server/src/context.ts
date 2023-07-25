@@ -1,5 +1,6 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import type { CreateHTTPContextOptions } from "@trpc/server/adapters/standalone";
+import type { CreateWSSContextFnOptions } from "@trpc/server/adapters/ws";
 import type { IncomingMessage } from "http";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
@@ -16,7 +17,9 @@ function getUserId(req: IncomingMessage) {
   return payload.userId;
 }
 
-export function createContext({ req }: CreateHTTPContextOptions) {
+export function createContext({
+  req,
+}: CreateHTTPContextOptions | CreateWSSContextFnOptions) {
   return { userId: getUserId(req) };
 }
 
