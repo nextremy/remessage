@@ -1,6 +1,24 @@
+import { observable } from "@trpc/server/observable";
+import EventEmitter from "events";
 import { z } from "zod";
 import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
+
+const ee = new EventEmitter();
+
+type Message = {
+  id: string;
+  textContent: string;
+  timestamp: Date;
+  sender: {
+    id: string;
+    username: string;
+  };
+  receiver: {
+    id: string;
+    username: string;
+  };
+};
 
 export const directMessageRouter = router({
   list: protectedProcedure
@@ -16,7 +34,8 @@ export const directMessageRouter = router({
           id: true,
           textContent: true,
           timestamp: true,
-          sender: { select: { id: true, username: true } },
+          senderId: true,
+          receiverId: true,
         },
         where: {
           OR: [
@@ -29,6 +48,15 @@ export const directMessageRouter = router({
       });
       return directMessages;
     }),
+  stream: protectedProcedure.subscription(() => {
+    return observable<Message>((emit) => {
+      function onDirectMessageCreate(message: Message) {
+        emit.next(message);
+      }
+      ee.on("directMessageCreate", onDirectMessageCreate);
+      return () => ee.off("directMessageCreate", onDirectMessageCreate);
+    });
+  }),
   create: protectedProcedure
     .input(
       z.object({
@@ -52,6 +80,7 @@ export const directMessageRouter = router({
           receiverId: input.receiverId,
         },
       });
+      ee.emit("directMessageCreate", directMessage);
       return directMessage;
     }),
 });
