@@ -6,14 +6,14 @@ import { FriendRequestsList } from "./friend-requests-list";
 export function FriendsRoute() {
   return (
     <Tab.Group as="div" className="grow">
-      <Tab.List className="flex gap-2 border-b-2 border-gray-200 p-2">
-        <Tab className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
+      <Tab.List className="flex h-12 items-center gap-2 border-b-2 border-gray-200 px-2">
+        <Tab className="h-8 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
           All
         </Tab>
-        <Tab className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
+        <Tab className="h-8 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
           Pending
         </Tab>
-        <Tab className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
+        <Tab className="h-8 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900 ui-selected:bg-gray-200 ui-selected:text-gray-900">
           Add friend
         </Tab>
       </Tab.List>
