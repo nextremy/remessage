@@ -14,50 +14,46 @@ export function RegisterRoute() {
 
   return (
     <form
-      className="flex flex-col gap-4"
+      className="flex flex-col"
       onSubmit={(event) => {
         event.preventDefault();
         register({ username, password });
       }}
     >
       <h1 className="text-center text-xl font-bold">Register</h1>
-      <div className="flex flex-col gap-2">
-        <label
-          className="text-sm font-semibold tracking-wide"
-          htmlFor={usernameId}
-        >
-          Username
-        </label>
-        <input
-          className="h-12 rounded-md bg-gray-300 px-4"
-          id={usernameId}
-          onChange={(event) => setUsername(event.target.value)}
-          type="text"
-          value={username}
-        />
-      </div>
-      <div className="flex flex-col gap-2">
-        <label
-          className="text-sm font-semibold tracking-wide"
-          htmlFor={passwordId}
-        >
-          Password
-        </label>
-        <input
-          className="h-12 rounded-md bg-gray-300 px-4"
-          id={passwordId}
-          onChange={(event) => setPassword(event.target.value)}
-          type="password"
-          value={password}
-        />
-      </div>
+      <label
+        className="mt-4 text-sm font-semibold tracking-wide"
+        htmlFor={usernameId}
+      >
+        Username
+      </label>
+      <input
+        className="mt-1 h-12 rounded-md bg-gray-300 px-4"
+        id={usernameId}
+        onChange={(event) => setUsername(event.target.value)}
+        type="text"
+        value={username}
+      />
+      <label
+        className="mt-4 text-sm font-semibold tracking-wide"
+        htmlFor={passwordId}
+      >
+        Password
+      </label>
+      <input
+        className="mt-1 h-12 rounded-md bg-gray-300 px-4"
+        id={passwordId}
+        onChange={(event) => setPassword(event.target.value)}
+        type="password"
+        value={password}
+      />
       <button
-        className="mt-4 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 duration-200 hover:bg-blue-800"
+        className="mt-8 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 duration-200 hover:bg-blue-800"
         type="submit"
       >
         Register
       </button>
-      <p>
+      <p className="mt-4">
         Already have an account?{" "}
         <Link className="text-blue-700" to="/login">
           Log in here.
