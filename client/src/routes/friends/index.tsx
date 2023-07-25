@@ -1,4 +1,5 @@
 import { Tab } from "@headlessui/react";
+import { AddFriend } from "./add-friend";
 import { AllFriendsList } from "./all-friends-list";
 
 export function FriendsRoute() {
@@ -20,7 +21,9 @@ export function FriendsRoute() {
           <AllFriendsList />
         </Tab.Panel>
         <Tab.Panel></Tab.Panel>
-        <Tab.Panel></Tab.Panel>
+        <Tab.Panel>
+          <AddFriend />
+        </Tab.Panel>
       </Tab.Panels>
     </Tab.Group>
   );
