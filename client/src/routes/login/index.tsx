@@ -19,7 +19,7 @@ export function LoginRoute() {
   return (
     <form
       className="flex flex-col gap-4"
-      onSubmit={async (event) => {
+      onSubmit={(event) => {
         event.preventDefault();
         login({ username, password });
       }}
