@@ -4,34 +4,36 @@ import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
 
 export const friendRequestRouter = router({
-  list: protectedProcedure.query(async ({ ctx }) => {
-    const user = await db.user.findUnique({
-      select: {
-        sentFriendRequests: {
-          select: {
-            id: true,
-            sender: { select: { id: true, username: true } },
-            receiver: { select: { id: true, username: true } },
+  list: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input }) => {
+      const user = await db.user.findUnique({
+        select: {
+          sentFriendRequests: {
+            select: {
+              id: true,
+              sender: { select: { id: true, username: true } },
+              receiver: { select: { id: true, username: true } },
+            },
+          },
+          receivedFriendRequests: {
+            select: {
+              id: true,
+              sender: { select: { id: true, username: true } },
+              receiver: { select: { id: true, username: true } },
+            },
           },
         },
-        receivedFriendRequests: {
-          select: {
-            id: true,
-            sender: { select: { id: true, username: true } },
-            receiver: { select: { id: true, username: true } },
-          },
-        },
-      },
-      where: { id: ctx.userId },
-    });
-    if (!user) {
-      throw new TRPCError({ code: "NOT_FOUND" });
-    }
-    return user.sentFriendRequests.concat(user.receivedFriendRequests);
-  }),
+        where: { id: input.userId },
+      });
+      if (!user) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      return user.sentFriendRequests.concat(user.receivedFriendRequests);
+    }),
   create: protectedProcedure
-    .input(z.object({ receiverUsername: z.string() }))
-    .mutation(async ({ input, ctx }) => {
+    .input(z.object({ senderId: z.string(), receiverUsername: z.string() }))
+    .mutation(async ({ input }) => {
       await db.$transaction(async (db) => {
         const user = await db.user.findUnique({
           where: { username: input.receiverUsername },
@@ -40,7 +42,7 @@ export const friendRequestRouter = router({
           throw new TRPCError({ code: "NOT_FOUND" });
         }
         await db.friendRequest.create({
-          data: { senderId: ctx.userId, receiverId: user.id },
+          data: { senderId: input.senderId, receiverId: user.id },
         });
       });
     }),
