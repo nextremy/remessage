@@ -3,6 +3,7 @@ import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layouts/auth";
 import { MainLayout } from "./layouts/main";
+import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
 import { trpc } from "./trpc";
@@ -33,7 +34,7 @@ export function App() {
             </Route>
             <Route element={<MainLayout />}>
               <Route element={<Navigate to="friends" />} index />
-              <Route element={<div />} path="friends" />
+              <Route element={<FriendsRoute />} path="friends" />
             </Route>
           </Routes>
         </BrowserRouter>
