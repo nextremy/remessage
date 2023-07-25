@@ -5,9 +5,7 @@ import { trpc } from "../../trpc";
 export function AddFriend() {
   const { userId } = useSession();
   const { mutate: createFriendRequest } = trpc.friendRequest.create.useMutation(
-    {
-      onSuccess: () => setFriendUsername(""),
-    },
+    { onSuccess: () => setFriendUsername("") },
   );
   const inputId = useId();
   const [friendUsername, setFriendUsername] = useState("");
