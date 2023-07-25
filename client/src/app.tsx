@@ -3,6 +3,7 @@ import { httpBatchLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layouts/auth";
 import { MainLayout } from "./layouts/main";
+import { DirectChatRoute } from "./routes/direct-chat";
 import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
@@ -35,6 +36,10 @@ export function App() {
             <Route element={<MainLayout />}>
               <Route element={<Navigate to="friends" />} index />
               <Route element={<FriendsRoute />} path="friends" />
+              <Route
+                element={<DirectChatRoute />}
+                path="direct-chats/:directChatId"
+              />
             </Route>
           </Routes>
         </BrowserRouter>
