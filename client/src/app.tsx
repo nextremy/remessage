@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { createWSClient, httpBatchLink, wsLink } from "@trpc/client";
+import { createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layouts/auth";
 import { MainLayout } from "./layouts/main";
@@ -9,20 +9,20 @@ import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
 import { trpc } from "./trpc";
 
+const wsClient = createWSClient({ url: "ws://localhost:4000" });
 const queryClient = new QueryClient();
 const trpcClient = trpc.createClient({
   links: [
-    httpBatchLink({
-      url: "http://localhost:4000",
-      headers: () => {
-        const token = localStorage.getItem("token");
-        if (token === null) return {};
-        return { Authorization: `Bearer ${token}` };
-      },
-    }),
-    wsLink({
-      client: createWSClient({
-        url: "ws://localhost:4000",
+    splitLink({
+      condition: (op) => op.type === "subscription",
+      true: wsLink({ client: wsClient }),
+      false: httpBatchLink({
+        url: "http://localhost:4000",
+        headers: () => {
+          const token = localStorage.getItem("token");
+          if (token === null) return {};
+          return { Authorization: `Bearer ${token}` };
+        },
       }),
     }),
   ],
