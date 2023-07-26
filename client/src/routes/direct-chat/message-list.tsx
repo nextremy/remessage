@@ -39,7 +39,7 @@ export function MessageList() {
     return 0;
   });
   return (
-    <ul className="flex grow flex-col justify-end">
+    <ul className="flex flex-col overflow-y-auto p-4">
       {sortedMessages.map((message) => (
         <li key={message.id}>
           <div className="flex items-center gap-2">

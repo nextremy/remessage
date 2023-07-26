@@ -22,14 +22,16 @@ export function MessageInput() {
 
   if (!user) return null;
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        className="h-12 w-full rounded-md bg-gray-300 px-4 placeholder:text-gray-700"
-        onChange={(event) => setInput(event.target.value)}
-        placeholder={`Message @${user.username}`}
-        type="text"
-        value={input}
-      />
-    </form>
+    <div className="px-4 pb-4">
+      <form onSubmit={handleSubmit}>
+        <input
+          className="h-12 w-full rounded-md bg-gray-300 px-4 placeholder:text-gray-700"
+          onChange={(event) => setInput(event.target.value)}
+          placeholder={`Message @${user.username}`}
+          type="text"
+          value={input}
+        />
+      </form>
+    </div>
   );
 }
