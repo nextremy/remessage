@@ -10,14 +10,8 @@ type Message = {
   id: string;
   textContent: string;
   timestamp: Date;
-  sender: {
-    id: string;
-    username: string;
-  };
-  receiver: {
-    id: string;
-    username: string;
-  };
+  sender: { id: string; username: string };
+  receiver: { id: string; username: string };
 };
 
 export const directMessageRouter = router({
