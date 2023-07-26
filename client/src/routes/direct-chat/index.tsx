@@ -6,6 +6,7 @@ export function DirectChatRoute() {
   return (
     <div className="flex grow flex-col">
       <AppBar />
+      <div className="grow" />
       <MessageList />
       <MessageInput />
     </div>
