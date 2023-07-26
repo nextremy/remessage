@@ -8,9 +8,9 @@ export function SettingsLink() {
     <Link
       className={`${
         pathname.startsWith("/settings")
-          ? "text-gray-900 brightness-90"
+          ? "bg-gray-300 text-gray-900"
           : "text-gray-700"
-      } grid h-10 w-10 place-items-center rounded-full bg-gray-300 hover:text-gray-900 hover:brightness-90`}
+      } grid h-10 w-10 place-items-center rounded-full hover:bg-gray-300 hover:text-gray-900`}
       to="settings"
     >
       <Cog6ToothIcon className="h-5 w-5" />
