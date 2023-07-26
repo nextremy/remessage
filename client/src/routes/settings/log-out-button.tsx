@@ -15,7 +15,7 @@ export function LogOutButton() {
   return (
     <>
       <button
-        className="h-10 rounded-md border-2 border-gray-300 bg-gray-100 px-4 font-bold text-gray-700 hover:brightness-90"
+        className="h-10 rounded-md border-2 border-gray-300 px-4 font-bold text-gray-700 hover:bg-gray-200"
         onClick={() => setDialogOpen(true)}
       >
         Log out
