@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
@@ -30,6 +31,10 @@ export function MessageList() {
     },
   );
   const { data: otherUser } = trpc.user.get.useQuery({ userId: otherUserId! });
+  const scrollTargetRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    scrollTargetRef.current?.scrollIntoView();
+  }, [messages]);
 
   if (!messages) return null;
   if (!otherUser) return null;
@@ -49,6 +54,7 @@ export function MessageList() {
           <p>{message.textContent}</p>
         </li>
       ))}
+      <div ref={scrollTargetRef} />
     </ul>
   );
 }
