@@ -6,7 +6,7 @@ import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 const ee = new EventEmitter();
 
-type Message = {
+type DirectMessage = {
   id: string;
   textContent: string;
   timestamp: Date;
@@ -46,8 +46,8 @@ export const directMessageRouter = router({
   stream: publicProcedure
     .input(z.object({ userIds: z.array(z.string()).length(2) }))
     .subscription(({ input }) => {
-      return observable<Message>((emit) => {
-        function onDirectMessageCreate(message: Message) {
+      return observable<DirectMessage>((emit) => {
+        function onDirectMessageCreate(message: DirectMessage) {
           if (
             input.userIds.includes(message.sender.id) &&
             input.userIds.includes(message.receiver.id)
@@ -73,8 +73,8 @@ export const directMessageRouter = router({
           id: true,
           textContent: true,
           timestamp: true,
-          senderId: true,
-          receiverId: true,
+          sender: { select: { id: true, username: true } },
+          receiver: { select: { id: true, username: true } },
         },
         data: {
           textContent: input.textContent,
