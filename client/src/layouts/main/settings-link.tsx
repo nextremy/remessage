@@ -7,7 +7,7 @@ export function SettingsLink() {
   return (
     <Link
       className={`${
-        pathname.startsWith("settings") ? "brightness-90" : ""
+        pathname.startsWith("/settings") ? "brightness-90" : ""
       } grid h-10 w-10 place-items-center rounded-full bg-gray-300 hover:brightness-90`}
       to="settings"
     >
