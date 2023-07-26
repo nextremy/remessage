@@ -1,6 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useSession } from "../../hooks/session";
 import { FriendsLink } from "./friends-link";
+import { User } from "./user";
 
 export function MainLayout() {
   try {
@@ -11,8 +12,10 @@ export function MainLayout() {
 
   return (
     <div className="flex h-screen">
-      <div className="w-80 bg-gray-200 p-4">
+      <div className="flex w-80 flex-col bg-gray-200">
         <FriendsLink />
+        <div className="grow" />
+        <User />
       </div>
       <Outlet />
     </div>
