@@ -26,7 +26,7 @@ export const directMessageRouter = router({
       z.object({
         userIds: z.array(z.string()).length(2),
         limit: z.number().int().min(1).max(50),
-      }),
+      })
     )
     .query(async ({ input }) => {
       const directMessages = await db.directMessage.findMany({
@@ -34,8 +34,8 @@ export const directMessageRouter = router({
           id: true,
           textContent: true,
           timestamp: true,
-          senderId: true,
-          receiverId: true,
+          sender: { select: { id: true, username: true } },
+          receiver: { select: { id: true, username: true } },
         },
         where: {
           OR: [
@@ -63,7 +63,7 @@ export const directMessageRouter = router({
         textContent: z.string().min(1).max(2000),
         senderId: z.string(),
         receiverId: z.string(),
-      }),
+      })
     )
     .mutation(async ({ input }) => {
       const directMessage = await db.directMessage.create({

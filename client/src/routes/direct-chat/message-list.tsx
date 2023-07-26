@@ -18,7 +18,7 @@ export function MessageList() {
       {messages.map((message) => (
         <li key={message.id}>
           <div className="flex items-center gap-2">
-            <p className="font-medium">{otherUser.username}</p>
+            <p className="font-medium">{message.sender.username}</p>
             <p className="text-xs">{message.timestamp}</p>
           </div>
           <p>{message.textContent}</p>
