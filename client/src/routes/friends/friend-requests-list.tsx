@@ -1,5 +1,5 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/20/solid";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 
 export function FriendRequestsList() {

@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { FriendsLink } from "./friends-link";
 import { User } from "./user";
 

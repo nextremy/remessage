@@ -1,7 +1,7 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { Dialog } from "../../components/dialog";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 
 export function RemoveFriendButton(props: {

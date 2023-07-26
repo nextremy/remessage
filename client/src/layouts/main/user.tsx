@@ -1,5 +1,5 @@
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 
 export function User() {

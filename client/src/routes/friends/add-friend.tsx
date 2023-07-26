@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 
 export function AddFriend() {

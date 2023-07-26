@@ -1,6 +1,6 @@
 import { ChatBubbleLeftIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 import { RemoveFriendButton } from "./remove-friend-button";
 

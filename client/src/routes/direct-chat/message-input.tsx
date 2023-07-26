@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useSession } from "../../hooks/session";
+import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
 
 export function MessageInput() {
