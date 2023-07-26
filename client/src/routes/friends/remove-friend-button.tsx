@@ -37,7 +37,7 @@ export function RemoveFriendButton(props: {
         open={dialogOpen}
         title="Remove friend"
       >
-        <div className="mt-4 flex justify-end gap-2">
+        <div className="mt-8 flex justify-end gap-2">
           <button
             className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900"
             onClick={() => setDialogOpen(false)}
