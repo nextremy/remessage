@@ -7,6 +7,7 @@ import { DirectChatRoute } from "./routes/direct-chat";
 import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
+import { SettingsRoute } from "./routes/settings";
 import { trpc } from "./trpc";
 
 const wsClient = createWSClient({ url: "ws://localhost:4000" });
@@ -45,6 +46,7 @@ export function App() {
                 element={<DirectChatRoute />}
                 path="direct-chats/:directChatId"
               />
+              <Route element={<SettingsRoute />} path="settings" />
             </Route>
           </Routes>
         </BrowserRouter>
