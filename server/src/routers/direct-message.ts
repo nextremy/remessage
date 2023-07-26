@@ -42,15 +42,22 @@ export const directMessageRouter = router({
       });
       return directMessages;
     }),
-  stream: protectedProcedure.subscription(() => {
-    return observable<Message>((emit) => {
-      function onDirectMessageCreate(message: Message) {
-        emit.next(message);
-      }
-      ee.on("directMessageCreate", onDirectMessageCreate);
-      return () => ee.off("directMessageCreate", onDirectMessageCreate);
-    });
-  }),
+  stream: protectedProcedure
+    .input(z.object({ userIds: z.array(z.string()).length(2) }))
+    .subscription(({ input }) => {
+      return observable<Message>((emit) => {
+        function onDirectMessageCreate(message: Message) {
+          if (
+            input.userIds.includes(message.sender.id) &&
+            input.userIds.includes(message.receiver.id)
+          ) {
+            emit.next(message);
+          }
+        }
+        ee.on("directMessageCreate", onDirectMessageCreate);
+        return () => ee.off("directMessageCreate", onDirectMessageCreate);
+      });
+    }),
   create: protectedProcedure
     .input(
       z.object({
