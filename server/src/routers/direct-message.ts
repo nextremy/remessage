@@ -2,7 +2,7 @@ import { observable } from "@trpc/server/observable";
 import EventEmitter from "events";
 import { z } from "zod";
 import { db } from "../prisma/client";
-import { protectedProcedure, router } from "../trpc";
+import { protectedProcedure, publicProcedure, router } from "../trpc";
 
 const ee = new EventEmitter();
 
@@ -42,7 +42,8 @@ export const directMessageRouter = router({
       });
       return directMessages;
     }),
-  stream: protectedProcedure
+  // TODO: Change to protected procedure once cookie auth is implemented
+  stream: publicProcedure
     .input(z.object({ userIds: z.array(z.string()).length(2) }))
     .subscription(({ input }) => {
       return observable<Message>((emit) => {
