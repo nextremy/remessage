@@ -19,7 +19,9 @@ export function Dialog(props: {
         <HUIDialog.Title className="text-xl font-bold">
           {props.title}
         </HUIDialog.Title>
-        <HUIDialog.Description>{props.description}</HUIDialog.Description>
+        <HUIDialog.Description className="text-gray-700">
+          {props.description}
+        </HUIDialog.Description>
         {props.children}
       </HUIDialog.Panel>
     </HUIDialog>
