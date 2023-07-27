@@ -16,7 +16,9 @@ type Message = {
 
 export const messageRouter = router({
   list: protectedProcedure
-    .input(z.object({ id: z.string(), limit: z.number().int().min(1).max(50) }))
+    .input(
+      z.object({ chatId: z.string(), limit: z.number().int().min(1).max(50) })
+    )
     .query(async ({ input }) => {
       const messages = await db.message.findMany({
         select: {
@@ -25,7 +27,7 @@ export const messageRouter = router({
           timestamp: true,
           sender: { select: { id: true, username: true } },
         },
-        where: { id: input.id },
+        where: { chatId: input.chatId },
         orderBy: { timestamp: "asc" },
         take: input.limit,
       });
