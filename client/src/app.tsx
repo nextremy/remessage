@@ -44,7 +44,7 @@ export function App() {
               <Route element={<FriendsRoute />} path="friends" />
               <Route
                 element={<DirectChatRoute />}
-                path="direct-chats/:directChatId"
+                path="direct-chats/:chatId"
               />
               <Route element={<SettingsRoute />} path="settings" />
             </Route>

@@ -18,16 +18,28 @@ export function AllFriendsList() {
         >
           {friend.username}
           <div className="flex gap-2">
-            <Link
-              className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-              to={`/direct-chats/${friend.id}`}
-            >
-              <ChatBubbleLeftIcon className="h-5 w-5" />
-            </Link>
+            <ChatFriendButton friendId={friend.id} />
             <RemoveFriendButton friend={friend} />
           </div>
         </li>
       ))}
     </ul>
+  );
+}
+
+function ChatFriendButton(props: { friendId: string }) {
+  const { userId } = useSession();
+  const { data: chat } = trpc.directChat.get.useQuery({
+    userIds: [userId, props.friendId],
+  });
+
+  if (!chat) return null;
+  return (
+    <Link
+      className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+      to={`/direct-chats/${chat.id}`}
+    >
+      <ChatBubbleLeftIcon className="h-5 w-5" />
+    </Link>
   );
 }
