@@ -17,4 +17,19 @@ export const chatRouter = router({
       });
       return chat;
     }),
+  list: protectedProcedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input }) => {
+      const chats = await db.chat.findMany({
+        select: {
+          id: true,
+          type: true,
+          lastNotificationTimestamp: true,
+          users: { select: { id: true, username: true } },
+        },
+        where: { users: { some: { id: input.userId } } },
+        orderBy: { lastNotificationTimestamp: "asc" },
+      });
+      return chats;
+    }),
 });
