@@ -65,19 +65,41 @@ function MessageList() {
 
   if (!messages) return null;
   return (
-    <ul className="flex flex-col overflow-y-auto p-4">
-      {messages.map((message) => (
-        <li key={message.id}>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">{message.sender.username}</p>
-            <p className="text-xs">{message.timestamp}</p>
-          </div>
-          <p>{message.textContent}</p>
-        </li>
-      ))}
+    <>
+      <ul className="flex flex-col overflow-y-auto py-4">
+        {messages.map((message) => (
+          <li className="px-4 py-1 hover:bg-gray-200" key={message.id}>
+            <div className="flex items-center gap-2">
+              <p className="font-medium">{message.sender.username}</p>
+              <p className="text-xs text-gray-700">
+                {prettifyTimestamp(message.timestamp)}
+              </p>
+            </div>
+            <p>{message.textContent}</p>
+          </li>
+        ))}
+      </ul>
       <div ref={scrollTargetRef} />
-    </ul>
+    </>
   );
+}
+
+function prettifyTimestamp(timestamp: string) {
+  const date = new Date(timestamp);
+  const currentDate = new Date();
+  if (
+    Intl.DateTimeFormat("en-us").format(date) ===
+    Intl.DateTimeFormat("en-us").format(currentDate)
+  ) {
+    const format = Intl.DateTimeFormat("en-us", { timeStyle: "short" });
+    const time = format.format(date);
+    return `Today at ${time}`;
+  }
+  const format = Intl.DateTimeFormat("en-us", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+  return format.format(date);
 }
 
 function MessageInput() {
