@@ -1,9 +1,7 @@
+import { Cog6ToothIcon, UsersIcon } from "@heroicons/react/20/solid";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import { useSession } from "../../hooks/use-session";
-import { trpc } from "../../trpc";
-import { FriendsLink } from "./friends-link";
-import { SettingsLink } from "./settings-link";
-import { UserDisplay } from "./user-display";
+import { useSession } from "../hooks/use-session";
+import { trpc } from "../trpc";
 
 export function MainLayout() {
   try {
@@ -25,6 +23,23 @@ export function MainLayout() {
       </div>
       <Outlet />
     </div>
+  );
+}
+
+function FriendsLink() {
+  const { pathname } = useLocation();
+
+  return (
+    <Link
+      className={`${
+        pathname.startsWith("/friends")
+          ? "bg-gray-300 text-gray-900"
+          : "text-gray-700"
+      } m-4 flex h-12 items-center gap-2 rounded-md px-4 font-medium hover:bg-gray-300 hover:text-gray-900`}
+      to="friends"
+    >
+      <UsersIcon className="h-5 w-5" /> Friends
+    </Link>
   );
 }
 
@@ -72,5 +87,30 @@ function ChatLink(props: {
         {otherUser.username}
       </Link>
     </li>
+  );
+}
+
+function UserDisplay() {
+  const session = useSession();
+  const { data: user } = trpc.user.get.useQuery({ userId: session.userId });
+
+  if (!user) return null;
+  return <p className="font-medium">{user.username}</p>;
+}
+
+export function SettingsLink() {
+  const { pathname } = useLocation();
+
+  return (
+    <Link
+      className={`${
+        pathname.startsWith("/settings")
+          ? "bg-gray-300 text-gray-900"
+          : "text-gray-700"
+      } grid h-10 w-10 place-items-center rounded-full hover:bg-gray-300 hover:text-gray-900`}
+      to="settings"
+    >
+      <Cog6ToothIcon className="h-5 w-5" />
+    </Link>
   );
 }
