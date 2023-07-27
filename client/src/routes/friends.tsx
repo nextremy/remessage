@@ -113,7 +113,7 @@ function RemoveFriendButton(props: {
           <span className="font-semibold">@{props.friend.username}</span> from
           your friends?
         </Dialog.Description>
-        <div className="mt-8 flex justify-end gap-2">
+        <Dialog.ActionArea>
           <button
             className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900"
             onClick={() => setDialogOpen(false)}
@@ -126,7 +126,7 @@ function RemoveFriendButton(props: {
           >
             Remove
           </button>
-        </div>
+        </Dialog.ActionArea>
       </Dialog>
     </>
   );

@@ -30,8 +30,12 @@ Dialog.Title = function Title(props: { children: ReactNode }) {
 
 Dialog.Description = function Description(props: { children: ReactNode }) {
   return (
-    <HUIDialog.Description className="mt-4 text-gray-700">
+    <HUIDialog.Description className="mt-2 text-gray-700">
       {props.children}
     </HUIDialog.Description>
   );
+};
+
+Dialog.ActionArea = function ActionArea(props: { children: ReactNode }) {
+  return <div className="mt-8 flex justify-end gap-2">{props.children}</div>;
 };
