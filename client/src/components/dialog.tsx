@@ -1,5 +1,5 @@
-import { Dialog as HUIDialog } from "@headlessui/react";
-import { ReactNode } from "react";
+import { Dialog as HUIDialog, Transition } from "@headlessui/react";
+import { Fragment, ReactNode } from "react";
 
 export function Dialog(props: {
   open: boolean;
@@ -7,16 +7,37 @@ export function Dialog(props: {
   children: ReactNode;
 }) {
   return (
-    <HUIDialog
-      className="fixed inset-0 grid place-items-center"
-      onClose={props.onClose}
-      open={props.open}
-    >
-      <div className="fixed inset-0 bg-gray-900/50" />
-      <HUIDialog.Panel className="z-50 w-full max-w-sm rounded-md border-gray-200 bg-gray-100 p-4">
-        {props.children}
-      </HUIDialog.Panel>
-    </HUIDialog>
+    <Transition as={Fragment} show={props.open}>
+      <HUIDialog
+        className="fixed inset-0 grid place-items-center"
+        onClose={props.onClose}
+      >
+        <Transition.Child
+          as={Fragment}
+          enter="duration-200 ease-out"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="duration-150 ease-in"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-gray-900/50" />
+        </Transition.Child>
+        <Transition.Child
+          as={Fragment}
+          enter="delay-75 duration-150 ease-out"
+          enterFrom="opacity-0 scale-125"
+          enterTo="opacity-100 scale-100"
+          leave="duration-100 ease-in"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-125"
+        >
+          <HUIDialog.Panel className="z-50 w-full max-w-sm rounded-md border-gray-200 bg-gray-100 p-4">
+            {props.children}
+          </HUIDialog.Panel>
+        </Transition.Child>
+      </HUIDialog>
+    </Transition>
   );
 }
 
