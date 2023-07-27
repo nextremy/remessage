@@ -4,6 +4,7 @@ import cors from "cors";
 import { WebSocketServer } from "ws";
 import { createContext } from "./context";
 import { authRouter } from "./routers/auth";
+import { chatRouter } from "./routers/chat";
 import { directChatRouter } from "./routers/direct-chat";
 import { friendRouter } from "./routers/friend";
 import { friendRequestRouter } from "./routers/friend-request";
@@ -16,6 +17,7 @@ const appRouter = router({
   user: userRouter,
   friend: friendRouter,
   friendRequest: friendRequestRouter,
+  chat: chatRouter,
   directChat: directChatRouter,
   message: messageRouter,
 });
