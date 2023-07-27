@@ -106,18 +106,13 @@ function RemoveFriendButton(props: {
       >
         <XMarkIcon className="h-5 w-5" />
       </button>
-      <Dialog
-        description={
-          <>
-            Are you sure you want to remove{" "}
-            <span className="font-semibold">@{props.friend.username}</span> from
-            your friends?
-          </>
-        }
-        onClose={() => setDialogOpen(false)}
-        open={dialogOpen}
-        title="Remove friend"
-      >
+      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
+        <Dialog.Title>Remove friend</Dialog.Title>
+        <Dialog.Description>
+          Are you sure you want to remove{" "}
+          <span className="font-semibold">@{props.friend.username}</span> from
+          your friends?
+        </Dialog.Description>
         <div className="mt-8 flex justify-end gap-2">
           <button
             className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900"

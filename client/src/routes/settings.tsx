@@ -42,12 +42,11 @@ function LogOutButton() {
       >
         Log out
       </button>
-      <Dialog
-        description="Are you sure you want to log out?"
-        onClose={() => setDialogOpen(false)}
-        open={dialogOpen}
-        title="Log out"
-      >
+      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
+        <Dialog.Title>Log out</Dialog.Title>
+        <Dialog.Description>
+          Are you sure you want to log out?
+        </Dialog.Description>
         <div className="mt-8 flex justify-end gap-2">
           <button
             className="h-10 rounded-md px-4 font-medium text-gray-700 hover:bg-gray-200 hover:text-gray-900"
