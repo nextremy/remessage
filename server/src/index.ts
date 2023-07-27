@@ -4,9 +4,10 @@ import cors from "cors";
 import { WebSocketServer } from "ws";
 import { createContext } from "./context";
 import { authRouter } from "./routers/auth";
-import { directMessageRouter } from "./routers/direct-message";
+import { directChatRouter } from "./routers/direct-chat";
 import { friendRouter } from "./routers/friend";
 import { friendRequestRouter } from "./routers/friend-request";
+import { messageRouter } from "./routers/message";
 import { userRouter } from "./routers/user";
 import { router } from "./trpc";
 
@@ -15,7 +16,8 @@ const appRouter = router({
   user: userRouter,
   friend: friendRouter,
   friendRequest: friendRequestRouter,
-  directMessage: directMessageRouter,
+  directChat: directChatRouter,
+  message: messageRouter,
 });
 
 export type AppRouter = typeof appRouter;
