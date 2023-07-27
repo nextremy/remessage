@@ -66,6 +66,10 @@ export const messageRouter = router({
         },
         data: { ...input },
       });
+      await db.chat.update({
+        data: { lastNotificationTimestamp: message.timestamp },
+        where: { id: input.chatId },
+      });
       ee.emit("messageCreate", message);
     }),
 });
