@@ -14,7 +14,7 @@ export function MainLayout() {
 
   return (
     <div className="flex h-screen">
-      <div className="flex w-80 flex-col bg-gray-200">
+      <div className="flex w-80 flex-shrink-0 flex-col bg-gray-200">
         <FriendsLink />
         <ChatList />
         <div className="grow" />
