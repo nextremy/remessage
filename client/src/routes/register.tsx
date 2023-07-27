@@ -1,15 +1,11 @@
 import { FormEvent, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { trpc } from "../../trpc";
+import { trpc } from "../trpc";
 
-export function LoginRoute() {
+export function RegisterRoute() {
   const navigate = useNavigate();
-  const { mutate: login } = trpc.auth.login.useMutation({
-    onSuccess: (data) => {
-      localStorage.setItem("userId", data.userId);
-      localStorage.setItem("token", data.token);
-      navigate("/", { replace: true });
-    },
+  const { mutate: register } = trpc.user.create.useMutation({
+    onSuccess: () => navigate("/login"),
   });
   const [username, setUsername] = useState("");
   const usernameId = useId();
@@ -18,12 +14,12 @@ export function LoginRoute() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    login({ username, password });
+    register({ username, password });
   }
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      <h1 className="text-center text-xl font-bold">Log in</h1>
+      <h1 className="text-center text-xl font-bold">Register</h1>
       <label
         className="mt-4 text-sm font-semibold tracking-wide"
         htmlFor={usernameId}
@@ -54,12 +50,12 @@ export function LoginRoute() {
         className="mt-8 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 duration-200 hover:bg-blue-800"
         type="submit"
       >
-        Log in
+        Register
       </button>
       <p className="mt-4">
-        Don{"'"}t have an account?{" "}
-        <Link className="text-blue-700" to="/register">
-          Register for one here.
+        Already have an account?{" "}
+        <Link className="text-blue-700" to="/login">
+          Log in here.
         </Link>
       </p>
     </form>
