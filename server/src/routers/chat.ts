@@ -28,7 +28,7 @@ export const chatRouter = router({
           users: { select: { id: true, username: true } },
         },
         where: { users: { some: { id: input.userId } } },
-        orderBy: { lastNotificationTimestamp: "asc" },
+        orderBy: { lastNotificationTimestamp: "desc" },
       });
       return chats;
     }),
