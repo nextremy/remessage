@@ -65,22 +65,20 @@ function MessageList() {
 
   if (!messages) return null;
   return (
-    <>
-      <ul className="flex flex-col overflow-y-auto py-4">
-        {messages.map((message) => (
-          <li className="px-4 py-1 hover:bg-gray-200" key={message.id}>
-            <div className="flex items-center gap-2">
-              <p className="font-medium">{message.sender.username}</p>
-              <p className="text-xs text-gray-700">
-                {prettifyTimestamp(message.timestamp)}
-              </p>
-            </div>
-            <p>{message.textContent}</p>
-          </li>
-        ))}
-      </ul>
+    <ul className="flex flex-col overflow-y-auto py-4">
+      {messages.map((message) => (
+        <li className="px-4 py-1 hover:bg-gray-200" key={message.id}>
+          <div className="flex items-center gap-2">
+            <p className="font-medium">{message.sender.username}</p>
+            <p className="text-xs text-gray-700">
+              {prettifyTimestamp(message.timestamp)}
+            </p>
+          </div>
+          <p>{message.textContent}</p>
+        </li>
+      ))}
       <div ref={scrollTargetRef} />
-    </>
+    </ul>
   );
 }
 
