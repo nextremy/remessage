@@ -78,7 +78,7 @@ function ChatFriendButton(props: { friendId: string }) {
   return (
     <Link
       className="grid h-10 w-10 place-items-center rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-      to={`/direct-chats/${chat.id}`}
+      to={`/chats/direct/${chat.id}`}
     >
       <ChatBubbleLeftIcon className="h-5 w-5" />
     </Link>

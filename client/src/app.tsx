@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthLayout } from "./layouts/auth";
+import { ChatsLayout } from "./layouts/chats";
 import { MainLayout } from "./layouts/main";
 import { DirectChatRoute } from "./routes/direct-chat";
 import { FriendsRoute } from "./routes/friends";
@@ -40,12 +41,11 @@ export function App() {
               <Route element={<RegisterRoute />} path="register" />
             </Route>
             <Route element={<MainLayout />}>
+              <Route element={<ChatsLayout />} path="chats">
+                <Route element={<DirectChatRoute />} path="direct/:chatId" />
+              </Route>
               <Route element={<Navigate to="friends" />} index />
               <Route element={<FriendsRoute />} path="friends" />
-              <Route
-                element={<DirectChatRoute />}
-                path="direct-chats/:chatId"
-              />
               <Route element={<SettingsRoute />} path="settings" />
             </Route>
           </Routes>
