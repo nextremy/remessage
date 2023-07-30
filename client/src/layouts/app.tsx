@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSession } from "../hooks/use-session";
 
-export function MainLayout() {
+export function AppLayout() {
   try {
     useSession();
   } catch (error) {
