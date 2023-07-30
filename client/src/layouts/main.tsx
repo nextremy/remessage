@@ -81,7 +81,7 @@ function ChatLink(props: {
           pathname.startsWith(`/direct-chats/${props.chat.id}`)
             ? "bg-gray-300 text-gray-900"
             : "text-gray-700"
-        } flex h-12 items-center rounded-md px-4 font-medium hover:bg-gray-300`}
+        } flex h-12 items-center rounded-md px-4 font-medium hover:bg-gray-300 hover:text-gray-900`}
         to={`/direct-chats/${props.chat.id}`}
       >
         {otherUser.username}
