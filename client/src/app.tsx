@@ -4,8 +4,9 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./layouts/app";
 import { AuthLayout } from "./layouts/auth";
 import { ChatsLayout } from "./layouts/chats";
+import { FriendsLayout } from "./layouts/friends";
+import { AllFriendsRoute } from "./routes/all-friends";
 import { DirectChatRoute } from "./routes/direct-chat";
-import { FriendsRoute } from "./routes/friends";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
 import { SettingsRoute } from "./routes/settings";
@@ -45,7 +46,12 @@ export function App() {
               <Route element={<ChatsLayout />} path="chats">
                 <Route element={<DirectChatRoute />} path="direct/:chatId" />
               </Route>
-              <Route element={<FriendsRoute />} path="friends" />
+              <Route element={<FriendsLayout />} path="friends">
+                <Route element={<Navigate to="all" />} index />
+                <Route element={<AllFriendsRoute />} path="all" />
+                <Route element={<div />} path="pending" />
+                <Route element={<div />} path="add-friend" />
+              </Route>
               <Route element={<SettingsRoute />} path="settings" />
             </Route>
           </Routes>
