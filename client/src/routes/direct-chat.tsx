@@ -24,7 +24,7 @@ function AppBar() {
   const user = chat.users.filter((user) => user.id !== session.userId)[0];
   return (
     <div className="flex h-16 flex-shrink-0 items-center border-b-2 border-gray-300 px-4">
-      <h2 className="font-semibold">{user.username}</h2>
+      <h2 className="font-semibold text-lg">{user.username}</h2>
     </div>
   );
 }
