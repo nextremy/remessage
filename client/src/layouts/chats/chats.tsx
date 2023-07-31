@@ -8,7 +8,7 @@ export function Chats() {
 
   if (!chats) return null;
   return (
-    <ul className="flex flex-col gap-2">
+    <ul className="flex flex-col">
       {chats.map((chat) => (
         <Chat chat={chat} key={chat.id}></Chat>
       ))}
