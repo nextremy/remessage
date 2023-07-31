@@ -68,7 +68,7 @@ function MessageList() {
   return (
     <ul className="flex flex-col overflow-y-auto py-4">
       {messages.map((message) => (
-        <li className="px-4 py-1 hover:bg-gray-200" key={message.id}>
+        <li className="px-4 py-1" key={message.id}>
           <div className="flex items-center gap-2">
             <p className="font-medium">{message.sender.username}</p>
             <p className="text-xs text-gray-700">
