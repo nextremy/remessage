@@ -41,10 +41,10 @@ export function App() {
               <Route element={<RegisterRoute />} path="register" />
             </Route>
             <Route element={<AppLayout />}>
+              <Route element={<Navigate to="chats" />} index />
               <Route element={<ChatsLayout />} path="chats">
                 <Route element={<DirectChatRoute />} path="direct/:chatId" />
               </Route>
-              <Route element={<Navigate to="friends" />} index />
               <Route element={<FriendsRoute />} path="friends" />
               <Route element={<SettingsRoute />} path="settings" />
             </Route>
