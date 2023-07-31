@@ -1,3 +1,4 @@
+import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSession } from "../hooks/use-session";
@@ -109,26 +110,33 @@ function MessageInput() {
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setInput("");
     createMessage({
       textContent: input,
       senderId: session.userId,
       chatId: chatId!,
     });
-    setInput("");
   }
 
   if (!chat) return null;
   const otherUser = chat.users.filter((user) => user.id != session.userId)[0];
   return (
     <div className="px-4 pb-4">
-      <form onSubmit={handleSubmit}>
+      <form className="flex gap-2" onSubmit={handleSubmit}>
         <input
-          className="h-12 w-full rounded-md bg-gray-300 px-4 placeholder:text-gray-700"
+          className="h-14 w-full rounded-full bg-gray-300 px-6 placeholder:text-gray-700"
           onChange={(event) => setInput(event.target.value)}
           placeholder={`Message @${otherUser.username}`}
           type="text"
           value={input}
         />
+        <button
+          className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-full bg-blue-600 text-gray-100 duration-200 enabled:hover:brightness-110 disabled:opacity-50"
+          disabled={input === ""}
+          type="submit"
+        >
+          <PaperAirplaneIcon className="h-6 w-6" />
+        </button>
       </form>
     </div>
   );
