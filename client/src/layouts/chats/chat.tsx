@@ -18,9 +18,9 @@ export function Chat(props: {
       <Link
         className={`${
           pathname.startsWith(`/chats/direct/${props.chat.id}`)
-            ? "bg-gray-300 text-gray-900"
+            ? "bg-gray-200 text-gray-900"
             : "text-gray-700"
-        } flex h-16 items-center px-4 font-medium duration-150 hover:bg-gray-300 hover:text-gray-900`}
+        } flex h-16 items-center rounded-xl px-8 font-medium duration-150 hover:bg-gray-200 hover:text-gray-900`}
         to={`/chats/direct/${props.chat.id}`}
       >
         {user.username}

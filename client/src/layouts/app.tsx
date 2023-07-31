@@ -24,7 +24,7 @@ export function AppLayout() {
 
 function Sidebar() {
   return (
-    <div className="flex w-16 flex-shrink-0 flex-col bg-gray-200 lg:w-80">
+    <div className="flex w-20 flex-shrink-0 flex-col gap-2 p-2 lg:w-80 lg:p-4">
       <SidebarLink
         icon={<ChatBubbleLeftRightIcon />}
         text="Chats"
@@ -43,9 +43,9 @@ function SidebarLink(props: { to: string; icon: ReactNode; text: string }) {
     <Link
       className={`${
         pathname.startsWith(props.to)
-          ? "bg-gray-300 text-gray-900"
+          ? "bg-gray-200 text-gray-900"
           : "text-gray-700"
-      } flex h-16 items-center justify-center gap-4 text-xl font-medium duration-150 hover:bg-gray-300 hover:text-gray-900 lg:justify-start lg:px-4`}
+      } flex h-16 items-center justify-center gap-4 rounded-full text-xl font-medium duration-150 hover:bg-gray-200 hover:text-gray-900 lg:justify-start lg:px-8`}
       to={props.to}
     >
       <div className="h-6 w-6 flex-shrink-0">{props.icon}</div>
