@@ -15,15 +15,15 @@ export function DirectChatRoute() {
 }
 
 function AppBar() {
-  const { userId } = useSession();
+  const session = useSession();
   const { chatId } = useParams();
   const { data: chat } = trpc.chat.get.useQuery({ id: chatId! });
 
   if (!chat) return null;
-  const otherUser = chat.users.filter((user) => user.id !== userId)[0];
+  const user = chat.users.filter((user) => user.id !== session.userId)[0];
   return (
-    <div className="flex h-12 flex-shrink-0 items-center border-b-2 border-gray-200 px-4">
-      <h1 className="font-semibold">{otherUser.username}</h1>
+    <div className="flex h-16 flex-shrink-0 items-center border-b-2 border-gray-300 px-4">
+      <h2 className="font-semibold">{user.username}</h2>
     </div>
   );
 }
