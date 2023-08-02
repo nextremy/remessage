@@ -1,12 +1,13 @@
 "use client";
 
+import { Dialog } from "@/components/dialog";
 import { useSession } from "@/hooks/use-session";
 import { trpc } from "@/trpc";
 import { Tab } from "@headlessui/react";
-import { ChatBubbleLeftIcon } from "@heroicons/react/20/solid";
+import { ChatBubbleLeftIcon, UserPlusIcon } from "@heroicons/react/20/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useId, useState } from "react";
 
 export default function AppLayout(props: { children: ReactNode }) {
   const pathname = usePathname();
@@ -31,7 +32,8 @@ export default function AppLayout(props: { children: ReactNode }) {
             <Tab.Panel>
               <ChatsList />
             </Tab.Panel>
-            <Tab.Panel>
+            <Tab.Panel className="flex flex-col p-4">
+              <AddFriendButton />
               <FriendsList />
             </Tab.Panel>
           </Tab.Panels>
@@ -72,6 +74,64 @@ function ChatsList() {
   );
 }
 
+function AddFriendButton() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const friendUsernameInputId = useId();
+  const [friendUsername, setFriendUsername] = useState("");
+  const session = useSession();
+  const { mutate: sendFriendRequest } = trpc.friendRequest.create.useMutation();
+
+  return (
+    <>
+      <button
+        className="flex h-14 w-full items-center gap-2 rounded-md bg-gray-200 px-4 font-semibold text-gray-700 duration-200 hover:brightness-95"
+        onClick={() => setDialogOpen(true)}
+      >
+        <UserPlusIcon className="h-5 w-5" />
+        Add friend
+      </button>
+      <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
+        <Dialog.Title>Add friend</Dialog.Title>
+        <Dialog.Description>
+          You can add another user as a friend by their username.
+        </Dialog.Description>
+        <form
+          className="mt-4 flex flex-col"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!session) return;
+            sendFriendRequest({
+              senderId: session.userId,
+              receiverUsername: friendUsername,
+            });
+            setFriendUsername("");
+          }}
+        >
+          <label
+            htmlFor={friendUsernameInputId}
+            className="text-sm font-semibold tracking-wide"
+          >
+            Friend{"'"}s username
+          </label>
+          <input
+            value={friendUsername}
+            onChange={(event) => setFriendUsername(event.target.value)}
+            className="mt-1 h-12 rounded-md bg-gray-300 px-4"
+            id={friendUsernameInputId}
+            type="text"
+          />
+          <button
+            type="submit"
+            className="mt-2 h-14 rounded-md bg-blue-700 font-bold text-gray-100 duration-200 hover:brightness-95"
+          >
+            Send friend request
+          </button>
+        </form>
+      </Dialog>
+    </>
+  );
+}
+
 function FriendsList() {
   const session = useSession();
   const { data: friends } = trpc.friend.list.useQuery(
@@ -98,7 +158,7 @@ function FriendsListItem(props: { friend: { username: string; id: string } }) {
   );
 
   return (
-    <li className="flex h-16 items-center justify-between px-4 font-medium">
+    <li className="flex h-16 items-center justify-between font-medium">
       {props.friend.username}
       <div className="flex gap-2">
         {chat ? (
