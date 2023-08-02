@@ -1,7 +1,7 @@
 import { Cog6ToothIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dialog } from "../components/dialog";
+import { Dialog } from "../../components/dialog";
 
 export function SettingsRoute() {
   return (
