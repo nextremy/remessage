@@ -35,28 +35,34 @@ export function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<AuthLayout />}>
-              <Route element={<LoginRoute />} path="login" />
-              <Route element={<RegisterRoute />} path="register" />
-            </Route>
-            <Route element={<AppLayout />}>
-              <Route element={<Navigate to="chats" />} index />
-              <Route element={<ChatsLayout />} path="chats">
-                <Route element={<DirectChatRoute />} path="direct/:chatId" />
-              </Route>
-              <Route element={<FriendsLayout />} path="friends">
-                <Route element={<Navigate to="all" />} index />
-                <Route element={<AllFriendsRoute />} path="all" />
-                <Route element={<div />} path="pending" />
-                <Route element={<div />} path="add-friend" />
-              </Route>
-              <Route element={<SettingsRoute />} path="settings" />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <Router />
       </QueryClientProvider>
     </trpc.Provider>
+  );
+}
+
+function Router() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route element={<AuthLayout />}>
+          <Route element={<LoginRoute />} path="login" />
+          <Route element={<RegisterRoute />} path="register" />
+        </Route>
+        <Route element={<AppLayout />}>
+          <Route element={<Navigate to="chats" />} index />
+          <Route element={<ChatsLayout />} path="chats">
+            <Route element={<DirectChatRoute />} path="direct/:chatId" />
+          </Route>
+          <Route element={<FriendsLayout />} path="friends">
+            <Route element={<Navigate to="all" />} index />
+            <Route element={<AllFriendsRoute />} path="all" />
+            <Route element={<div />} path="pending" />
+            <Route element={<div />} path="add-friend" />
+          </Route>
+          <Route element={<SettingsRoute />} path="settings" />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
