@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog as HUIDialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
 
