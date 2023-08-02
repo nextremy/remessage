@@ -176,9 +176,7 @@ function FriendRequestsList() {
 
   if (friendRequests?.length === 0) {
     return (
-      <p className="mt-2 grid h-16 place-items-center font-light">
-        No friend requests to show
-      </p>
+      <p className="grid h-16 place-items-center">No pending friend requests</p>
     );
   }
   return (
