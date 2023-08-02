@@ -11,7 +11,7 @@ export function Dialog(props: {
   return (
     <Transition as={Fragment} show={props.open}>
       <HUIDialog
-        className="fixed inset-0 grid place-items-center"
+        className="fixed inset-0 grid place-items-center p-2"
         onClose={props.onClose}
       >
         <Transition.Child
