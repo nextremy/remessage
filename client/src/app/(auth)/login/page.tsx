@@ -60,13 +60,13 @@ export default function LoginPage() {
         >
           Log in
         </button>
-        <p className="mt-4 text-center">
-          Don{"'"}t have an account?{" "}
-          <Link href="/register" className="text-blue-700">
-            Register here.
-          </Link>
-        </p>
       </form>
+      <p className="mt-4 text-center">
+        Don{"'"}t have an account?{" "}
+        <Link href="/register" className="text-blue-700">
+          Register here.
+        </Link>
+      </p>
     </>
   );
 }
