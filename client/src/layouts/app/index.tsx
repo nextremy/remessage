@@ -5,7 +5,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { ReactNode } from "react";
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import { useSession } from "../hooks/use-session";
+import { useSession } from "../../hooks/use-session";
 
 export function AppLayout() {
   try {
