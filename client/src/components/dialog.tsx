@@ -1,5 +1,3 @@
-"use client";
-
 import { Dialog as HUIDialog, Transition } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
 
@@ -11,7 +9,7 @@ export function Dialog(props: {
   return (
     <Transition as={Fragment} show={props.open}>
       <HUIDialog
-        className="fixed inset-0 grid place-items-center p-2"
+        className="fixed inset-0 grid place-items-center"
         onClose={props.onClose}
       >
         <Transition.Child

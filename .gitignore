@@ -1,9 +1,7 @@
 .env
 .next
-.next
 *.db
 *.db-journal
-build
 dist
 node_modules
 out
