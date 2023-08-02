@@ -27,10 +27,10 @@ export default function AppLayout(props: { children: ReactNode }) {
       >
         <Tab.Group>
           <Tab.List className="grid auto-cols-fr grid-flow-col">
-            <Tab className="h-16 border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:text-gray-900 hover:brightness-95 ui-selected:border-blue-700 ui-selected:text-gray-900 ui-selected:brightness-95">
+            <Tab className="h-16 border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:text-gray-900 hover:brightness-95 ui-selected:border-blue-700 ui-selected:text-gray-900">
               Chats
             </Tab>
-            <Tab className="h-16 border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:text-gray-900 hover:brightness-95 ui-selected:border-blue-700 ui-selected:text-gray-900 ui-selected:brightness-95">
+            <Tab className="h-16 border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:text-gray-900 hover:brightness-95 ui-selected:border-blue-700 ui-selected:text-gray-900">
               Friends
             </Tab>
           </Tab.List>
