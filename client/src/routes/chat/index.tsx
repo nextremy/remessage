@@ -1,10 +1,11 @@
+import { ArrowLeftIcon } from "@heroicons/react/20/solid";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useSession } from "../hooks/use-session";
-import { trpc } from "../trpc";
+import { Link, useParams } from "react-router-dom";
+import { useSession } from "../../hooks/use-session";
+import { trpc } from "../../trpc";
 
-export function DirectChatRoute() {
+export function ChatRoute() {
   return (
     <div className="flex grow flex-col">
       <AppBar />
@@ -23,8 +24,14 @@ function AppBar() {
   if (!chat) return null;
   const user = chat.users.filter((user) => user.id !== session.userId)[0];
   return (
-    <div className="flex h-16 flex-shrink-0 items-center border-b-2 border-gray-300 px-4">
-      <h2 className="font-semibold text-lg">{user.username}</h2>
+    <div className="flex h-16 flex-shrink-0 items-center gap-2 border-b border-gray-300 md:px-4">
+      <Link
+        className="grid h-12 w-12 place-items-center rounded-full duration-200 hover:bg-gray-200 md:hidden"
+        to="/"
+      >
+        <ArrowLeftIcon className="h-5 w-5" />
+      </Link>
+      <h2 className="text-lg font-semibold">{user.username}</h2>
     </div>
   );
 }
@@ -66,8 +73,8 @@ function MessageList() {
 
   if (!messages) return null;
   return (
-    <div className="overflow-y-auto">
-      <ul className="flex flex-col gap-4 p-4">
+    <div className="mx-4 overflow-y-auto">
+      <ul className="flex flex-col gap-4">
         {messages.map((message) => (
           <li key={message.id}>
             <div className="flex items-center gap-2">
@@ -80,6 +87,7 @@ function MessageList() {
           </li>
         ))}
       </ul>
+      <div className="h-4" />
       <div ref={scrollTargetRef} />
     </div>
   );
@@ -123,23 +131,25 @@ function MessageInput() {
   if (!chat) return null;
   const otherUser = chat.users.filter((user) => user.id != session.userId)[0];
   return (
-    <div className="px-4 pb-4">
-      <form className="flex gap-2" onSubmit={handleSubmit}>
-        <input
-          className="h-14 w-full rounded-full bg-gray-300 px-6 placeholder:text-gray-700"
-          onChange={(event) => setInput(event.target.value)}
-          placeholder={`Message @${otherUser.username}`}
-          type="text"
-          value={input}
-        />
-        <button
-          className="grid h-14 w-14 flex-shrink-0 place-items-center rounded-full bg-blue-600 text-gray-100 duration-200 enabled:hover:brightness-110 disabled:opacity-50"
-          disabled={input === ""}
-          type="submit"
-        >
-          <PaperAirplaneIcon className="h-6 w-6" />
-        </button>
-      </form>
-    </div>
+    <form
+      className="flex gap-2 border-t border-gray-300 p-2"
+      onSubmit={handleSubmit}
+    >
+      <input
+        className="h-12 w-full rounded-full bg-gray-300 px-6 placeholder:text-gray-700"
+        onChange={(event) => setInput(event.target.value)}
+        placeholder={`Message @${otherUser.username}`}
+        type="text"
+        value={input}
+      />
+      <button
+        className="grid h-12 w-12 flex-shrink-0 place-items-center rounded-full bg-blue-600 text-gray-100 duration-200 enabled:hover:bg-blue-500 disabled:opacity-50"
+        disabled={input === ""}
+        title="Send message"
+        type="submit"
+      >
+        <PaperAirplaneIcon className="h-6 w-6" />
+      </button>
+    </form>
   );
 }

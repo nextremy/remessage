@@ -1,12 +1,9 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createWSClient, httpBatchLink, splitLink, wsLink } from "@trpc/client";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AppLayout } from "./layouts/app";
 import { AuthLayout } from "./layouts/auth";
-import { ChatsLayout } from "./layouts/chats";
-import { FriendsLayout } from "./layouts/friends";
-import { AllFriendsRoute } from "./routes/all-friends";
-import { DirectChatRoute } from "./routes/direct-chat";
+import { ChatRoute } from "./routes/chat";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
 import { SettingsRoute } from "./routes/settings";
@@ -50,17 +47,11 @@ function Router() {
           <Route element={<RegisterRoute />} path="register" />
         </Route>
         <Route element={<AppLayout />}>
-          <Route element={<Navigate to="chats" />} index />
-          <Route element={<ChatsLayout />} path="chats">
-            <Route element={<DirectChatRoute />} path="direct/:chatId" />
-          </Route>
-          <Route element={<FriendsLayout />} path="friends">
-            <Route element={<Navigate to="all" />} index />
-            <Route element={<AllFriendsRoute />} path="all" />
-            <Route element={<div />} path="pending" />
-            <Route element={<div />} path="add-friend" />
-          </Route>
+          <Route element={<div />} index />
           <Route element={<SettingsRoute />} path="settings" />
+          <Route path="chats">
+            <Route element={<ChatRoute />} path=":chatId" />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

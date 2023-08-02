@@ -1,13 +1,11 @@
-import {
-  ChatBubbleLeftRightIcon,
-  Cog6ToothIcon,
-  UsersIcon,
-} from "@heroicons/react/24/solid";
-import { ReactNode } from "react";
-import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
+import { Tab } from "@headlessui/react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSession } from "../../hooks/use-session";
+import { ChatsList } from "./chats-list";
+import { FriendsList } from "./friends-list";
 
 export function AppLayout() {
+  const { pathname } = useLocation();
   try {
     useSession();
   } catch (error) {
@@ -15,41 +13,32 @@ export function AppLayout() {
   }
 
   return (
-    <div className="flex h-screen divide-x-2 divide-gray-300">
-      <Sidebar />
+    <div className="flex h-screen divide-x divide-gray-300">
+      <div
+        className={`w-full flex-shrink-0 md:max-w-sm ${
+          pathname !== "/" ? "hidden md:block" : ""
+        }`}
+      >
+        <Tab.Group>
+          <Tab.List className="grid h-16 auto-cols-fr grid-flow-col">
+            <Tab className="border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:bg-gray-200 ui-selected:border-blue-700 ui-selected:text-gray-900">
+              Chats
+            </Tab>
+            <Tab className="border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:bg-gray-200 ui-selected:border-blue-700 ui-selected:text-gray-900">
+              Friends
+            </Tab>
+          </Tab.List>
+          <Tab.Panels>
+            <Tab.Panel>
+              <ChatsList />
+            </Tab.Panel>
+            <Tab.Panel>
+              <FriendsList />
+            </Tab.Panel>
+          </Tab.Panels>
+        </Tab.Group>
+      </div>
       <Outlet />
     </div>
-  );
-}
-
-function Sidebar() {
-  return (
-    <div className="flex w-20 flex-shrink-0 flex-col gap-2 p-2 lg:w-80 lg:p-4">
-      <SidebarLink
-        icon={<ChatBubbleLeftRightIcon />}
-        text="Chats"
-        to="/chats"
-      />
-      <SidebarLink icon={<UsersIcon />} text="Friends" to="/friends" />
-      <SidebarLink icon={<Cog6ToothIcon />} text="Settings" to="/settings" />
-    </div>
-  );
-}
-
-function SidebarLink(props: { to: string; icon: ReactNode; text: string }) {
-  const { pathname } = useLocation();
-
-  return (
-    <Link
-      className={`${
-        pathname.startsWith(props.to)
-          ? "bg-gray-200 text-gray-900"
-          : "text-gray-700"
-      } flex h-16 items-center justify-center gap-4 rounded-full text-xl font-medium duration-150 hover:bg-gray-200 hover:text-gray-900 lg:justify-start lg:px-8`}
-      to={props.to}
-    >
-      <div className="h-6 w-6 flex-shrink-0">{props.icon}</div>
-      <span className="hidden lg:inline">{props.text}</span>
-    </Link>
   );
 }
