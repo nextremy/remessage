@@ -1,6 +1,7 @@
 "use client";
 
 import { trpc } from "@/trpc";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 
@@ -59,6 +60,12 @@ export default function LoginPage() {
         >
           Log in
         </button>
+        <p className="mt-4 text-center">
+          Don{"'"}t have an account?{" "}
+          <Link href="/register" className="text-blue-700">
+            Register here.
+          </Link>
+        </p>
       </form>
     </>
   );
