@@ -1,6 +1,7 @@
 import { Tab } from "@headlessui/react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSession } from "../../hooks/use-session";
+import { AddFriendButton } from "./add-friend.button";
 import { ChatsList } from "./chats-list";
 import { FriendsList } from "./friends-list";
 
@@ -32,7 +33,8 @@ export function AppLayout() {
             <Tab.Panel>
               <ChatsList />
             </Tab.Panel>
-            <Tab.Panel>
+            <Tab.Panel className="flex flex-col py-2">
+              <AddFriendButton />
               <FriendsList />
             </Tab.Panel>
           </Tab.Panels>
