@@ -55,7 +55,7 @@ export default function LoginPage() {
           id={passwordInputId}
         />
         <button
-          className="mt-8 h-16 w-full rounded-md bg-orange-700 px-4 text-lg font-bold text-gray-100 duration-200 hover:brightness-110"
+          className="mt-6 h-16 w-full rounded-md bg-orange-700 px-4 text-lg font-bold text-gray-100 duration-200 hover:brightness-110"
           type="submit"
         >
           Log in
