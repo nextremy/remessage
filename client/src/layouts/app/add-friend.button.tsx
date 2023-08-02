@@ -44,9 +44,9 @@ export function AddFriendButton() {
           <input
             className="mt-1 h-12 rounded-md bg-gray-300 px-4"
             id={friendUsernameInputId}
-            value={friendUsername}
             onChange={(event) => setFriendUsername(event.target.value)}
             type="text"
+            value={friendUsername}
           />
           <button
             className="mt-2 h-14 rounded-md bg-blue-700 font-bold text-gray-100 duration-200 hover:bg-blue-600"
