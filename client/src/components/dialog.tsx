@@ -25,7 +25,7 @@ export function Dialog(props: {
         </Transition.Child>
         <Transition.Child
           as={Fragment}
-          enter="delay-75 duration-150 ease-out"
+          enter="duration-150 ease-out"
           enterFrom="opacity-0 scale-110"
           enterTo="opacity-100 scale-100"
           leave="duration-100 ease-in"
