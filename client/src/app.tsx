@@ -6,7 +6,6 @@ import { AuthLayout } from "./layouts/auth";
 import { ChatRoute } from "./routes/chat";
 import { LoginRoute } from "./routes/login";
 import { RegisterRoute } from "./routes/register";
-import { SettingsRoute } from "./routes/settings";
 import { trpc } from "./trpc";
 
 const wsClient = createWSClient({ url: "ws://localhost:4000" });
@@ -48,7 +47,6 @@ function Router() {
         </Route>
         <Route element={<AppLayout />}>
           <Route element={<div />} index />
-          <Route element={<SettingsRoute />} path="settings" />
           <Route path="chats">
             <Route element={<ChatRoute />} path=":chatId" />
           </Route>
