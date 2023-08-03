@@ -46,13 +46,21 @@ export const messageRouter = router({
     }),
   // TODO: Change to protected procedure once cookie auth is implemented
   stream: publicProcedure
-    .input(z.object({ chatId: z.string() }))
+    .input(z.object({ userId: z.string() }))
     .subscription(({ input }) => {
       return observable<Message>((emit) => {
         function onMessageCreate(message: Message) {
-          if (input.chatId === message.chatId) {
-            emit.next(message);
-          }
+          void db.chat
+            .findUnique({
+              select: { users: { select: { id: true } } },
+              where: { id: message.chatId },
+            })
+            .then((chat) => {
+              if (!chat) return;
+              if (chat.users.some((user) => user.id === input.userId)) {
+                emit.next(message);
+              }
+            });
         }
         ee.on("messageCreate", onMessageCreate);
         return () => ee.off("messageCreate", onMessageCreate);
