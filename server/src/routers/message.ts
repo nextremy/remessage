@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import EventEmitter from "events";
 import { z } from "zod";
@@ -19,7 +20,17 @@ export const messageRouter = router({
     .input(
       z.object({ chatId: z.string(), limit: z.number().int().min(1).max(50) })
     )
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      const chat = await db.chat.findUnique({
+        select: { users: { select: { id: true } } },
+        where: { id: input.chatId },
+      });
+      if (!chat) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+      if (!chat.users.some((user) => user.id === ctx.userId)) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
       const messages = await db.message.findMany({
         select: {
           id: true,
@@ -55,21 +66,33 @@ export const messageRouter = router({
         chatId: z.string(),
       })
     )
-    .mutation(async ({ input }) => {
-      const message = await db.message.create({
-        select: {
-          id: true,
-          textContent: true,
-          timestamp: true,
-          sender: { select: { id: true, username: true } },
-          chatId: true,
-        },
-        data: { ...input },
+    .mutation(async ({ input, ctx }) => {
+      await db.$transaction(async (db) => {
+        const chat = await db.chat.findUnique({
+          select: { users: { select: { id: true } } },
+          where: { id: input.chatId },
+        });
+        if (!chat) {
+          throw new TRPCError({ code: "NOT_FOUND" });
+        }
+        if (!chat.users.some((user) => user.id === ctx.userId)) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        const message = await db.message.create({
+          select: {
+            id: true,
+            textContent: true,
+            timestamp: true,
+            sender: { select: { id: true, username: true } },
+            chatId: true,
+          },
+          data: { ...input },
+        });
+        await db.chat.update({
+          data: { lastNotificationTimestamp: message.timestamp },
+          where: { id: input.chatId },
+        });
+        ee.emit("messageCreate", message);
       });
-      await db.chat.update({
-        data: { lastNotificationTimestamp: message.timestamp },
-        where: { id: input.chatId },
-      });
-      ee.emit("messageCreate", message);
     }),
 });

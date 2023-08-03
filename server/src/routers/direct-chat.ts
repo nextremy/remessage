@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { db } from "../prisma/client";
 import { protectedProcedure, router } from "../trpc";
@@ -5,7 +6,10 @@ import { protectedProcedure, router } from "../trpc";
 export const directChatRouter = router({
   get: protectedProcedure
     .input(z.object({ userIds: z.array(z.string()).length(2) }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      if (!input.userIds.includes(ctx.userId)) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
       const chat = await db.$transaction(async (db) => {
         let chat = await db.chat.findFirst({
           select: { id: true, type: true, lastNotificationTimestamp: true },

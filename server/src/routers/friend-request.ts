@@ -6,7 +6,10 @@ import { protectedProcedure, router } from "../trpc";
 export const friendRequestRouter = router({
   list: protectedProcedure
     .input(z.object({ userId: z.string() }))
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
+      if (input.userId !== ctx.userId) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
       const user = await db.user.findUnique({
         select: {
           sentFriendRequests: {
@@ -33,31 +36,72 @@ export const friendRequestRouter = router({
     }),
   create: protectedProcedure
     .input(z.object({ senderId: z.string(), receiverUsername: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
+      if (input.senderId !== ctx.userId) {
+        throw new TRPCError({ code: "FORBIDDEN" });
+      }
       await db.$transaction(async (db) => {
-        const user = await db.user.findUnique({
+        const receiver = await db.user.findUnique({
+          select: { id: true, friends: { select: { id: true } } },
           where: { username: input.receiverUsername },
         });
-        if (!user) {
+        if (!receiver) {
           throw new TRPCError({ code: "NOT_FOUND" });
         }
+        const usersAreFriends = receiver.friends.some(
+          (friend) => friend.id === input.senderId
+        );
+        if (usersAreFriends) {
+          throw new TRPCError({ code: "CONFLICT" });
+        }
+        const existingFriendRequest = await db.friendRequest.findFirst({
+          where: {
+            OR: [
+              { senderId: input.senderId, receiverId: receiver.id },
+              { senderId: receiver.id, receiverId: input.senderId },
+            ],
+          },
+        });
+        if (existingFriendRequest) {
+          throw new TRPCError({ code: "CONFLICT" });
+        }
         await db.friendRequest.create({
-          data: { senderId: input.senderId, receiverId: user.id },
+          data: { senderId: input.senderId, receiverId: receiver.id },
         });
       });
     }),
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
-      await db.friendRequest.delete({ where: { id: input.id } });
+    .mutation(async ({ input, ctx }) => {
+      await db.$transaction(async (db) => {
+        const friendRequest = await db.friendRequest.findUnique({
+          where: { id: input.id },
+        });
+        if (!friendRequest) {
+          throw new TRPCError({ code: "NOT_FOUND" });
+        }
+        if (
+          ctx.userId !== friendRequest.senderId &&
+          ctx.userId !== friendRequest.receiverId
+        ) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
+        await db.friendRequest.delete({ where: { id: input.id } });
+      });
     }),
   accept: protectedProcedure
     .input(z.object({ id: z.string() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       await db.$transaction(async (db) => {
         const friendRequest = await db.friendRequest.delete({
           where: { id: input.id },
         });
+        if (
+          ctx.userId !== friendRequest.senderId &&
+          ctx.userId !== friendRequest.receiverId
+        ) {
+          throw new TRPCError({ code: "FORBIDDEN" });
+        }
         await db.user.update({
           data: { friends: { connect: { id: friendRequest.receiverId } } },
           where: { id: friendRequest.senderId },
