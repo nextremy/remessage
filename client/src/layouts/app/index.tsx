@@ -5,9 +5,11 @@ import { AddFriendButton } from "./add-friend.button";
 import { ChatsList } from "./chats-list";
 import { FriendRequestsButton } from "./friend-requests-button";
 import { FriendsList } from "./friends-list";
+import { useStreamData } from "./use-stream-data";
 
 export function AppLayout() {
   const { pathname } = useLocation();
+  useStreamData();
   try {
     useSession();
   } catch (error) {
