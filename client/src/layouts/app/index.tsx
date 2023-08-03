@@ -23,10 +23,10 @@ export function AppLayout() {
       >
         <Tab.Group>
           <Tab.List className="grid h-16 auto-cols-fr grid-flow-col">
-            <Tab className="border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:bg-gray-200 ui-selected:border-blue-700 ui-selected:text-gray-900">
+            <Tab className="border-b-2 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 ui-selected:border-blue-700 ui-selected:text-blue-700">
               Chats
             </Tab>
-            <Tab className="border-b-4 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 hover:bg-gray-200 ui-selected:border-blue-700 ui-selected:text-gray-900">
+            <Tab className="border-b-2 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 ui-selected:border-blue-700 ui-selected:text-blue-700">
               Friends
             </Tab>
           </Tab.List>
