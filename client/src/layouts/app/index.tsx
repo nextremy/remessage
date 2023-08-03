@@ -3,6 +3,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useSession } from "../../hooks/use-session";
 import { AddFriendButton } from "./add-friend.button";
 import { ChatsList } from "./chats-list";
+import { FriendRequestsButton } from "./friend-requests-button";
 import { FriendsList } from "./friends-list";
 
 export function AppLayout() {
@@ -33,8 +34,9 @@ export function AppLayout() {
             <Tab.Panel>
               <ChatsList />
             </Tab.Panel>
-            <Tab.Panel className="flex flex-col py-2">
+            <Tab.Panel className="flex flex-col gap-2 py-2">
               <AddFriendButton />
+              <FriendRequestsButton />
               <FriendsList />
             </Tab.Panel>
           </Tab.Panels>
