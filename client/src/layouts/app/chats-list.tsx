@@ -25,7 +25,7 @@ function ChatsListItem(props: {
     users: { username: string; id: string }[];
   };
 }) {
-  const session = useSession();
+  const session = useSession()!;
   const { pathname } = useLocation();
 
   const user = props.chat.users.filter((user) => user.id !== session.userId)[0];

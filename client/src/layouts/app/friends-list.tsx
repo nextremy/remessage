@@ -8,7 +8,7 @@ import { trpc } from "../../trpc";
 type Friend = { id: string; username: string };
 
 export function FriendsList() {
-  const { userId } = useSession();
+  const { userId } = useSession()!;
   const { data: friends } = trpc.friend.list.useQuery({ userId });
 
   if (!friends) return null;

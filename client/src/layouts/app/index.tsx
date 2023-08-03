@@ -9,13 +9,10 @@ import { useStreamData } from "./use-stream-data";
 
 export function AppLayout() {
   const { pathname } = useLocation();
+  const session = useSession();
   useStreamData();
-  try {
-    useSession();
-  } catch (error) {
-    return <Navigate to="/login" />;
-  }
 
+  if (!session) return <Navigate replace to="/login" />;
   return (
     <div className="flex h-screen divide-x divide-gray-300">
       <div

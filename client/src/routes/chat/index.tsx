@@ -17,7 +17,7 @@ export function ChatRoute() {
 }
 
 function AppBar() {
-  const session = useSession();
+  const session = useSession()!;
   const { chatId } = useParams();
   const { data: chat } = trpc.chat.get.useQuery({ id: chatId! });
 
@@ -88,7 +88,7 @@ function prettifyTimestamp(timestamp: string) {
 }
 
 function MessageInput() {
-  const session = useSession();
+  const session = useSession()!;
   const { chatId } = useParams();
   const { data: chat } = trpc.chat.get.useQuery({ id: chatId! });
   const { mutate: createMessage } = trpc.message.create.useMutation();

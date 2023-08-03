@@ -9,7 +9,7 @@ export function AddFriendButton() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const friendUsernameInputId = useId();
   const [friendUsername, setFriendUsername] = useState("");
-  const session = useSession();
+  const session = useSession()!;
   const { mutate: sendFriendRequest } = trpc.friendRequest.create.useMutation();
 
   return (

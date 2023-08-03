@@ -5,20 +5,23 @@ export function useStreamData() {
   const session = useSession();
   const context = trpc.useContext();
   trpc.message.stream.useSubscription(
-    { userId: session.userId },
+    { userId: session?.userId ?? "" },
     {
       onData: (newMessage) => {
-        context.chat.list.setData({ userId: session.userId }, (chats) => {
-          if (!chats) return;
-          const newMessageChat = chats.find(
-            (chat) => chat.id === newMessage.chatId,
-          );
-          if (!newMessageChat) return;
-          return [
-            newMessageChat,
-            ...chats.filter((chat) => chat.id !== newMessage.chatId),
-          ];
-        });
+        context.chat.list.setData(
+          { userId: session?.userId ?? "" },
+          (chats) => {
+            if (!chats) return;
+            const newMessageChat = chats.find(
+              (chat) => chat.id === newMessage.chatId,
+            );
+            if (!newMessageChat) return;
+            return [
+              newMessageChat,
+              ...chats.filter((chat) => chat.id !== newMessage.chatId),
+            ];
+          },
+        );
         context.message.list.setData(
           { chatId: newMessage.chatId, limit: 50 },
           (messages) => {
@@ -36,6 +39,7 @@ export function useStreamData() {
           },
         );
       },
+      enabled: session !== null,
     },
   );
 }

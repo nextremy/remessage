@@ -57,7 +57,7 @@ function FriendRequestsListItem(props: {
     receiver: { username: string; id: string };
   };
 }) {
-  const session = useSession();
+  const session = useSession()!;
   const context = trpc.useContext();
   const { mutate: acceptFriendRequest } = trpc.friendRequest.accept.useMutation(
     {
