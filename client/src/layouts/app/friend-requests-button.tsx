@@ -4,6 +4,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/20/solid";
 import { useState } from "react";
+import { Button } from "../../components/button";
 import { Dialog } from "../../components/dialog";
 import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
@@ -13,12 +14,13 @@ export function FriendRequestsButton() {
 
   return (
     <>
-      <button
-        className="mx-2 flex h-14 items-center gap-2 rounded-md border border-gray-300 px-4 font-semibold text-gray-600 duration-200 hover:bg-gray-200"
+      <Button
+        className="mx-2"
+        intent="secondary"
         onClick={() => setDialogOpen(true)}
       >
         <ArrowsRightLeftIcon className="h-5 w-5" /> Friend requests
-      </button>
+      </Button>
       <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
         <Dialog.Title>Friend requests</Dialog.Title>
         <FriendRequestsList />

@@ -1,5 +1,6 @@
 import { UserPlusIcon } from "@heroicons/react/20/solid";
 import { useId, useState } from "react";
+import { Button } from "../../components/button";
 import { Dialog } from "../../components/dialog";
 import { useSession } from "../../hooks/use-session";
 import { trpc } from "../../trpc";
@@ -13,12 +14,13 @@ export function AddFriendButton() {
 
   return (
     <>
-      <button
-        className="mx-2 flex h-14 items-center gap-2 rounded-md border border-gray-300 px-4 font-semibold text-gray-600 duration-200 hover:bg-gray-200"
+      <Button
+        className="mx-2"
+        intent="secondary"
         onClick={() => setDialogOpen(true)}
       >
         <UserPlusIcon className="h-5 w-5" /> Add friend
-      </button>
+      </Button>
       <Dialog onClose={() => setDialogOpen(false)} open={dialogOpen}>
         <Dialog.Title>Add friend</Dialog.Title>
         <Dialog.Description>
@@ -48,12 +50,9 @@ export function AddFriendButton() {
             type="text"
             value={friendUsername}
           />
-          <button
-            className="mt-2 h-14 rounded-md bg-blue-700 font-bold text-gray-100 duration-200 hover:bg-blue-600"
-            type="submit"
-          >
+          <Button className="mt-2" intent="primary" type="submit">
             Send friend request
-          </button>
+          </Button>
         </form>
       </Dialog>
     </>

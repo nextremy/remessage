@@ -1,5 +1,6 @@
 import { FormEvent, useId, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "../../components/button";
 import { trpc } from "../../trpc";
 
 export function LoginRoute() {
@@ -50,12 +51,10 @@ export function LoginRoute() {
         type="password"
         value={password}
       />
-      <button
-        className="mt-8 h-16 rounded-md bg-blue-700 text-lg font-bold text-gray-100 duration-200 hover:bg-blue-800"
-        type="submit"
-      >
+      <div className="h-8" />
+      <Button size="lg" type="submit">
         Log in
-      </button>
+      </Button>
       <p className="mt-4">
         Don{"'"}t have an account?{" "}
         <Link className="text-blue-700" to="/register">
