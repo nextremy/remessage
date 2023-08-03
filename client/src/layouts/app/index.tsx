@@ -22,7 +22,7 @@ export function AppLayout() {
         }`}
       >
         <Tab.Group>
-          <Tab.List className="grid h-16 auto-cols-fr grid-flow-col">
+          <Tab.List className="grid h-14 auto-cols-fr grid-flow-col">
             <Tab className="border-b-2 border-transparent bg-gray-100 font-semibold text-gray-600 duration-200 ui-selected:border-blue-700 ui-selected:text-blue-700">
               Chats
             </Tab>
