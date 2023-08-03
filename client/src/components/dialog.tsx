@@ -26,11 +26,11 @@ export function Dialog(props: {
         <Transition.Child
           as={Fragment}
           enter="duration-150 ease-out"
-          enterFrom="opacity-0 scale-110"
+          enterFrom="opacity-0 scale-90"
           enterTo="opacity-100 scale-100"
           leave="duration-100 ease-in"
           leaveFrom="opacity-100 scale-100"
-          leaveTo="opacity-0 scale-110"
+          leaveTo="opacity-0 scale-90"
         >
           <HUIDialog.Panel className="z-50 w-full max-w-sm rounded-md border-gray-200 bg-gray-100 p-4">
             {props.children}
