@@ -21,6 +21,6 @@ Users can do the following:
 | - |
 | ![Screenshot of a desktop view of a chat screen in Remessage](https://github.com/nextremy/remessage/assets/99709675/352c8142-f1e2-455f-8b1d-493145d555db) |
 
-| Mobile view 1 |
+| Mobile view |
 | - |
 | ![Screenshot of a mobile view of a chat screen in Remessage](https://github.com/nextremy/remessage/assets/99709675/b22229e8-0256-4f34-b25d-65a72da4cc37) |
